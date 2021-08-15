@@ -1,4 +1,5 @@
 using Cinemachine;
+using Client.Interfaces.HUD;
 using Entities.Base;
 using Transports.Base;
 using UnityEngine;
@@ -17,6 +18,7 @@ namespace Client.Player
         [SerializeField] private Car _carPrefab;
         [SerializeField] private Camera _camera;
         [SerializeField] private CinemachineFreeLook _CinemachineCamera;
+        [SerializeField] private Hud _hud;
         
         [Header("Настройки")]
         [SerializeField] private MouseButtons _shotButton; // TODO: Сделать InputManager
@@ -32,6 +34,9 @@ namespace Client.Player
             var car = Instantiate(_carPrefab.gameObject, transform.transform);
             _car = car.GetComponent<Car>();
             _car.Player = this;
+
+            _hud = gameObject.GetComponentInChildren<Hud>();
+            _hud.Init();
 
             _CinemachineCamera.Follow = _car.CameraFollow;
             _CinemachineCamera.LookAt = _car.CameraLookAt;
