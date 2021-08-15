@@ -7,6 +7,11 @@ namespace Locations.MiniGames.Racing.Wall
     {
         [HideInInspector] public Wall Wall;
 
+        protected override void Death()
+        {
+            Destroy(gameObject);
+        }
+        
         private void OnDestroy()
         {
             Wall.TargetDestroy(this);
