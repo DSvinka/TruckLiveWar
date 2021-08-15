@@ -11,6 +11,18 @@ namespace Transports.Base
 		FrontWheel,
 		AllWheel
 	}
+	
+	public enum PickupBonusType 
+	{
+		SpeedBonus = 0,
+		GunBox = 1,
+	}
+    
+	public enum TrapType 
+	{
+		SlowingTrap = 0,
+		DeathTrap = 1,
+	}
 
 	public sealed class CarController : MonoBehaviour
 	{
@@ -35,6 +47,18 @@ namespace Transports.Base
 		
 		[Tooltip("Тип ручного тормоза автомобиля: задний, передний или полноприводный.")]
 		[SerializeField] private DriveType handBrakeType;
+		
+		/// <summary>Ивент подбора бонуса</summary>
+		/// <param name="arg1">Время действия бонуса (0 если бесконечно или не требуется)</param>
+		/// <param name="arg2">Тип бонуса</param>
+		/// <param name="arg3">Название бонуса</param>
+		public event Action< float, PickupBonusType, string> PickupBonusEvent;
+		
+		/// <summary>Ивент попадания в ловушку</summary>
+		/// <param name="arg1">Время действия ловушки (0 если бесконечно или не требуется)</param>
+		/// <param name="arg2">Тип ловушки</param>
+		/// <param name="arg3">Название ловушки</param>
+		public event Action<float, TrapType, string> TrapActivateEvent;
 
 		private WheelCollider[] _wheels;
 
@@ -73,7 +97,6 @@ namespace Transports.Base
 
 			_handBrake = Input.GetKey(KeyCode.Space) ? brakeTorque : 0;
 		}
-
 		private void UpdateVisual(WheelCollider wheel)
 		{
 			Quaternion q;
@@ -135,6 +158,7 @@ namespace Transports.Base
 		public void SpeedSlowing(float slowing)
 		{
 			_slowingTorque = slowing;
+			TrapActivateEvent?.Invoke(0, TrapType.SlowingTrap, "Замедление");
 		}
 		/// <summary>
 		/// Временное замедление
@@ -143,6 +167,7 @@ namespace Transports.Base
 		/// <param name="time">Время действия (в секундах)</param>
 		public void SpeedSlowing(float slowing, float time)
 		{
+			TrapActivateEvent?.Invoke(time, TrapType.SlowingTrap, "Замедление");
 			StartCoroutine(SpeedSlowingCoroutine(slowing, time));
 		}
 		
@@ -153,6 +178,7 @@ namespace Transports.Base
 		public void SpeedBoost(float speed)
 		{
 			_boostTorque = speed;
+			PickupBonusEvent?.Invoke(0, PickupBonusType.SpeedBonus, "Ускорение");
 		}
 		/// <summary>
 		/// Временный буст
@@ -161,28 +187,35 @@ namespace Transports.Base
 		/// <param name="time">Время действия (в секундах)</param>
 		public void SpeedBoost(float speed, float time)
 		{
+			PickupBonusEvent?.Invoke(time, PickupBonusType.SpeedBonus, "Ускорение");
 			StartCoroutine(SpeedBoostCoroutine(speed, time));
 		}
 
-		IEnumerator SpeedBoostCoroutine(float speed, float time)
+		public void KillTrap()
+		{
+			TrapActivateEvent?.Invoke(0, TrapType.DeathTrap, "Смертельная ловушка");
+		}
+		
+		public void PickupGun(string gunName)
+		{
+			PickupBonusEvent?.Invoke(0, PickupBonusType.GunBox, $"Оружие \"{gunName}\"");
+		}
+
+		private IEnumerator SpeedBoostCoroutine(float speed, float time)
 		{
 			var currentBoost = _boostTorque;
 			
 			_boostTorque = speed;
-			Debug.Log("Буст скорости актевирован!");
 			yield return new WaitForSecondsRealtime(time);
 			_boostTorque = currentBoost;
-			Debug.Log("Буст скорости закончился!"); // TODO: СДЕЛАТЬ ЭТО ЧЕРЕЗ HUD
 		}
-		IEnumerator SpeedSlowingCoroutine(float speed, float time)
+		private IEnumerator SpeedSlowingCoroutine(float speed, float time)
 		{
 			var currentSlowing = _slowingTorque;
 			
 			_slowingTorque = speed;
-			Debug.Log("Замедление...");
 			yield return new WaitForSecondsRealtime(time);
 			_slowingTorque = currentSlowing;
-			Debug.Log("Замедление кончилось!"); // TODO: СДЕЛАТЬ ЭТО ЧЕРЕЗ HUD
 		}
 	}
 }
