@@ -146,7 +146,7 @@ namespace VehicleTools.Debug
 					continue;
 				}
 
-				if (Mathf.Abs(timeTravel) < k_MaxRecordTimeTravel) // TODO: solve this mystery
+				if (Mathf.Abs(timeTravel) < k_MaxRecordTimeTravel)
 				{
 					wheelConfig.longData.Add(hit.forwardSlip);
 					wheelConfig.latData.Add(hit.sidewaysSlip);
