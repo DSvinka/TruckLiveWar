@@ -61,7 +61,6 @@ namespace Guns.Base
                 
                 if (Physics.Raycast(barrelPosition, barrelForward, out raycastHit, _gunInfo.MaxDistance))
                 {
-                    Debug.Log(raycastHit.collider.gameObject.name);
                     var entity = raycastHit.collider.gameObject.GetComponent<Entity>();
                     if (entity)
                     {
