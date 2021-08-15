@@ -7,6 +7,7 @@ namespace Locations.MiniGames.Racing.Pickup
     internal sealed class BoxWithGun : MonoBehaviour
     {
         [Header("Характеристики")]
+        [SerializeField] [Tooltip("Название Оружия")] private Gun _gunName;
         [SerializeField] [Tooltip("Оружие")] private Gun _gunPrefab;
         [SerializeField] [Tooltip("В какой слот транспорта будет устанавливаться оружие")] private int _slotIndex;
         
@@ -16,6 +17,7 @@ namespace Locations.MiniGames.Racing.Pickup
             if (player)
             {
                 player.Car.PlaceGun(_slotIndex, _gunPrefab);
+                player.Car.CarController.PickupGun(_gunPrefab.Name);
                 Destroy(gameObject);
             }
         }

@@ -4,14 +4,18 @@ namespace Entities.Base
 {
     public class Entity: MonoBehaviour
     {
+        [Header("Информация")] 
+        [SerializeField] private string _name = "Мишень";
+        
         [Header("Характеристики")]
-        [SerializeField] private float _health;
-        [SerializeField] private float _maxHealth;
-        [SerializeField] private float _fuel; // TODO: Использовать топливо.
-        [SerializeField] private float _maxFuel;
+        [SerializeField] private float _health = 100f;
+        [SerializeField] private float _maxHealth = 100f;
+        [SerializeField] private float _fuel = 200f; // TODO: Использовать топливо.
+        [SerializeField] private float _maxFuel = 200f;
         [SerializeField] private bool _infinityFuel;
         private bool _isDeath;
 
+        public string Name => _name;
         public float Health => _health;
         public float MaxHealth => _maxHealth;
         public float Fuel => _fuel;
