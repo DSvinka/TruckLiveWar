@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Code.Locations.MiniGames.Racing.Pickup

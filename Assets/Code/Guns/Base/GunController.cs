@@ -1,6 +1,4 @@
-using System;
 using Code.Entities.Base;
-using Code.Entities.Enemy;
 using Code.Client;
 using UnityEngine;
 using static UnityEngine.Debug;

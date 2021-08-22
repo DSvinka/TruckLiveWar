@@ -1,7 +1,6 @@
 using Code.Client;
 using Code.Entities.Base;
 using Code.Guns.Base;
-using Code.Locations.MiniGames.Racing;
 using UnityEngine;
 
 namespace Code.Transports.Base

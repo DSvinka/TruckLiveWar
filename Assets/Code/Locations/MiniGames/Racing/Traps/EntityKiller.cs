@@ -1,5 +1,3 @@
-using System;
-using Code.Client;
 using Code.Entities.Base;
 using UnityEngine;
 

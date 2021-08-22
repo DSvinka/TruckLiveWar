@@ -1,7 +1,5 @@
-using System;
 using Code.Client.Interfaces.Hud.Components;
 using Code.Entities.Base;
-using Code.Transports.Base;
 using UnityEngine;
 
 namespace Code.Client.Interfaces.HUD
