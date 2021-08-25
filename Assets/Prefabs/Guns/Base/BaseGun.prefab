@@ -295,8 +295,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7924632198321386107}
-  - component: {fileID: 8230806816958028165}
-  - component: {fileID: 3825295209740958676}
+  - component: {fileID: 3068818217966147393}
   m_Layer: 0
   m_Name: BaseGun
   m_TagString: Untagged
@@ -320,7 +319,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8230806816958028165
+--- !u!114 &3068818217966147393
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -329,36 +328,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7924632198321386108}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ab97144f54ab784aa8e94bb4f0a5e76, type: 3}
+  m_Script: {fileID: 11500000, guid: 20ad87f1ce2040f1abd1a294ac4bc307, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 0}
-  _debug: 0
-  _debugRayTime: 0
   _gun: {fileID: 7924632197337217584}
-  _barrel: {fileID: 7924632197959279704}
   _handle: {fileID: 7924632197303678327}
---- !u!114 &3825295209740958676
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7924632198321386108}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9ec9fa5c45b4c58a97638b153dd5dc2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _name: "\u041F\u0442\u0438\u0447\u043A\u0430"
-  _description: "\u0421\u0430\u043C\u043E\u0435 \u043B\u0443\u0447\u0448\u0435\u0435
-    \u043E\u0440\u0443\u0436\u0438\u0435 \u0432 \u0438\u0433\u0440\u0435!"
-  _icon: {fileID: 0}
-  _price: 100
-  _damage: 10
-  _maxDistance: 100
-  _fireRate: 0.1
-  _turnSpeed: 0.1
-  _clipAmmo: 60
-  _maxAmmo: 360
-  _infinityAmmo: 1
+  _firePoint: {fileID: 7924632197959279704}

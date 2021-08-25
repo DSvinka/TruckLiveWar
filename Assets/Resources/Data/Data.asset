@@ -18,3 +18,4 @@ MonoBehaviour:
   _playerKillerPath: Modificators/PlayerKiller
   _baseWeaponPath: Weapons/BaseWeapon
   _baseCarPath: Transports/BaseCar
+  _targetPath: Objects/Target

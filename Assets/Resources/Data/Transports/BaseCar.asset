@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _carProvider: {fileID: 228394205304314984, guid: 37e8aec0f2deb384893884121c5b75b9, type: 3}
   _name: "\u041C\u0430\u0448\u0438\u043D\u0430"
+  _maxHealth: 100
   _maxAngle: 30
-  _maxTorque: 300
+  _maxTorque: 600
   _brakeTorque: 30000
   _criticalSpeed: 5
   _stepsBelow: 12

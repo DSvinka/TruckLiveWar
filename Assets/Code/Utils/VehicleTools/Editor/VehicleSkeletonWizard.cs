@@ -34,7 +34,7 @@ namespace Code.Utils.VehicleTools.EditorGUI
 
 		private void CreateCar()
 		{
-			var root = new GameObject("CarBase");
+			var root = new GameObject("Car");
 			var rootBody = root.AddComponent<Rigidbody>();
 			rootBody.mass = m_Mass;
 
@@ -48,8 +48,8 @@ namespace Code.Utils.VehicleTools.EditorGUI
 
 			for (int i = 0; i < m_AxlesCount; ++i)
 			{
-				var leftWheel = new GameObject(string.Format("a{0}l", i));
-				var rightWheel = new GameObject(string.Format("a{0}r", i));
+				var leftWheel = new GameObject(string.Format("Wheel{0}Left", i));
+				var rightWheel = new GameObject(string.Format("Wheel{0}Right", i));
 
 				leftWheel.AddComponent<WheelCollider>();
 				rightWheel.AddComponent<WheelCollider>();
@@ -64,7 +64,6 @@ namespace Code.Utils.VehicleTools.EditorGUI
 			}
 
 			root.AddComponent<EasySuspension>();
-			root.AddComponent<CarController>();
 		}
 	}
 }

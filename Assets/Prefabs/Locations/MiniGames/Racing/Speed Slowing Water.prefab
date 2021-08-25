@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4237696779374976278}
   - component: {fileID: 4237696779374976279}
   - component: {fileID: 4237696779374976280}
-  - component: {fileID: 4237696779374976281}
+  - component: {fileID: 4485893694719362472}
   m_Layer: 0
   m_Name: Speed Slowing Water
   m_TagString: Untagged
@@ -96,7 +96,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.5, z: 1}
   m_Center: {x: 0, y: 0.25, z: 0}
---- !u!114 &4237696779374976281
+--- !u!114 &4485893694719362472
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -105,12 +105,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4237696779374976282}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9617036f13148219b5560d6bc4d2619, type: 3}
+  m_Script: {fileID: 11500000, guid: f637ea0d752d4db885ba403f68cdef8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _modificator:
-    _modificatorName: "\u0412\u043E\u0434\u0430"
-    _changeSpeed: -1.5
-    _changeBreak: -1.5
-    _messageColor: {r: 0.124154516, g: 0.5849056, b: 0.5333795, a: 1}
-    _activeTime: 5
+  _modificatorType: 1
