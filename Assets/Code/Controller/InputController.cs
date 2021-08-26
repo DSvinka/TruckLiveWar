@@ -5,36 +5,36 @@ using Code.Interfaces.UserInput;
 
 namespace Code.Controller
 {
-    public sealed class InputController : IExecute
+    internal sealed class InputController : IExecute
     {
-        private readonly IUserAxisProxy _horizontal;
-        private readonly IUserAxisProxy _vertical;
-        private readonly IUserKeyProxy _handbreak;
-        private readonly IUserKeyProxy _restart;
-        private readonly IUserKeyProxy _fireButton;
-        
-        public InputController(
-            (IUserAxisProxy inputHorizontal, IUserAxisProxy inputVertical) axisInput, 
+        private readonly IUserAxisProxy m_horizontal;
+        private readonly IUserAxisProxy m_vertical;
+        private readonly IUserKeyProxy m_handbreak;
+        private readonly IUserKeyProxy m_restart;
+        private readonly IUserKeyProxy m_fireButton;
+
+        internal InputController(
+            (IUserAxisProxy inputHorizontal, IUserAxisProxy inputVertical) axisInput,
             (IUserKeyProxy inputHandbreak, IUserKeyProxy inputRestart) keysInput,
-            IUserKeyProxy mouseInput 
+            IUserKeyProxy mouseInput
         )
         {
-            _horizontal = axisInput.inputHorizontal;
-            _vertical = axisInput.inputVertical;
-            
-            _handbreak = keysInput.inputHandbreak;
-            _restart = keysInput.inputRestart;
-            
-            _fireButton = mouseInput;
+            m_horizontal = axisInput.inputHorizontal;
+            m_vertical = axisInput.inputVertical;
+
+            m_handbreak = keysInput.inputHandbreak;
+            m_restart = keysInput.inputRestart;
+
+            m_fireButton = mouseInput;
         }
 
         public void Execute(float deltaTime)
         {
-            _horizontal.GetAxis();
-            _vertical.GetAxis();
-            _handbreak.GetKey();
-            _restart.GetKey();
-            _fireButton.GetKey();
+            m_horizontal.GetAxis();
+            m_vertical.GetAxis();
+            m_handbreak.GetKey();
+            m_restart.GetKey();
+            m_fireButton.GetKey();
         }
     }
 }

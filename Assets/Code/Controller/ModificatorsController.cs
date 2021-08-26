@@ -11,31 +11,31 @@ namespace Code.Controller
 {
     internal sealed class Modificator
     {
-        private ModificatorData _modificatorData;
+        private ModificatorData m_modificatorData;
 
-        private float _changeSpeed;
-        private float _changeHealth;
-        
+        private float m_changeSpeed;
+        private float m_changeHealth;
+
         public float Cooldown;
         public GameObject GameObject;
-        
-        public float ChangeSpeed() => _changeSpeed;
-        public float ChangeHealth() => _changeHealth;
 
-        public ModificatorData ModificatorData() => _modificatorData;
+        public float ChangeSpeed() => m_changeSpeed;
+        public float ChangeHealth() => m_changeHealth;
+
+        public ModificatorData ModificatorData() => m_modificatorData;
 
         public Modificator(ModificatorData modificatorData)
         {
-            _modificatorData = modificatorData;
+            m_modificatorData = modificatorData;
 
-            _changeHealth = modificatorData.ChangeHealth;
-            _changeSpeed = modificatorData.ChangeSpeed;
+            m_changeHealth = modificatorData.ChangeHealth;
+            m_changeSpeed = modificatorData.ChangeSpeed;
             Cooldown = modificatorData.ActiveTime;
             GameObject = null;
         }
     }
-    
-    internal class ModificatorsController : IController, IInitialization, ICleanup, IExecute
+
+    internal sealed class ModificatorsController : IController, IInitialization, ICleanup, IExecute
     {
         private readonly ModificatorProvider[] _modificators;
         private readonly Data.Data _data;
@@ -46,7 +46,7 @@ namespace Code.Controller
         private Modificator _playerKillerModificator;
 
         private List<Modificator> _activeModificators;
-        
+
         public ModificatorsController(ModificatorProvider[] modificators, CarController CarController, Data.Data data)
         {
             _modificators = modificators;
@@ -68,7 +68,7 @@ namespace Code.Controller
                 modificatorProvider.OnTriggerEnterChange += OnTriggerExit;
             }
         }
-        
+
         private void OnTriggerEnter(GameObject gameObject, ModificatorProvider modificatorProvider, ModificatorType modificatorType)
         {
             var carProvider = gameObject.GetComponentInParent<CarProvider>();
@@ -89,13 +89,13 @@ namespace Code.Controller
                             Destroy(modificatorProvider);
                         }
                         break;
-                
+
                     case ModificatorType.SpeedSlowingDown:
                         var speedSlowingDown = _data.SpeedSlowingDown;
 
                         if (speedSlowingDown.ZoneObject)
                         {
-                            _playerCarController.SpeedModificator = speedSlowingDown.ChangeSpeed;   
+                            _playerCarController.SpeedModificator = speedSlowingDown.ChangeSpeed;
                         }
                         else
                         {
@@ -103,7 +103,7 @@ namespace Code.Controller
                             Destroy(modificatorProvider);
                         }
                         break;
-                
+
                     case ModificatorType.PlayerKiller:
                         var playerKiller = _data.PlayerKiller;
                         if (playerKiller.ZoneObject)
@@ -116,13 +116,13 @@ namespace Code.Controller
                             Destroy(modificatorProvider);
                         }
                         break;
-                    
+
                     default:
                         throw new Exception("Указанный в объекте тип модификатора не найден!");
                 }
             }
         }
-        
+
         private void OnTriggerExit(GameObject gameObject, ModificatorProvider modificatorProvider, ModificatorType modificatorType)
         {
             var carProvider = gameObject.GetComponentInParent<CarProvider>();
@@ -138,7 +138,7 @@ namespace Code.Controller
                             _activeModificators.Add(_speedSlowingDownModificator);
                         }
                         break;
-                    
+
                     case ModificatorType.SpeedSlowingDown:
                         var speedSlowingDown = _data.SpeedSlowingDown;
                         if (speedSlowingDown.ZoneObject)
@@ -147,7 +147,7 @@ namespace Code.Controller
                             _activeModificators.Add(_speedSlowingDownModificator);
                         }
                         break;
-                    
+
                     case ModificatorType.PlayerKiller:
                         var playerKiller = _data.PlayerKiller;
                         if (playerKiller.ZoneObject)

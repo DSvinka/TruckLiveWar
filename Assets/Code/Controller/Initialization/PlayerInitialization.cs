@@ -10,35 +10,35 @@ namespace Code.Controller.Initialization
 {
     internal sealed class PlayerInitialization : IInitialization
     {
-        private IPlayerFactory _playerFactory;
-        private Transform _player;
-        private CarProvider _playerCar;
+        private IPlayerFactory m_playerFactory;
+        private Transform m_player;
+        private CarProvider m_playerCar;
 
-        private Vector3 _playerSpawnPosition;
+        private Vector3 m_playerSpawnPosition;
 
         public PlayerInitialization(PlayerFactory playerFactory, Vector3 playerSpawnPosition)
         {
-            _playerFactory = playerFactory;
-            _playerSpawnPosition = playerSpawnPosition;
+            m_playerFactory = playerFactory;
+            m_playerSpawnPosition = playerSpawnPosition;
         }
 
         public void Initialization()
         {
-            _player = _playerFactory.CreatePlayer();
-            _playerCar = _playerFactory.CreateTransport();
-            
-            _player.position = _playerSpawnPosition;
-            _playerCar.transform.position = _playerSpawnPosition;
+            m_player = m_playerFactory.CreatePlayer();
+            m_playerCar = m_playerFactory.CreateTransport();
+
+            m_player.position = m_playerSpawnPosition;
+            m_playerCar.transform.position = m_playerSpawnPosition;
         }
 
         public Transform GetPlayer()
         {
-            return _player;
+            return m_player;
         }
-        
+
         public CarProvider GetPlayerTransport()
         {
-            return _playerCar;
+            return m_playerCar;
         }
     }
 }

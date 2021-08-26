@@ -9,22 +9,22 @@ namespace Code.Data
     [CreateAssetMenu(fileName = "PlayerSettings", menuName = "Data/Unit/PlayerSettings")]
     internal sealed class PlayerData : ScriptableObject
     {
-        [SerializeField] private string _carDataPath;
-        
+        [SerializeField] private string m_carDataPath;
+
         [Header("Объекты")]
-        [SerializeField] private GameObject _playerPrefab;
+        [SerializeField] private GameObject m_playerPrefab;
 
         [Header("Появление")]
-        [SerializeField] private Vector3 _spawnPosition;
+        [SerializeField] private Vector3 m_spawnPosition;
 
-        private CarData _car;
+        private CarData m_car;
 
         public CinemachineFreeLook CinemachineCamera { get; set; }
         public Camera Camera { get; set; }
 
-        public GameObject PlayerPrefab => _playerPrefab;
-        public Vector3 SpawnPosition => _spawnPosition;
+        public GameObject PlayerPrefab => m_playerPrefab;
+        public Vector3 SpawnPosition => m_spawnPosition;
 
-        public CarData Car => GetData(_carDataPath, ref _car);
+        public CarData Car => GetData(m_carDataPath, ref m_car);
     }
 }

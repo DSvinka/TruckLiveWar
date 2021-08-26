@@ -16,12 +16,12 @@ namespace Code.Providers
         {
             Destroy(gameObject);
         }
-        
+
         public void AddDamage(GameObject damager, float damage)
         {
             OnUnitDamage.Invoke(damager, this, damage);
         }
-        
+
         public void AddHealth(GameObject healer, float health)
         {
             OnUnitHealth.Invoke(healer, this, health);

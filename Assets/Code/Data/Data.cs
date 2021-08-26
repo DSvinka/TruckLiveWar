@@ -12,59 +12,59 @@ namespace Code.Data
         SpeedSlowingDown,
         PlayerKiller
     }
-    
+
     [CreateAssetMenu(fileName = "Data", menuName = "Data/Data")]
     internal sealed class Data : ScriptableObject
     {
         #region Пути
 
         [Header("Игрок")]
-        [SerializeField] private string _playerDataPath;
-        
+        [SerializeField] private string m_playerDataPath;
+
         [Header("Модификаторы")] // TODO: Сделать автоматический сбор модификаторов (ввод только названия папки)
-        [SerializeField] private string _speedBonusPath;
-        [SerializeField] private string _speedSlowingDownPath;
-        [SerializeField] private string _playerKillerPath;
-        
+        [SerializeField] private string m_speedBonusPath;
+        [SerializeField] private string m_speedSlowingDownPath;
+        [SerializeField] private string m_playerKillerPath;
+
         [Header("Вооружение")] // TODO: Сделать автоматический сбор транспорта (ввод только названия папки)
-        [SerializeField] private string _baseWeaponPath;
-        
+        [SerializeField] private string m_baseWeaponPath;
+
         [Header("Траспортные средства")] // TODO: Сделать автоматический сбор вооружения (ввод только названия папки)
-        [SerializeField] private string _baseCarPath;
-        
+        [SerializeField] private string m_baseCarPath;
+
         [Header("Объекты")] // TODO: Сделать автоматический сбор объектов (ввод только названия папки)
-        [SerializeField] private string _targetPath;
+        [SerializeField] private string m_targetPath;
 
         #endregion
-        
+
         #region Объекты
 
-        private PlayerData _player;
-        
-        private ModificatorData _speedBonus;
-        private ModificatorData _speedSlowingDown;
-        private ModificatorData _playerKiller;
+        private PlayerData m_player;
 
-        private WeaponData _baseWeapon;
+        private ModificatorData m_speedBonus;
+        private ModificatorData m_speedSlowingDown;
+        private ModificatorData m_playerKiller;
 
-        private CarData _baseCar;
-        private TargetData _targetData;
-        
+        private WeaponData m_baseWeapon;
+
+        private CarData m_baseCar;
+        private TargetData m_targetData;
+
         #endregion
-        
+
         #region Свойства
 
-        public PlayerData Player => GetData(_playerDataPath, ref _player);
+        public PlayerData Player => GetData(m_playerDataPath, ref m_player);
 
-        public ModificatorData SpeedBonus => GetData(_speedBonusPath, ref _speedBonus);
-        public ModificatorData SpeedSlowingDown => GetData(_speedSlowingDownPath, ref _speedSlowingDown);
-        public ModificatorData PlayerKiller => GetData(_playerKillerPath, ref _playerKiller);
+        public ModificatorData SpeedBonus => GetData(m_speedBonusPath, ref m_speedBonus);
+        public ModificatorData SpeedSlowingDown => GetData(m_speedSlowingDownPath, ref m_speedSlowingDown);
+        public ModificatorData PlayerKiller => GetData(m_playerKillerPath, ref m_playerKiller);
 
-        public WeaponData BaseWeapon => GetData(_baseWeaponPath, ref _baseWeapon);
+        public WeaponData BaseWeapon => GetData(m_baseWeaponPath, ref m_baseWeapon);
 
-        public CarData BaseCar => GetData(_baseCarPath, ref _baseCar);
-        
-        public TargetData TargetData => GetData(_targetPath, ref _targetData);
+        public CarData BaseCar => GetData(m_baseCarPath, ref m_baseCar);
+
+        public TargetData TargetData => GetData(m_targetPath, ref m_targetData);
 
         #endregion
     }

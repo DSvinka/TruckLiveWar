@@ -8,10 +8,10 @@ namespace Code.Providers
     internal sealed class PickupProvider : MonoBehaviour, IPickupProvider
     {
         public event Action<GameObject, PickupProvider> OnTriggerEnterChange = delegate(GameObject gameObject, PickupProvider pickupProvider) {  };
-        
-        [SerializeField] private WeaponData _weaponData;
 
-        public WeaponData WeaponData => _weaponData;
+        [SerializeField] private WeaponData m_weaponData;
+
+        public WeaponData WeaponData => m_weaponData;
 
         private void OnTriggerEnter(Collider other)
         {

@@ -8,41 +8,41 @@ namespace Code.Controller.Initialization
     internal sealed class InputInitialization
     {
         // Axis
-        private IUserAxisProxy _axisHorizontal;
-        private IUserAxisProxy _axisVertical;
+        private IUserAxisProxy m_axisHorizontal;
+        private IUserAxisProxy m_axisVertical;
         // Keys
-        private IUserKeyProxy _inputHandbreak;
-        private IUserKeyProxy _inputRestart;
+        private IUserKeyProxy m_inputHandbreak;
+        private IUserKeyProxy m_inputRestart;
         // Mouse
-        private IUserKeyProxy _inputFireMouse;
+        private IUserKeyProxy m_inputFireMouse;
 
         public InputInitialization()
         {
             // Axis
-            _axisHorizontal = new AxisHorizontal();
-            _axisVertical = new AxisVertical();
+            m_axisHorizontal = new AxisHorizontal();
+            m_axisVertical = new AxisVertical();
             
             // Keys
-            _inputHandbreak = new InputHandbreak();
-            _inputRestart = new InputRestart();
+            m_inputHandbreak = new InputHandbreak();
+            m_inputRestart = new InputRestart();
             
             // Mouse
-            _inputFireMouse = new InputFireMouse();
+            m_inputFireMouse = new InputFireMouse();
         }
-        
+
         public (IUserAxisProxy inputHorizontal, IUserAxisProxy inputVertical) GetAxisInput()
         {
-            return (_axisHorizontal, _axisVertical);
+            return (m_axisHorizontal, m_axisVertical);
         }
-        
-        public (IUserKeyProxy inputHandbreak, IUserKeyProxy _inputRestart) GetKeysInput()
+
+        public (IUserKeyProxy inputHandbreak, IUserKeyProxy m_inputRestart) GetKeysInput()
         {
-            return (_inputHandbreak, _inputRestart);
+            return (m_inputHandbreak, m_inputRestart);
         }
 
         public IUserKeyProxy GetMouseInput()
         {
-            return (_inputFireMouse);
+            return (m_inputFireMouse);
         }
     }
 }

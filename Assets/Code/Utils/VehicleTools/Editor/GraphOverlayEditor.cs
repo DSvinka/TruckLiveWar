@@ -2,22 +2,21 @@
 using UnityEngine;
 using Code.Utils.VehicleTools.Debug;
 
-namespace Code.Utils.VehicleTools.EditorGUI
+namespace Code.Utils.VehicleTools.Editor
 {
     [CustomEditor(typeof(GraphOverlay))]
-    internal sealed class GraphOverlayEditor : Editor
+    internal sealed class GraphOverlayEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
-            GraphOverlay myTarget = (GraphOverlay) target;
+            var myTarget = (GraphOverlay) target;
 
-            myTarget.vehicleBody =
-                (Rigidbody) EditorGUILayout.ObjectField("Транспорт", myTarget.vehicleBody, typeof(Rigidbody), true);
+            myTarget.vehicleBody = (Rigidbody) EditorGUILayout.ObjectField("Транспорт", myTarget.vehicleBody, typeof(Rigidbody), true);
 
             if (!myTarget.vehicleBody)
                 return;
 
-            myTarget.timeTravel = EditorGUILayout.FloatField("Time Travel", myTarget.timeTravel);
+            myTarget.timeTravel = EditorGUILayout.FloatField("Отображаемый в диограмме промежуток времени", myTarget.timeTravel);
 
             myTarget.width = EditorGUILayout.Slider("Ширина", myTarget.width, 0, 1);
             myTarget.height = EditorGUILayout.Slider("Высота", myTarget.height, 0, 1);
@@ -35,7 +34,7 @@ namespace Code.Utils.VehicleTools.EditorGUI
                 foreach (var wheelConfig in myTarget.wheelConfigs)
                 {
                     EditorGUILayout.LabelField(wheelConfig.collider.name);
-                    wheelConfig.visible = EditorGUILayout.Toggle("Включить", wheelConfig.visible);
+                    wheelConfig.visible = EditorGUILayout.Toggle("Выключатель", wheelConfig.visible);
                 }
             }
         }

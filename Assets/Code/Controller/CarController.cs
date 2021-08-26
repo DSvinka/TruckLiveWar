@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Code.Controller.Initialization;
 using UnityEngine;
 using Code.Interfaces;
@@ -10,191 +11,186 @@ using IUnit = Code.Interfaces.Providers.IUnit;
 
 namespace Code.Controller
 {
-	internal sealed class CarController : IInitialization, IExecute, ICleanup
-	{
-		private readonly PlayerInitialization _playerInitialization;
-		private readonly ICarData _carData;
-		
-		private CarProvider _car;
-		
-		private float _horizontalInput;
-		private float _verticalInput;
-		private bool _handBreakInput;
+    internal sealed class CarController : IInitialization, IExecute, ICleanup
+    {
+        private readonly PlayerInitialization m_playerInitialization;
+        private readonly ICarData m_carData;
 
-		private IUserAxisProxy _horizontalAxisProxy;
-		private IUserAxisProxy _verticalAxisProxy;
-		private IUserKeyProxy _handbreakInputProxy;
-		
-		private float _angle;
-		private float _torque;
-		private float _handBrake;
+        private float m_horizontalInput;
+        private float m_verticalInput;
+        private bool m_handBreakInput;
 
-		private float _speedModificator;
-		private float _health;
-		private bool _death;
+        private IUserAxisProxy m_horizontalAxisProxy;
+        private IUserAxisProxy m_verticalAxisProxy;
+        private IUserKeyProxy m_handbreakInputProxy;
 
-		public CarProvider CarProvider => _car;
-		public float SpeedModificator { get => _speedModificator; set => _speedModificator = value; }
+        private float _angle;
+        private float _torque;
+        private float _handBrake;
 
-		public CarController(
-			(IUserAxisProxy inputHorizontal, IUserAxisProxy inputVertical) axisInput,
-			(IUserKeyProxy inputHandbreak, IUserKeyProxy inputRestart) keysInput,
-			PlayerInitialization playerInitialization, ICarData carData)
-		{
-			_playerInitialization = playerInitialization;
-			_carData = carData;
-			
-			_horizontalAxisProxy = axisInput.inputHorizontal;
-			_verticalAxisProxy = axisInput.inputVertical;
-			_handbreakInputProxy = keysInput.inputHandbreak;
-		}
-		
-		public void Initialization()
-		{
-			_horizontalAxisProxy.AxisOnChange += HorizontalOnAxisOnChange;
-			_verticalAxisProxy.AxisOnChange += VerticalOnAxisOnChange;
-			_handbreakInputProxy.KeyOnChange += HandbreakOnChange;
-			
-			_car = _playerInitialization.GetPlayerTransport();
+        private float _health;
+        private bool _death;
 
-			_car.OnUnitDamage += AddDamage;
-			_car.OnUnitHealth += AddHealth;
-			
-			_health = _carData.MaxHealth;
+        public CarProvider CarProvider { get; private set; }
 
-			foreach (var wheelAxie in _car.WheelAxies)
-			{
-				foreach (var wheel in wheelAxie.Wheels)
-				{
-					wheel.WheelCollider.ConfigureVehicleSubsteps(_carData.CriticalSpeed, _carData.StepsBelow, _carData.StepsAbove);
-				}
-			}
-		}
-		
-		public void Cleanup()
-		{
-			_horizontalAxisProxy.AxisOnChange -= HorizontalOnAxisOnChange;
-			_verticalAxisProxy.AxisOnChange -= VerticalOnAxisOnChange;
-			_handbreakInputProxy.KeyOnChange -= HandbreakOnChange;
-			
-			_car.OnUnitDamage -= AddDamage;
-			_car.OnUnitHealth -= AddHealth;
-		}
+        public float SpeedModificator { get; set; }
 
-		private void VerticalOnAxisOnChange(float value)
-		{
-			_verticalInput = value;
-		}
-		private void HorizontalOnAxisOnChange(float value)
-		{
-			_horizontalInput = value;
-		}
-		private void HandbreakOnChange(bool value)
-		{
-			_handBreakInput = value;
-		}
+        public CarController(
+            (IUserAxisProxy inputHorizontal, IUserAxisProxy inputVertical) axisInput,
+            (IUserKeyProxy inputHandbreak, IUserKeyProxy inputRestart) keysInput,
+            PlayerInitialization playerInitialization, ICarData carData)
+        {
+            m_playerInitialization = playerInitialization;
+            m_carData = carData;
+            
+            m_horizontalAxisProxy = axisInput.inputHorizontal;
+            m_verticalAxisProxy = axisInput.inputVertical;
+            m_handbreakInputProxy = keysInput.inputHandbreak;
+        }
 
-		public void Execute(float deltaTime)
-		{
-			if (!_death)
-			{
-				GetInput();
-				foreach (var wheelAxie in _car.WheelAxies)
-				{
-					foreach (var wheel in wheelAxie.Wheels)
-					{
-						CarMove(wheel, wheelAxie);
-						if (wheel.WheelShape)
-							UpdateVisual(wheel);
-					}
-				}
-			}
-		}
+        public void Initialization()
+        {
+            m_horizontalAxisProxy.AxisOnChange += HorizontalOnAxisOnChange;
+            m_verticalAxisProxy.AxisOnChange += VerticalOnAxisOnChange;
+            m_handbreakInputProxy.KeyOnChange += HandbreakOnChange;
+            
+            CarProvider = m_playerInitialization.GetPlayerTransport();
 
-		private void GetInput()
-		{
-			_angle = _carData.MaxAngle * _horizontalInput;
-			_handBrake = _handBreakInput ? _carData.BrakeTorque : 0;
-			
-			if (_speedModificator < 0f)
-				_torque = (_carData.MaxTorque / -SpeedModificator) * _verticalInput;
-			else if (_speedModificator > 0f)
-				_torque = (_carData.MaxTorque * SpeedModificator) * _verticalInput;
-			else
-				_torque = _carData.MaxTorque * _verticalInput;
-		}
-		
-		private void UpdateVisual(Wheel wheel)
-		{
-			wheel.WheelCollider.GetWorldPose(out var position, out var rotation);
-			
-			Transform shapeTransform = wheel.WheelShape.transform;
+            CarProvider.OnUnitDamage += AddDamage;
+            CarProvider.OnUnitHealth += AddHealth;
+            
+            _health = m_carData.MaxHealth;
 
-			if (wheel.WheelSide == WheelSide.Left)
-			{
-				shapeTransform.rotation = rotation * Quaternion.Euler(0, 180, 0);
-				shapeTransform.position = position;
-			}
-			else
-			{
-				shapeTransform.position = position;
-				shapeTransform.rotation = rotation;
-			}
-		}
+            foreach (var wheel in CarProvider.WheelAxies.SelectMany(wheelAxie => wheelAxie.Wheels))
+            {
+                wheel.WheelCollider.ConfigureVehicleSubsteps(m_carData.CriticalSpeed, m_carData.StepsBelow, m_carData.StepsAbove);
+            }
+        }
 
-		private void CarMove(Wheel wheel, WheelAxie wheelAxie)
-		{
-			var wheelCollider = wheel.WheelCollider;
-			
-			if (wheelAxie.IsSteeringAxie)
-				wheelCollider.steerAngle = _angle;
+        public void Cleanup()
+        {
+            m_horizontalAxisProxy.AxisOnChange -= HorizontalOnAxisOnChange;
+            m_verticalAxisProxy.AxisOnChange -= VerticalOnAxisOnChange;
+            m_handbreakInputProxy.KeyOnChange -= HandbreakOnChange;
+            
+            CarProvider.OnUnitDamage -= AddDamage;
+            CarProvider.OnUnitHealth -= AddHealth;
+        }
 
-			if (wheelAxie.IsHandbreakAxie)
-				wheelCollider.brakeTorque = _handBrake;
+        private void VerticalOnAxisOnChange(float value)
+        {
+            m_verticalInput = value;
+        }
+        private void HorizontalOnAxisOnChange(float value)
+        {
+            m_horizontalInput = value;
+        }
+        private void HandbreakOnChange(bool value)
+        {
+            m_handBreakInput = value;
+        }
 
-			if (wheelAxie.IsMotorAxie)
-				wheelCollider.motorTorque = _torque;
-		}
-		
-		private void AddDamage(GameObject damager, IUnit unit, float damage)
-		{
-			if (!_death)
-			{
-				var carProvider = unit as CarProvider;
-				if (carProvider == null)
-					throw new Exception("Аргумент unit не является CarProvider'ом");
-			
-				if (carProvider.gameObject.GetInstanceID() == _car.gameObject.GetInstanceID())
-				{
-					_health -= damage;
-					if (_health <= 0)
-						Death();
-				}
-			}
-		}
+        public void Execute(float deltaTime)
+        {
+            if (!_death)
+            {
+                GetInput();
+                foreach (var wheelAxie in CarProvider.WheelAxies)
+                {
+                    foreach (var wheel in wheelAxie.Wheels)
+                    {
+                        CarMove(wheel, wheelAxie);
+                        if (wheel.WheelShape)
+                            UpdateVisual(wheel);
+                    }
+                }
+            }
+        }
 
-		private void AddHealth(GameObject healer, IUnit unit, float health)
-		{
-			if (!_death)
-			{
-				var carProvider = unit as CarProvider;
-				if (carProvider == null)
-					throw new Exception("Аргумент unit не является CarProvider'ом");
+        private void GetInput()
+        {
+            _angle = m_carData.MaxAngle * m_horizontalInput;
+            _handBrake = m_handBreakInput ? m_carData.BrakeTorque : 0;
+            
+            if (SpeedModificator < 0f)
+                _torque = (m_carData.MaxTorque / -SpeedModificator) * m_verticalInput;
+            else if (SpeedModificator > 0f)
+                _torque = (m_carData.MaxTorque * SpeedModificator) * m_verticalInput;
+            else
+                _torque = m_carData.MaxTorque * m_verticalInput;
+        }
 
-				if (carProvider.gameObject.GetInstanceID() == _car.gameObject.GetInstanceID())
-				{
-					_health += health;
-					if (_health > _carData.MaxHealth)
-						_health = _carData.MaxHealth;
-				}
-			}
-		}
+        private void UpdateVisual(Wheel wheel)
+        {
+            wheel.WheelCollider.GetWorldPose(out var position, out var rotation);
+            
+            Transform shapeTransform = wheel.WheelShape.transform;
 
-		private void Death()
-		{
-			_death = true;
-			_health = 0;
-			_car.Explosion();
-		}
-	}
+            if (wheel.WheelSide == WheelSide.Left)
+            {
+                shapeTransform.rotation = rotation * Quaternion.Euler(0, 180, 0);
+                shapeTransform.position = position;
+            }
+            else
+            {
+                shapeTransform.position = position;
+                shapeTransform.rotation = rotation;
+            }
+        }
+
+        private void CarMove(Wheel wheel, WheelAxie wheelAxie)
+        {
+            var wheelCollider = wheel.WheelCollider;
+            
+            if (wheelAxie.IsSteeringAxie)
+                wheelCollider.steerAngle = _angle;
+
+            if (wheelAxie.IsHandbreakAxie)
+                wheelCollider.brakeTorque = _handBrake;
+
+            if (wheelAxie.IsMotorAxie)
+                wheelCollider.motorTorque = _torque;
+        }
+
+        private void AddDamage(GameObject damager, IUnit unit, float damage)
+        {
+            if (!_death)
+            {
+                var carProvider = unit as CarProvider;
+                if (carProvider == null)
+                    throw new Exception("Аргумент unit не является CarProvider'ом");
+
+                if (carProvider.gameObject.GetInstanceID() == CarProvider.gameObject.GetInstanceID())
+                {
+                    _health -= damage;
+                    if (_health <= 0)
+                        Death();
+                }
+            }
+        }
+
+        private void AddHealth(GameObject healer, IUnit unit, float health)
+        {
+            if (!_death)
+            {
+                var carProvider = unit as CarProvider;
+                if (carProvider == null)
+                    throw new Exception("Аргумент unit не является CarProvider'ом");
+
+                if (carProvider.gameObject.GetInstanceID() == CarProvider.gameObject.GetInstanceID())
+                {
+                    _health += health;
+                    if (_health > m_carData.MaxHealth)
+                        _health = m_carData.MaxHealth;
+                }
+            }
+        }
+
+        private void Death()
+        {
+            _death = true;
+            _health = 0;
+            CarProvider.Explosion();
+        }
+    }
 }

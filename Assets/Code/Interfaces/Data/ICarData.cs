@@ -11,10 +11,10 @@ namespace Code.Interfaces.Data
         float CriticalSpeed { get; }
         int StepsBelow { get; }
         int StepsAbove { get; }
-        
+
         public string Name { get; }
         public float MaxHealth { get; }
-        
+
         CarProvider CarProvider { get; }
     }
 }

@@ -10,8 +10,8 @@ namespace Code.Interfaces.Providers
         event Action<GameObject, ModificatorProvider, ModificatorType> OnTriggerEnterChange;
         event Action<GameObject, ModificatorProvider, ModificatorType> OnTriggerExitChange;
     }
-    
-    internal interface IPickupProvider 
+
+    internal interface IPickupProvider
     {
         event Action<GameObject, PickupProvider> OnTriggerEnterChange;
     }

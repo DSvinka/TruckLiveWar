@@ -6,18 +6,18 @@ namespace Code.Providers
     public class WeaponProvider : MonoBehaviour
     {
         [Header("Элементы оружия")]
-        [SerializeField] [Tooltip("Оружие")] 
-        private Transform _gun;
+        [SerializeField] [Tooltip("Оружие")]
+        private Transform m_gun;
 
-        [SerializeField] [Tooltip("Стойка на которой стоит оружие")] 
-        private Transform _handle;
-        
-        [SerializeField] [Tooltip("Точка от куда будут производится выстрелы")] 
-        private Transform _firePoint;
+        [SerializeField] [Tooltip("Стойка на которой стоит оружие")]
+        private Transform m_handle;
 
-        public Transform Gun => _gun;
-        public Transform FirePoint => _firePoint;
-        public Transform Handle => _handle;
-        
+        [SerializeField] [Tooltip("Точка от куда будут производится выстрелы")]
+        private Transform m_firePoint;
+
+        public Transform Gun => m_gun;
+        public Transform FirePoint => m_firePoint;
+        public Transform Handle => m_handle;
+
     }
 }
