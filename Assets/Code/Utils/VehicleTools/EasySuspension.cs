@@ -1,69 +1,67 @@
 ﻿using UnityEngine;
 
-namespace Code.Transports.Base
+namespace Code.Utils.VehicleTools
 {
-	[ExecuteInEditMode]
-	public sealed class EasySuspension : MonoBehaviour
-	{
-		[Range(0.1f, 20f)]
-		[Tooltip("Natural frequency of the suspension springs. Describes bounciness of the suspension.")]
-		public float naturalFrequency = 10;
+    [ExecuteInEditMode]
+    internal sealed class EasySuspension : MonoBehaviour
+    {
+        [Range(0.1f, 20f)]
+        [Tooltip("Собственная частота пружин подвески. Описывает упругость подвески.")]
+        [SerializeField] private float m_naturalFrequency = 10;
 
-		[Range(0f, 3f)]
-		[Tooltip("Damping ratio of the suspension springs. Describes how fast the spring returns back after a bounce. ")]
-		public float dampingRatio = 0.8f;
+        [Range(0f, 3f)]
+        [Tooltip("Коэффициент демпфирования пружин подвески. Описывает, как быстро пружина возвращается в исходное положение после отскока.")]
+        [SerializeField] private float m_dampingRatio = 0.8f;
 
-		[Range(-1f, 1f)]
-		[Tooltip("The distance along the Y axis the suspension forces application point is offset below the center of mass")]
-		public float forceShift = 0.03f;
+        [Range(-1f, 1f)]
+        [Tooltip("Расстояние по оси Y до точки приложения сил подвески смещеное ниже центра масс.")]
+        [SerializeField] private float m_forceShift = 0.03f;
 
-		[Tooltip("Adjust the length of the suspension springs according to the natural frequency and damping ratio. When off, can cause unrealistic suspension bounce.")]
-		public bool setSuspensionDistance = true;
+        [Tooltip("Регулировка длинны пружин подвески в соответствии с частотой и коэффициентом демпфирования. В выключенном состоянии может вызвать нереалистичные отскоки подвески.")]
+        [SerializeField] private bool m_setSuspensionDistance = true;
 
-	    Rigidbody m_Rigidbody;
+        private Rigidbody m_Rigidbody;
 
-	    private void Start ()
-	    {
-	        m_Rigidbody = GetComponent<Rigidbody> ();
-	    }
-	    
-		private void Update () 
-	    {
-			// Work out the stiffness and damper parameters based on the better spring model.
-			foreach (WheelCollider wc in GetComponentsInChildren<WheelCollider>()) 
-	        {
-				JointSpring spring = wc.suspensionSpring;
+        private void Start()
+        {
+            m_Rigidbody = GetComponent<Rigidbody>();
+        }
 
-	            float sqrtWcSprungMass = Mathf.Sqrt (wc.sprungMass);
-	            spring.spring = sqrtWcSprungMass * naturalFrequency * sqrtWcSprungMass * naturalFrequency;
-	            spring.damper = 2f * dampingRatio * Mathf.Sqrt(spring.spring * wc.sprungMass);
+        private void Update()
+        {
+            foreach (var wc in GetComponentsInChildren<WheelCollider>())
+            {
+                var spring = wc.suspensionSpring;
 
-				wc.suspensionSpring = spring;
+                var sqrtWcSprungMass = Mathf.Sqrt(wc.sprungMass);
+                spring.spring = sqrtWcSprungMass * m_naturalFrequency * sqrtWcSprungMass * m_naturalFrequency;
+                spring.damper = 2f * m_dampingRatio * Mathf.Sqrt(spring.spring * wc.sprungMass);
 
-				Vector3 wheelRelativeBody = transform.InverseTransformPoint(wc.transform.position);
-	            float distance = m_Rigidbody.centerOfMass.y - wheelRelativeBody.y + wc.radius;
+                wc.suspensionSpring = spring;
 
-				wc.forceAppPointDistance = distance - forceShift;
+                var wheelRelativeBody = transform.InverseTransformPoint(wc.transform.position);
+                var distance = m_Rigidbody.centerOfMass.y - wheelRelativeBody.y + wc.radius;
 
-				// Make sure the spring force at maximum droop is exactly zero
-				if (spring.targetPosition > 0 && setSuspensionDistance)
-					wc.suspensionDistance = wc.sprungMass * Physics.gravity.magnitude / (spring.targetPosition * spring.spring);
-			}
-		}
+                wc.forceAppPointDistance = distance - m_forceShift;
 
-	    // Uncomment this to observe how parameters change.
-	    /*
-	    void OnGUI()
-	    {
-	        foreach (WheelCollider wc in GetComponentsInChildren<WheelCollider>()) {
-	            GUILayout.Label (string.Format("{0} sprung: {1}, k: {2}, d: {3}", wc.name, wc.sprungMass, wc.suspensionSpring.spring, wc.suspensionSpring.damper));
-	        }
+                if (spring.targetPosition > 0 && m_setSuspensionDistance)
+                    wc.suspensionDistance = wc.sprungMass * Physics.gravity.magnitude / (spring.targetPosition * spring.spring);
+            }
+        }
 
-	        GUILayout.Label ("Inertia: " + m_Rigidbody.inertiaTensor);
-	        GUILayout.Label ("Mass: " + m_Rigidbody.mass);
-	        GUILayout.Label ("Center: " + m_Rigidbody.centerOfMass);
-	    }
-	    */
+        // Uncomment this to observe how parameters change.
+        /*
+        void OnGUI()
+        {
+            foreach (WheelCollider wc in GetComponentsInChildren<WheelCollider>()) {
+                GUILayout.Label (string.Format("{0} sprung: {1}, k: {2}, d: {3}", wc.name, wc.sprungMass, wc.suspensionSpring.spring, wc.suspensionSpring.damper));
+            }
 
-	}
+            GUILayout.Label ("Inertia: " + m_Rigidbody.inertiaTensor);
+            GUILayout.Label ("Mass: " + m_Rigidbody.mass);
+            GUILayout.Label ("Center: " + m_Rigidbody.centerOfMass);
+        }
+        */
+
+    }
 }
