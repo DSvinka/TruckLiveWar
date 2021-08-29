@@ -1,20 +1,21 @@
 using System;
 using Code.Controller;
 using Code.Data;
+using Code.Interfaces.Data;
 using Code.Interfaces.Providers;
 using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Code.Providers
 {
-    public enum WheelSide
+    internal enum WheelSide
     {
         Left,
         Right,
     }
 
     [Serializable]
-    public struct WheelAxie
+    internal struct WheelAxie
     {
         [SerializeField] private Wheel[] m_wheels;
 
@@ -31,7 +32,7 @@ namespace Code.Providers
     }
 
     [Serializable]
-    public struct Wheel
+    internal struct Wheel
     {
         [SerializeField] private GameObject m_wheelShape;
         [SerializeField] private WheelCollider m_wheelCollider;
@@ -43,7 +44,7 @@ namespace Code.Providers
     }
 
     [Serializable]
-    public struct WeaponSlot
+    internal struct WeaponSlot
     {
         [Header("Объекты")]
         [SerializeField] [Tooltip("Слот")] private Transform m_slot;
@@ -73,6 +74,10 @@ namespace Code.Providers
 
         public event Action<GameObject, IUnit, float> OnUnitDamage = delegate(GameObject attacker, IUnit unit, float damage) { };
         public event Action<GameObject, IUnit, float> OnUnitHealth = delegate(GameObject healer, IUnit unit, float health) { };
+
+        public IUnitData UnitData { get; set; }
+
+        public float Health { get; set; }
 
         public WeaponSlot[] WeaponSlots => m_weaponSlots;
         public WheelAxie[] WheelAxies => m_wheelAxies;

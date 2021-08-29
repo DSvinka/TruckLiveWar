@@ -1,6 +1,6 @@
 namespace Code.Interfaces
 {
-    public interface ICleanup : IController
+    internal interface ICleanup : IController
     {
         void Cleanup();
     }

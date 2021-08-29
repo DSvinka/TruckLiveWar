@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d99abb9ba46c46c48d098b9739b400e9, type: 3}
   m_Name: BaseCar
   m_EditorClassIdentifier: 
-  _carProvider: {fileID: 228394205304314984, guid: 37e8aec0f2deb384893884121c5b75b9, type: 3}
-  _name: "\u041C\u0430\u0448\u0438\u043D\u0430"
-  _maxHealth: 100
-  _maxAngle: 30
-  _maxTorque: 600
-  _brakeTorque: 30000
-  _criticalSpeed: 5
-  _stepsBelow: 12
-  _stepsAbove: 15
+  m_carProvider: {fileID: 228394205304314984, guid: 37e8aec0f2deb384893884121c5b75b9, type: 3}
+  m_name: "\u041C\u0430\u0448\u0438\u043D\u0430"
+  m_maxHealth: 200
+  m_maxFuel: 100
+  m_infinityFuel: 0
+  m_maxAngle: 30
+  m_maxTorque: 600
+  m_brakeTorque: 30000
+  m_criticalSpeed: 5
+  m_stepsBelow: 12
+  m_stepsAbove: 15

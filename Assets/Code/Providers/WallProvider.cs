@@ -4,10 +4,8 @@ namespace Code.Providers
 {
     internal sealed class WallProvider : MonoBehaviour
     {
-        [SerializeField] private TargetProvider[] m_targetProviders;
-
         [HideInInspector] public int TargetCount;
-        public TargetProvider[] TargetProviders => m_targetProviders;
+        public TargetProvider[] TargetProviders { get; set; }
 
         public void Explosion()
         {

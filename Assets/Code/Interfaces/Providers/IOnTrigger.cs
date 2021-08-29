@@ -15,4 +15,10 @@ namespace Code.Interfaces.Providers
     {
         event Action<GameObject, PickupProvider> OnTriggerEnterChange;
     }
+
+    internal interface ILocationChangerProvider
+    {
+        event Action<GameObject, LocationChangerProvider> OnTriggerEnterChange;
+        event Action<GameObject, LocationChangerProvider> OnTriggerExitChange;
+    }
 }

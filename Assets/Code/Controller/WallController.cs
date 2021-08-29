@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using Code.Data;
 using Code.Interfaces;
+using Code.Interfaces.Data;
 using Code.Interfaces.Providers;
 using Code.Providers;
 using Unity.Collections;
@@ -26,17 +27,20 @@ namespace Code.Controller
         {
             foreach (var wallProvider in m_wallProviders)
             {
+                wallProvider.TargetProviders = wallProvider.GetComponentsInChildren<TargetProvider>();
                 wallProvider.TargetCount = wallProvider.TargetProviders.Length;
+                
                 foreach (var targetProvider in wallProvider.TargetProviders)
                 {
                     targetProvider.Wall = wallProvider;
+                    targetProvider.UnitData = m_targetData;
                     targetProvider.Health = m_targetData.MaxHealth;
                     targetProvider.OnUnitDamage += OnTargetDamage;
                 }
             }
         }
 
-        public void OnTargetDamage(GameObject gameObject, IUnit unit, float damage)
+        private void OnTargetDamage(GameObject gameObject, IUnit unit, float damage)
         {
             var target = unit as TargetProvider;
             if (target == null)
@@ -46,7 +50,6 @@ namespace Code.Controller
             if (target.Health <= 0)
             {
                 var wall = target.Wall;
-
                 target.OnUnitDamage -= OnTargetDamage;
                 target.Explosion();
                 wall.TargetCount -= 1;

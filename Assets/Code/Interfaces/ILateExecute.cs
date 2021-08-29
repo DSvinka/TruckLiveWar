@@ -1,6 +1,6 @@
 namespace Code.Interfaces
 {
-    public interface ILateExecute : IController
+    internal interface ILateExecute : IController
     {
         void LateExecute(float deltaTime);
     }

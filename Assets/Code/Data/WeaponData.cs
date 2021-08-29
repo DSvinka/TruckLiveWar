@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace Code.Data
 {
-    public enum WeaponSlotType
+    internal enum WeaponSlotType
     {
         Small,
         Middle
     }
 
     [CreateAssetMenu(fileName = "WeaponSettings", menuName = "Data/Pickup/WeaponSettings")]
-    public sealed class WeaponData : ScriptableObject
+    internal sealed class WeaponData : ScriptableObject
     {
         [SerializeField] private WeaponProvider m_prefab;
 

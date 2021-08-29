@@ -18,16 +18,13 @@ namespace Code.Factory
         public Transform CreatePlayer()
         {
             var prefab = Object.Instantiate(m_playerData.PlayerPrefab.gameObject);
-            m_playerData.CinemachineCamera = prefab.GetComponentInChildren<CinemachineFreeLook>();
-            m_playerData.Camera = prefab.GetComponentInChildren<Camera>();
             return prefab.transform;
         }
 
         public CarProvider CreateTransport()
         {
             var carProvider = Object.Instantiate(m_playerData.Car.CarProvider);
-            m_playerData.CinemachineCamera.Follow = carProvider.CameraFollow;
-            m_playerData.CinemachineCamera.LookAt = carProvider.CameraLookAt;
+            carProvider.UnitData = m_playerData.Car;
             return carProvider;
         }
     }

@@ -292,6 +292,7 @@ GameObject:
   - component: {fileID: 5611438205077449493}
   - component: {fileID: 228394205304314984}
   - component: {fileID: 1039637259888228210}
+  - component: {fileID: 4944173074237999947}
   m_Layer: 0
   m_Name: BaseCar
   m_TagString: Untagged
@@ -345,33 +346,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9b5603a445848738cfb8497c3d60161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cameraFollow: {fileID: 5611438205077449496}
-  _cameraLookAt: {fileID: 5611438206447792286}
-  _wheelAxies:
-  - _wheels:
-    - _wheelShape: {fileID: 7416332857013288537}
-      _wheelCollider: {fileID: 5611438206362354603}
-      _wheelSide: 0
-    - _wheelShape: {fileID: 1035438922397205575}
-      _wheelCollider: {fileID: 5611438204814336792}
-      _wheelSide: 1
-    _isMotorAxie: 1
-    _isHandbreakAxie: 1
-    _isSteeringAxie: 1
-  - _wheels:
-    - _wheelShape: {fileID: 5571819294550077767}
-      _wheelCollider: {fileID: 5611438205028938826}
-      _wheelSide: 0
-    - _wheelShape: {fileID: 8991142066087006058}
-      _wheelCollider: {fileID: 5611438205861798554}
-      _wheelSide: 1
-    _isMotorAxie: 1
-    _isHandbreakAxie: 1
-    _isSteeringAxie: 0
-  _weaponSlots:
-  - _slot: {fileID: 5652561556081341159}
-    _placePoint: {fileID: 3665076763916257823}
-    _slotType: 0
+  m_cameraFollow: {fileID: 5611438205077449496}
+  m_cameraLookAt: {fileID: 5611438206447792286}
+  m_wheelAxies:
+  - m_wheels:
+    - m_wheelShape: {fileID: 7416332857013288537}
+      m_wheelCollider: {fileID: 5611438206362354603}
+      m_wheelSide: 0
+    - m_wheelShape: {fileID: 1035438922397205575}
+      m_wheelCollider: {fileID: 5611438204814336792}
+      m_wheelSide: 1
+    m_isMotorAxie: 1
+    m_isHandbreakAxie: 1
+    m_isSteeringAxie: 1
+  - m_wheels:
+    - m_wheelShape: {fileID: 5571819294550077767}
+      m_wheelCollider: {fileID: 5611438205028938826}
+      m_wheelSide: 0
+    - m_wheelShape: {fileID: 8991142066087006058}
+      m_wheelCollider: {fileID: 5611438205861798554}
+      m_wheelSide: 1
+    m_isMotorAxie: 1
+    m_isHandbreakAxie: 1
+    m_isSteeringAxie: 0
+  m_weaponSlots:
+  - m_slot: {fileID: 5652561556081341159}
+    m_placePoint: {fileID: 3665076763916257823}
+    m_slotType: 0
 --- !u!114 &1039637259888228210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -384,10 +385,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61682be5314d0440b9e67529196ac1a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  naturalFrequency: 10
-  dampingRatio: 0.8
-  forceShift: 0.03
-  setSuspensionDistance: 1
+  m_naturalFrequency: 10
+  m_dampingRatio: 0.8
+  m_forceShift: 0.03
+  m_setSuspensionDistance: 1
+--- !u!65 &4944173074237999947
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5611438205077449497}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.5, y: 2.9, z: 5.5}
+  m_Center: {x: 0, y: 0.25, z: -0.05}
 --- !u!1 &5611438205654417430
 GameObject:
   m_ObjectHideFlags: 0

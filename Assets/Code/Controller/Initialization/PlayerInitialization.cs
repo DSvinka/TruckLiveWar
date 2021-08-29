@@ -1,4 +1,5 @@
 using System.Data;
+using Cinemachine;
 using Code.Factory;
 using Code.Interfaces;
 using Code.Interfaces.Factory;
@@ -15,6 +16,9 @@ namespace Code.Controller.Initialization
         private CarProvider m_playerCar;
 
         private Vector3 m_playerSpawnPosition;
+        
+        public CinemachineFreeLook CinemachineCamera { get; private set; }
+        public Camera Camera { get; private set; }
 
         public PlayerInitialization(PlayerFactory playerFactory, Vector3 playerSpawnPosition)
         {
@@ -26,6 +30,12 @@ namespace Code.Controller.Initialization
         {
             m_player = m_playerFactory.CreatePlayer();
             m_playerCar = m_playerFactory.CreateTransport();
+            
+            CinemachineCamera = m_player.GetComponentInChildren<CinemachineFreeLook>();
+            Camera = m_player.GetComponentInChildren<Camera>();
+            
+            CinemachineCamera.Follow = m_playerCar.CameraFollow;
+            CinemachineCamera.LookAt = m_playerCar.CameraLookAt;
 
             m_player.position = m_playerSpawnPosition;
             m_playerCar.transform.position = m_playerSpawnPosition;

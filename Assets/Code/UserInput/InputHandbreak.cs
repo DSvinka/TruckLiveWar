@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Code.UserInput
 {
-    internal sealed class  InputHandbreak: IUserKeyProxy
+    internal sealed class InputHandbreak : IUserKeyProxy
     {
         public event Action<bool> KeyOnChange = delegate(bool f) {  };
 
