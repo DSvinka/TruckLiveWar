@@ -11,12 +11,11 @@ namespace Code.Controller
         private readonly IUserAxisProxy m_vertical;
         private readonly IUserKeyProxy m_handbreak;
         private readonly IUserKeyProxy m_restart;
-        private readonly IUserKeyProxy m_horn;
         private readonly IUserKeyProxy m_fireButton;
 
         internal InputController(
             (IUserAxisProxy inputHorizontal, IUserAxisProxy inputVertical) axisInput,
-            (IUserKeyProxy inputHandbreak, IUserKeyProxy inputRestart, IUserKeyProxy inputHorn) keysInput,
+            (IUserKeyProxy inputHandbreak, IUserKeyProxy inputRestart) keysInput,
             IUserKeyProxy mouseInput
         )
         {
@@ -25,8 +24,7 @@ namespace Code.Controller
 
             m_handbreak = keysInput.inputHandbreak;
             m_restart = keysInput.inputRestart;
-            m_horn = keysInput.inputHorn;
-            
+
             m_fireButton = mouseInput;
         }
 
@@ -36,7 +34,6 @@ namespace Code.Controller
             m_vertical.GetAxis();
             m_handbreak.GetKey();
             m_restart.GetKey();
-            m_horn.GetKey();
             m_fireButton.GetKey();
         }
     }

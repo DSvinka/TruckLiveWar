@@ -13,14 +13,17 @@ namespace Code.Data
 
         [Header("Объекты")]
         [SerializeField] private GameObject m_playerPrefab;
-        
-        [Header("Параметры")] 
-        [SerializeField] private float m_rayDistance = 100f;
-        
+
+        [Header("Появление")]
+        [SerializeField] private Vector3 m_spawnPosition;
+
         private CarData m_car;
 
+        public CinemachineFreeLook CinemachineCamera { get; set; }
+        public Camera Camera { get; set; }
+
         public GameObject PlayerPrefab => m_playerPrefab;
-        public float RayDistance => m_rayDistance;
+        public Vector3 SpawnPosition => m_spawnPosition;
 
         public CarData Car => GetData(m_carDataPath, ref m_car);
     }

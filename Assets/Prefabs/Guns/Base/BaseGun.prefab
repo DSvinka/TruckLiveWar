@@ -331,6 +331,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20ad87f1ce2040f1abd1a294ac4bc307, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_gun: {fileID: 7924632197337217584}
-  m_handle: {fileID: 7924632197303678327}
-  m_firePoint: {fileID: 7924632197959279704}
+  _gun: {fileID: 7924632197337217584}
+  _handle: {fileID: 7924632197303678327}
+  _firePoint: {fileID: 7924632197959279704}

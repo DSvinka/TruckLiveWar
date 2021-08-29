@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c975ba639aa4cb7998cdf210ec45c3e, type: 3}
   m_Name: Data
   m_EditorClassIdentifier: 
-  m_playerDataPath: PlayerSettings
-  m_speedBonusPath: Modificators/SpeedBonus
-  m_speedSlowingDownPath: Modificators/SpeedSlowingDown
-  m_playerKillerPath: Modificators/PlayerKiller
-  m_baseWeaponPath: Weapons/BaseWeapon
-  m_baseCarPath: Transports/BaseCar
-  m_targetPath: Objects/Target
-  m_hudPath: Hud/Hud
+  _playerDataPath: PlayerSettings
+  _speedBonusPath: Modificators/SpeedBonus
+  _speedSlowingDownPath: Modificators/SpeedSlowingDown
+  _playerKillerPath: Modificators/PlayerKiller
+  _baseWeaponPath: Weapons/BaseWeapon
+  _baseCarPath: Transports/BaseCar
+  _targetPath: Objects/Target

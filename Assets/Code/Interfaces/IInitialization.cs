@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Code.Interfaces
 {
-    internal interface IInitialization : IController
+    public interface IInitialization : IController
     {
         void Initialization();
     }

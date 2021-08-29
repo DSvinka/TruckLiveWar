@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d896b902d864b98bcf41f01ff639fd3, type: 3}
   m_Name: PlayerSettings
   m_EditorClassIdentifier: 
-  m_carDataPath: Transports/BaseCar
-  m_playerPrefab: {fileID: 6031419617725288833, guid: ba587d84647fcd94aa0ee0ab370b9d28, type: 3}
-  m_spawnPosition: {x: 125, y: 49, z: 120}
+  _carDataPath: Transports/BaseCar
+  _playerPrefab: {fileID: 6031419617725288833, guid: ba587d84647fcd94aa0ee0ab370b9d28, type: 3}
+  _spawnPosition: {x: 124, y: 49, z: 125}

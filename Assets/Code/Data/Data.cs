@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.IO;
-using Code.Interfaces.Data;
 using static Code.Data.DataUtils;
 using UnityEngine;
 
@@ -36,13 +34,6 @@ namespace Code.Data
 
         [Header("Объекты")] // TODO: Сделать автоматический сбор объектов (ввод только названия папки)
         [SerializeField] private string m_targetPath;
-        
-        [Header("Интерфейс")] // TODO: Сделать автоматический сбор интерфейсов (ввод только названия папки)
-        [SerializeField] private string m_hudPath;
-        
-        // TODO: СДЕЛАТЬ СМЕНУ ЛОКАЦИИ... Только я не знаю как это грамотно реализовать...
-        [Header("Локации")]
-        [SerializeField] private string m_locationsDirPath;
 
         #endregion
 
@@ -57,12 +48,7 @@ namespace Code.Data
         private WeaponData m_baseWeapon;
 
         private CarData m_baseCar;
-        
         private TargetData m_targetData;
-
-        private HudData m_hudData;
-
-        private IDictData m_Locations;
 
         #endregion
 
@@ -79,10 +65,6 @@ namespace Code.Data
         public CarData BaseCar => GetData(m_baseCarPath, ref m_baseCar);
 
         public TargetData TargetData => GetData(m_targetPath, ref m_targetData);
-
-        public HudData HudData => GetData(m_hudPath, ref m_hudData);
-
-        public Dictionary<string, IDictData> LocationDatas => GetDatasDict<LocationData>(m_locationsDirPath, ref m_Locations);
 
         #endregion
     }

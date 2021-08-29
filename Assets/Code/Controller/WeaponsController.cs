@@ -31,6 +31,7 @@ namespace Code.Controller
     internal sealed class WeaponsController: IController, IExecute, IInitialization, ICleanup
     {
         private readonly PlayerInitialization m_playerInitialization;
+        private readonly PlayerData m_playerData;
 
         private CarProvider m_carProvider;
         private Weapon[] m_weapons;
@@ -43,9 +44,10 @@ namespace Code.Controller
 
         public WeaponsController(
             IUserKeyProxy mouseInput,
-            PlayerInitialization playerInitialization)
+            PlayerInitialization playerInitialization, PlayerData playerData)
         {
             m_playerInitialization = playerInitialization;
+            m_playerData = playerData;
             m_mouseFireInputProxy = mouseInput;
         }
 
@@ -64,19 +66,16 @@ namespace Code.Controller
 
         public void Execute(float deltatime)
         {
-            if (m_weapons.Any(x => x == null)) 
-                return;
-
-            if (m_carProvider == null)
-                return;
-            
-            foreach (var weapon in m_weapons)
+            if (m_weapons.All(x => x != null))
             {
-                Move(weapon);
-                Shot(weapon);
+                foreach (var weapon in m_weapons)
+                {
+                    Move(weapon);
+                    Shot(weapon);
 
-                if (weapon.Cooldown >= 0f)
-                    weapon.Cooldown -= deltatime;
+                    if (weapon.Cooldown >= 0f)
+                        weapon.Cooldown -= deltatime;
+                }
             }
         }
 
@@ -110,7 +109,7 @@ namespace Code.Controller
             var weaponData = weapon.WeaponData;
 
             var gunRotation = weaponProvider.Gun.rotation;
-            gunRotation = Quaternion.Lerp(gunRotation, m_playerInitialization.Camera.transform.rotation, weaponData.TurnSpeed);
+            gunRotation = Quaternion.Lerp(gunRotation, m_playerData.Camera.transform.rotation, weaponData.TurnSpeed);
             weaponProvider.Gun.rotation = gunRotation;
 
             var handleRotation = weaponProvider.Handle.rotation;
@@ -121,16 +120,20 @@ namespace Code.Controller
         {
             var weaponProvider = weapon.WeaponProvider;
             var weaponData = weapon.WeaponData;
-            
-            if (m_mouseFireInput && weapon.Cooldown <= 0)
-            {
-                var barrelPosition = weaponProvider.FirePoint.position;
-                var barrelForward = weaponProvider.FirePoint.forward;
 
-                if (Physics.Raycast(barrelPosition, barrelForward, out var raycastHit, weaponData.MaxDistance))
+            if (m_mouseFireInput && weapon.Cooldown <= 0) // TODO: ЧИТАЙТЕ TODO ВЫШЕ!
+            {
+                RaycastHit raycastHit;
+                Vector3 barrelPosition = weaponProvider.FirePoint.position;
+                Vector3 barrelForward = weaponProvider.FirePoint.forward;
+
+                if (Physics.Raycast(barrelPosition, barrelForward, out raycastHit, weaponData.MaxDistance))
                 {
                     var unit = raycastHit.collider.gameObject.GetComponent<IUnit>();
-                    unit?.AddDamage(weaponProvider.gameObject, weaponData.Damage);
+                    if (unit != null)
+                    {
+                        unit.AddDamage(weaponProvider.gameObject, weaponData.Damage);
+                    }
                 }
                 weapon.Cooldown = weaponData.FireRate;
             }
@@ -139,6 +142,10 @@ namespace Code.Controller
         public void Cleanup()
         {
             m_mouseFireInputProxy.KeyOnChange -= MouseFireButtonChange;
+            for (var index = 0; index < m_weapons.Length; index++)
+            {
+                m_weapons[index] = null;
+            }
         }
     }
 }
