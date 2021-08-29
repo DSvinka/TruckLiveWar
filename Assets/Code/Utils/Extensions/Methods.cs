@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-namespace Utils.Extensions
+namespace Code.Utils.Extensions
 {
     public static class Methods
     {
@@ -22,7 +22,7 @@ namespace Utils.Extensions
             return array;
         }
 
-        public static void DebugLog(this string self)
+        public static void DebugLog<T>(this T self)
         {
             Debug.Log(self);
         }

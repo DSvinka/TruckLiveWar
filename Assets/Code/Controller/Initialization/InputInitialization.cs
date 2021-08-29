@@ -13,6 +13,7 @@ namespace Code.Controller.Initialization
         // Keys
         private IUserKeyProxy m_inputHandbreak;
         private IUserKeyProxy m_inputRestart;
+        private IUserKeyProxy m_inputHorn;
         // Mouse
         private IUserKeyProxy m_inputFireMouse;
 
@@ -25,6 +26,7 @@ namespace Code.Controller.Initialization
             // Keys
             m_inputHandbreak = new InputHandbreak();
             m_inputRestart = new InputRestart();
+            m_inputHorn = new InputHorn();
             
             // Mouse
             m_inputFireMouse = new InputFireMouse();
@@ -35,9 +37,9 @@ namespace Code.Controller.Initialization
             return (m_axisHorizontal, m_axisVertical);
         }
 
-        public (IUserKeyProxy inputHandbreak, IUserKeyProxy m_inputRestart) GetKeysInput()
+        public (IUserKeyProxy inputHandbreak, IUserKeyProxy m_inputRestart, IUserKeyProxy m_inputHorn) GetKeysInput()
         {
-            return (m_inputHandbreak, m_inputRestart);
+            return (m_inputHandbreak, m_inputRestart, m_inputHorn);
         }
 
         public IUserKeyProxy GetMouseInput()

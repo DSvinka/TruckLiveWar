@@ -1,6 +1,6 @@
 namespace Code.Interfaces
 {
-    public interface IController
+    internal interface IController
     {
 
     }

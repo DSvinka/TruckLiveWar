@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb43ec2935d8b75418bfb13fe4c9d0b4, type: 3}
   m_Name: PlayerKiller
   m_EditorClassIdentifier: 
-  _modificatorName: "\u0421\u043C\u0435\u0440\u0442\u0435\u043B\u044C\u043D\u0430\u044F
+  m_modificatorName: "\u0421\u043C\u0435\u0440\u0442\u0435\u043B\u044C\u043D\u0430\u044F
     \u041B\u043E\u0432\u0443\u0448\u043A\u0430"
-  _messageColor: {r: 0.8867924, g: 0.15477037, b: 0.15477037, a: 1}
-  _changeSpeed: 0
-  _changeBreak: 0
-  _changeHealth: -100
-  _activeTime: 0
-  _zoneObject: 1
+  m_messageColor: {r: 0.6981132, g: 0.10208259, b: 0.10208259, a: 1}
+  m_changeSpeed: 0
+  m_changeHealth: 0
+  m_permaKiller: 1
+  m_activeTime: 0
+  m_activateAfterExit: 0
+  m_zoneObject: 1

@@ -1,4 +1,5 @@
 using System;
+using Code.Interfaces.Data;
 using Code.Interfaces.Providers;
 using UnityEngine;
 
@@ -9,8 +10,10 @@ namespace Code.Providers
         public event Action<GameObject, IUnit, float> OnUnitDamage = delegate(GameObject damager, IUnit targetProvider, float damage) {  };
         public event Action<GameObject, IUnit, float> OnUnitHealth = delegate(GameObject healer, IUnit targetProvider, float health) {  };
 
+        public IUnitData UnitData { get; set; }
+        public float Health { get; set; }
+        
         [HideInInspector] public WallProvider Wall;
-        [HideInInspector] public float Health;
 
         public void Explosion()
         {

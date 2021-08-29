@@ -32,8 +32,7 @@ namespace Code.Controller
 
         private void OnTriggerEnter(GameObject gameObject, PickupProvider pickupProvider)
         {
-            var carProvider = gameObject.GetComponentInParent<CarProvider>();
-            if (m_playerCarController.CarProvider.gameObject.GetInstanceID() == carProvider.gameObject.GetInstanceID())
+            if (m_playerCarController.CarProvider.gameObject.GetInstanceID() == gameObject.GetInstanceID())
             {
                 var weaponPlace = new Weapon(pickupProvider.WeaponData);
                 m_weaponsController.AddWeapon(0, weaponPlace);

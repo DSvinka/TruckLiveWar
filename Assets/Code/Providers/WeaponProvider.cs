@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Code.Providers
 {
     // TODO: Добавить эффект выстрела.
-    public class WeaponProvider : MonoBehaviour
+    internal sealed class WeaponProvider : MonoBehaviour
     {
         [Header("Элементы оружия")]
         [SerializeField] [Tooltip("Оружие")]
