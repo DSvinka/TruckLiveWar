@@ -176,7 +176,7 @@ namespace Code.Controller
         {
             modificatorProvider.OnTriggerEnterChange -= OnTriggerEnter;
             modificatorProvider.OnTriggerEnterChange -= OnTriggerExit;
-            Object.Destroy(modificatorProvider.gameObject);
+            modificatorProvider.Parent.SetActive(false);
         }
     }
 }

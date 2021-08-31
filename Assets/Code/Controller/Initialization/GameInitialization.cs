@@ -44,6 +44,7 @@ namespace Code.Controller.Initialization
             var weaponController = new WeaponsController(mouseInput, playerInitialization);
             var modificatorsController = new ModificatorsController(modificators, carController, data);
             var hudController = new HudController(hudInitialization, modificatorsController, carController, playerInitialization, data.Player);
+            var radarController = new RadarController(playerInitialization, hudInitialization, data.Player.RadarSize);
             
             controllers.Add(playerInitialization);
             controllers.Add(hudInitialization);
@@ -53,6 +54,7 @@ namespace Code.Controller.Initialization
             controllers.Add(weaponController);
             controllers.Add(modificatorsController);
             controllers.Add(hudController);
+            controllers.Add(radarController);
 
             if (locationChangers.Length != 0)
             {

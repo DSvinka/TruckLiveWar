@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e86257bc3fe8462898877304cd33c325, type: 3}
   m_Name: Test
   m_EditorClassIdentifier: 
-  m_locationPrefab: {fileID: 0}
-  m_IDName: location
-  m_name: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435"
+  m_locationPrefab: {fileID: 6747129923468029321, guid: 3a2d2fd5e842883498506dd26b601742, type: 3}
+  m_IDName: test
+  m_name: "\u0422\u0435\u0441\u0442\u043E\u0432\u0430\u044F \u041F\u043B\u043E\u0449\u0430\u0434\u043A\u0430"

@@ -34,7 +34,7 @@ namespace Code.Controller.Initialization
             
             CinemachineCamera = m_player.GetComponentInChildren<CinemachineFreeLook>();
             Camera = m_player.GetComponentInChildren<Camera>();
-            
+
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             
