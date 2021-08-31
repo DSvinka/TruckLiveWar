@@ -1,4 +1,3 @@
-using Cinemachine;
 using Code.Controller.Initialization;
 using Code.Data;
 using Code.Interfaces.Factory;

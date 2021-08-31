@@ -1,5 +1,4 @@
 using Code.Controller.Initialization;
-using Code.Utils.Extensions;
 using UnityEngine;
 
 namespace Code.Controller.Starter

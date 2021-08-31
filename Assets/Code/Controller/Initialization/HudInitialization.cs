@@ -1,7 +1,5 @@
 using Code.Factory;
 using Code.Interfaces;
-using Code.Interfaces.Factory;
-using Code.Providers;
 using UnityEngine;
 
 namespace Code.Controller.Initialization

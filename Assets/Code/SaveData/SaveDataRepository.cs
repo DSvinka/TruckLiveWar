@@ -29,9 +29,10 @@ namespace Code.SaveData
             var savePlayer = new PlayerSaveData
             {
                 Position = player.CarProvider.transform.position,
+                Rotation = player.CarProvider.transform.rotation,
                 Health = player.CarProvider.Health,
                 Car = player.CarProvider.UnitData as CarData,
-                Weapons = player.CarProvider.WeaponSlots
+                Weapons = player.CarProvider.WeaponSlots,
             };
             
             m_data.Save(savePlayer, Path.Combine(m_path, m_fileName));
@@ -51,8 +52,8 @@ namespace Code.SaveData
             var car = playerInitialization.GetPlayerTransport();
             var player = playerInitialization.GetPlayer();
             
-            player.transform.position = loadedPlayer.Position;
-            car.transform.localPosition = Vector3.zero;
+            car.transform.position = loadedPlayer.Position;
+            car.transform.rotation = loadedPlayer.Rotation;
             car.Health = loadedPlayer.Health;
             
             for (var index = 0; index < loadedPlayer.Weapons.Length; index++)

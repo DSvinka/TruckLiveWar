@@ -1,4 +1,3 @@
-using Cinemachine;
 using Code.Data;
 using Code.Interfaces.Factory;
 using Code.Providers;

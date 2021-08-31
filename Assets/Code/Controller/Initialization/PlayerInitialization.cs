@@ -1,13 +1,10 @@
-using System.Data;
 using Cinemachine;
 using Code.Data;
 using Code.Factory;
 using Code.Interfaces;
 using Code.Interfaces.Factory;
 using Code.Providers;
-using Code.Utils.Extensions;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Cursor = UnityEngine.Cursor;
 
 namespace Code.Controller.Initialization

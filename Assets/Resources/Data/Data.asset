@@ -19,6 +19,6 @@ MonoBehaviour:
   m_baseWeaponPath: Weapons/BaseWeapon
   m_baseCarPath: Transports/BaseCar
   m_targetPath: Objects/Target
-  m_hudPath: Hud/Hud
+  m_hudPath: UI/UISettings
   m_gameStarterPrefab: {fileID: 3339700231056870871, guid: 4412fd8fd8b5d7d45bccaf86f0fd8258, type: 3}
   m_locationsDirPath: Locations/

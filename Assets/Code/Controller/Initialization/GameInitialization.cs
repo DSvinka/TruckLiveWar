@@ -4,7 +4,6 @@ using Code.Controller.UI;
 using Code.Factory;
 using Code.Markers;
 using Code.Providers;
-using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Code.Controller.Initialization

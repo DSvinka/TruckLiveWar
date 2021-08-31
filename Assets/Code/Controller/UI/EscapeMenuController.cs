@@ -4,7 +4,6 @@ using Code.Interfaces;
 using Code.Interfaces.UserInput;
 using Code.Providers;
 using Code.SaveData;
-using Code.Utils.Extensions;
 using UnityEngine;
 
 namespace Code.Controller.UI

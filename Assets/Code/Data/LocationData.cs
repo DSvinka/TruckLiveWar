@@ -1,5 +1,4 @@
 using Code.Interfaces.Data;
-using Code.Providers;
 using UnityEngine;
 
 namespace Code.Data

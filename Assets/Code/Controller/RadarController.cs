@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using Code.Controller.Initialization;
 using Code.Interfaces;
-using Code.Markers;
-using Code.MiniMap;
 using Code.Providers;
 using UnityEngine;
 using UnityEngine.UI;

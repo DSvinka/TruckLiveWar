@@ -1,4 +1,3 @@
-using Code.Providers;
 using UnityEngine;
 
 namespace Code.Interfaces.Factory
