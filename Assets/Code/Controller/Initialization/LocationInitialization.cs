@@ -1,28 +1,61 @@
-using Code.Factory;
-using UnityEngine;
+using System;
+using Code.Controller.Starter;
+using Code.Markers;
+using Object = UnityEngine.Object;
 
-// TODO: СДЕЛАТЬ СМЕНУ ЛОКАЦИИ... Только я не знаю как это грамотно реализовать...
 namespace Code.Controller.Initialization
 {
     internal sealed class LocationInitialization
     {
-        private readonly LocationFactory m_locationFactory;
+        private readonly string m_locationNameID;
         private readonly Data.Data m_data;
+        private readonly GameStarter m_gameStarterPrefab;
+        private readonly GameStarter m_gameStarter;
         
-        private Transform m_currentLocation;
-        
-        public LocationInitialization(LocationFactory LocationFactory, Data.Data Data)
+        public LocationInitialization(string locationNameID, Data.Data data, GameStarter gameStarter, GameStarter gameStarterPrefab)
         {
-            m_locationFactory = LocationFactory;
-            m_data = Data;
+            m_gameStarter = gameStarter;
+            m_gameStarterPrefab = gameStarterPrefab;
+            m_locationNameID = locationNameID;
+            m_data = data;
         }
 
-        public void LoadLocation(string nameID)
+        public void ChangeLocation(string locationNameID)
         {
-            if (m_currentLocation != null)
-                Object.Destroy(m_currentLocation.gameObject);
+            var gameStarterOld = Object.FindObjectOfType<GameStarter>();
+            var location = Object.FindObjectOfType<LocationMarker>();
+            var player = Object.FindObjectOfType<PlayerMarker>();
+            Object.Destroy(gameStarterOld.gameObject);
+            Object.Destroy(player.gameObject);
+            Object.Destroy(location.gameObject);
+                
 
-            m_currentLocation = m_locationFactory.CreateLocation(nameID);
+            var gameStarter = Object.Instantiate(m_gameStarterPrefab);
+            gameStarter.gameObject.SetActive(false);
+
+            gameStarter.Data = m_data;
+            gameStarter.LocationNameID = locationNameID;
+            
+            gameStarter.gameObject.SetActive(true);
+        }
+
+        public void LoadLocation()
+        {
+            var marker = Object.FindObjectOfType<LocationMarker>();
+            if (marker != null)
+                Object.Destroy(marker.gameObject);
+
+            CreateLocation();
+        }
+
+        private void CreateLocation()
+        {
+            m_data.LocationDatas.TryGetValue(m_locationNameID, out var location);
+
+            if (location == null)
+                throw new Exception("Локация не найдена!");
+            
+            Object.Instantiate(location.LocationPrefab);
         }
     }
 }

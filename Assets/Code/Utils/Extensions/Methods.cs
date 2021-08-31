@@ -27,6 +27,44 @@ namespace Code.Utils.Extensions
             Debug.Log(self);
         }
 
+        public static Dictionary<TKey, TValue> DictDebugLog<TKey, TValue>(this Dictionary<TKey, TValue> self)
+        {
+            var array = self.ToArray();
+
+            Debug.Log("==== DictDebugLog ====");
+            for (var index = 0; index < array.Length; index++)
+            {
+                var value = array[index];
+                Debug.Log($"{value.Key} - {value.Value}");
+            }
+
+            Debug.Log("==== =========== ====");
+            return self;
+        }
+        
+        public static void ArrayDebugLog<T>(this IList<T> self)
+        {
+            Debug.Log("==== ArrayDebugLog ====");
+            for (var index = 0; index < self.Count; index++)
+            {
+                var value = self[index];
+                Debug.Log($"{index} - {value}");
+            }
+            Debug.Log("==== =========== ====");
+        }
+        
+        public static void ListDebugLog<T>(this IList<T> self)
+        {
+            Debug.Log("==== ListDebugLog ====");
+            for (var index = 0; index < self.Count; index++)
+            {
+                var value = self[index];
+                Debug.Log($"{index} - {value}");
+            }
+
+            Debug.Log("==== =========== ====");
+        }
+
         public static bool IsOneOf<T>(this T self, params T[] elem) where T : struct
         {
             return elem.Contains(self);

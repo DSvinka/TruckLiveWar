@@ -13,7 +13,7 @@ namespace Code.Controller.Initialization
         private Controllers m_controllers;
         private Data.Data m_data;
         
-        public GameInitialization(Controllers controllers, Data.Data data)
+        public GameInitialization(Controllers controllers, LocationInitialization locationInitialization, Data.Data data)
         {
             m_controllers = controllers;
             m_data = data;
@@ -23,15 +23,16 @@ namespace Code.Controller.Initialization
             var walls = Object.FindObjectsOfType<WallProvider>();
             var locationChangers = Object.FindObjectsOfType<LocationChangerProvider>();
 
-            var playerSpawn = Object.FindObjectOfType<PlayerSpawn>();
+            var playerSpawn = Object.FindObjectOfType<PlayerSpawnMarker>();
             if (playerSpawn == null)
                 throw new Exception("Спавнер игрока отсуствует!");
             
             var playerFactory = new PlayerFactory(data.Player);
-            var hudFactory = new HudFactory(data.HudData);
             
             var inputInitialization = new InputInitialization();
             var playerInitialization = new PlayerInitialization(playerFactory, playerSpawn.transform.position);
+            
+            var hudFactory = new HudFactory(data.HudData, playerInitialization);
             var hudInitialization = new HudInitialization(hudFactory);
 
             var axisInput = inputInitialization.GetAxisInput();
@@ -55,7 +56,7 @@ namespace Code.Controller.Initialization
 
             if (locationChangers.Length != 0)
             {
-                var locationChangerController = new LocationChangerController(hudInitialization, playerInitialization,
+                var locationChangerController = new LocationChangerController(playerInitialization, locationInitialization,
                     hudController, locationChangers, keysInput);
                 controllers.Add(locationChangerController);
             }

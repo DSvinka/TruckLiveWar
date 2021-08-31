@@ -6,6 +6,7 @@ using Code.Interfaces.Factory;
 using Code.Providers;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
 
 namespace Code.Controller.Initialization
 {
@@ -33,6 +34,9 @@ namespace Code.Controller.Initialization
             
             CinemachineCamera = m_player.GetComponentInChildren<CinemachineFreeLook>();
             Camera = m_player.GetComponentInChildren<Camera>();
+            
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
             
             CinemachineCamera.Follow = m_playerCar.CameraFollow;
             CinemachineCamera.LookAt = m_playerCar.CameraLookAt;

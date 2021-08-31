@@ -52,6 +52,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -167,11 +168,11 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.6
   m_SuspensionSpring:
-    spring: 54101.562
-    damper: 8656.25
+    spring: 98600.1
+    damper: 22933.652
     targetPosition: 0.5
-  m_SuspensionDistance: 0.19620001
-  m_ForceAppPointDistance: 1.3135139
+  m_SuspensionDistance: 0.10765432
+  m_ForceAppPointDistance: 1.0035138
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
@@ -228,11 +229,11 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.6
   m_SuspensionSpring:
-    spring: 35898.434
-    damper: 5743.7495
+    spring: 65424.9
+    damper: 15217.347
     targetPosition: 0.5
-  m_SuspensionDistance: 0.19620001
-  m_ForceAppPointDistance: 1.3135139
+  m_SuspensionDistance: 0.107654326
+  m_ForceAppPointDistance: 1.0035138
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
@@ -385,9 +386,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61682be5314d0440b9e67529196ac1a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_naturalFrequency: 10
-  m_dampingRatio: 0.8
-  m_forceShift: 0.03
+  m_naturalFrequency: 13.5
+  m_dampingRatio: 1.57
+  m_forceShift: 0.34
   m_setSuspensionDistance: 1
 --- !u!65 &4944173074237999947
 BoxCollider:
@@ -467,6 +468,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -538,11 +540,11 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.6
   m_SuspensionSpring:
-    spring: 35898.434
-    damper: 5743.7495
+    spring: 65424.9
+    damper: 15217.349
     targetPosition: 0.5
-  m_SuspensionDistance: 0.19620003
-  m_ForceAppPointDistance: 1.3135139
+  m_SuspensionDistance: 0.10765433
+  m_ForceAppPointDistance: 1.0035138
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
@@ -599,11 +601,11 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.6
   m_SuspensionSpring:
-    spring: 54101.562
-    damper: 8656.25
+    spring: 98600.1
+    damper: 22933.652
     targetPosition: 0.5
-  m_SuspensionDistance: 0.19620001
-  m_ForceAppPointDistance: 1.3135139
+  m_SuspensionDistance: 0.10765432
+  m_ForceAppPointDistance: 1.0035138
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
@@ -748,6 +750,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1

@@ -5,29 +5,29 @@ using Code.Managers;
 using Code.Providers;
 using UnityEngine;
 
-// TODO: СДЕЛАТЬ СМЕНУ ЛОКАЦИИ... Только я не знаю как это грамотно реализовать...
 namespace Code.Controller
 {
     internal sealed class LocationChangerController : IController, ICleanup, IInitialization, IExecute
     {
         private readonly IUserKeyProxy m_hornInputProxy;
-        private readonly HudInitialization m_hudInitialization;
         private readonly HudController m_hudController;
         private readonly PlayerInitialization m_playerInitialization;
+        private readonly LocationInitialization m_locationInitialization;
 
         private LocationChangerProvider[] m_locationChangerProviders;
+        private string m_locationIDName;
         private bool m_hornInput;
         private bool m_triggered;
 
-        public LocationChangerController(HudInitialization hudInitialization, PlayerInitialization playerInitialization, 
+        public LocationChangerController(PlayerInitialization playerInitialization, LocationInitialization locationInitialization,
             HudController hudController, LocationChangerProvider[] locationChangerProviders,
             (IUserKeyProxy inputHandbreak, IUserKeyProxy inputRestart, IUserKeyProxy inputHorn) keysInput)
         {
             m_hornInputProxy = keysInput.inputHorn;
             m_locationChangerProviders = locationChangerProviders;
-            m_hudController = hudController;
-            m_hudInitialization = hudInitialization;
             m_playerInitialization = playerInitialization;
+            m_hudController = hudController;
+            m_locationInitialization = locationInitialization;
         }
 
         public void Initialization()
@@ -63,6 +63,7 @@ namespace Code.Controller
                 return;
             
             m_hudController.SetMessage(MessagesManager.CHANGE_LOCATION_MESSAGE);
+            m_locationIDName = locationChangerProvider.LocationIDName;
             m_triggered = true;
         }
         
@@ -72,6 +73,7 @@ namespace Code.Controller
                 return;
             
             m_hudController.RemoveMessage();
+            m_locationIDName = null;
             m_triggered = false;
         }
 
@@ -79,8 +81,7 @@ namespace Code.Controller
         {
             if (m_triggered && m_hornInput)
             {
-                m_hudInitialization.DisableAllHud();
-                m_hudInitialization.GetWinHud().gameObject.SetActive(true);
+                m_locationInitialization.ChangeLocation(m_locationIDName);
                 m_triggered = false;
             }
         }

@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.IO;
+using Code.Controller.Starter;
 using Code.Interfaces.Data;
 using static Code.Data.DataUtils;
 using UnityEngine;
 
 
+// TODO: Перенести префабы в Resources
 namespace Code.Data
 {
     // TODO: Как то улучшить этот ENUM, не удобно.
@@ -39,9 +41,9 @@ namespace Code.Data
         
         [Header("Интерфейс")] // TODO: Сделать автоматический сбор интерфейсов (ввод только названия папки)
         [SerializeField] private string m_hudPath;
-        
-        // TODO: СДЕЛАТЬ СМЕНУ ЛОКАЦИИ... Только я не знаю как это грамотно реализовать...
-        [Header("Локации")]
+
+        [Header("Игра")] 
+        [SerializeField] private GameStarter m_gameStarterPrefab;
         [SerializeField] private string m_locationsDirPath;
 
         #endregion
@@ -61,8 +63,8 @@ namespace Code.Data
         private TargetData m_targetData;
 
         private HudData m_hudData;
-
-        private IDictData m_Locations;
+        
+        private Dictionary<string, LocationData> m_locations;
 
         #endregion
 
@@ -82,7 +84,8 @@ namespace Code.Data
 
         public HudData HudData => GetData(m_hudPath, ref m_hudData);
 
-        public Dictionary<string, IDictData> LocationDatas => GetDatasDict<LocationData>(m_locationsDirPath, ref m_Locations);
+        public GameStarter GameStarterPrefab => m_gameStarterPrefab;
+        public Dictionary<string, LocationData> LocationDatas => GetDatasDict(m_locationsDirPath, ref m_locations);
 
         #endregion
     }

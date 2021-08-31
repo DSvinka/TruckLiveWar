@@ -129,8 +129,11 @@ namespace Code.Controller
 
                 if (Physics.Raycast(barrelPosition, barrelForward, out var raycastHit, weaponData.MaxDistance))
                 {
-                    var unit = raycastHit.collider.gameObject.GetComponent<IUnit>();
-                    unit?.AddDamage(weaponProvider.gameObject, weaponData.Damage);
+                    if (m_carProvider.gameObject.GetInstanceID() != raycastHit.collider.gameObject.GetInstanceID())
+                    {
+                        var unit = raycastHit.collider.gameObject.GetComponent<IUnit>();
+                        unit?.AddDamage(weaponProvider.gameObject, weaponData.Damage);
+                    }
                 }
                 weapon.Cooldown = weaponData.FireRate;
             }
