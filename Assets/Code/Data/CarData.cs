@@ -7,7 +7,7 @@ namespace Code.Data
     [CreateAssetMenu(fileName = "CarSettings", menuName = "Data/Transport/CarSettings")]
     internal sealed class CarData : ScriptableObject, ICarData, IUnitData
     {
-        [SerializeField] private CarProvider m_carProvider;
+        [SerializeField] private CarProvider m_carPrefab;
 
         [Header("Информация")]
         [SerializeField] private string m_name = "Машина";
@@ -34,7 +34,7 @@ namespace Code.Data
         [SerializeField] [Tooltip("Подэтапы моделирования при скорости ниже критической.")]
         private int m_stepsAbove = 15;
         
-        public CarProvider CarProvider => m_carProvider;
+        public CarProvider CarPrefab => m_carPrefab;
         
         public float MaxAngle => m_maxAngle;
         public float MaxTorque => m_maxTorque;

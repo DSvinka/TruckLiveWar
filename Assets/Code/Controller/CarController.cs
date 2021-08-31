@@ -42,7 +42,7 @@ namespace Code.Controller
 
         public CarController(
             (IUserAxisProxy inputHorizontal, IUserAxisProxy inputVertical) axisInput,
-            (IUserKeyProxy inputHandbreak, IUserKeyProxy inputRestart, IUserKeyProxy inputHorn) keysInput,
+            (IUserKeyProxy inputHandbreak, IUserKeyProxy inputRestart, IUserKeyProxy inputHorn, IUserKeyProxy inputEscape) keysInput,
             PlayerInitialization playerInitialization, ICarData carData)
         {
             m_playerInitialization = playerInitialization;
@@ -148,7 +148,7 @@ namespace Code.Controller
         private void CarMove(Wheel wheel, WheelAxie wheelAxie)
         {
             var wheelCollider = wheel.WheelCollider;
-            
+
             if (wheelAxie.IsSteeringAxie)
                 wheelCollider.steerAngle = _angle;
 

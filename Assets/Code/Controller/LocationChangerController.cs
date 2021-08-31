@@ -1,4 +1,5 @@
 using Code.Controller.Initialization;
+using Code.Controller.UI;
 using Code.Interfaces;
 using Code.Interfaces.UserInput;
 using Code.Managers;
@@ -21,7 +22,7 @@ namespace Code.Controller
 
         public LocationChangerController(PlayerInitialization playerInitialization, LocationInitialization locationInitialization,
             HudController hudController, LocationChangerProvider[] locationChangerProviders,
-            (IUserKeyProxy inputHandbreak, IUserKeyProxy inputRestart, IUserKeyProxy inputHorn) keysInput)
+            (IUserKeyProxy inputHandbreak, IUserKeyProxy inputRestart, IUserKeyProxy inputHorn, IUserKeyProxy inputEscape) keysInput)
         {
             m_hornInputProxy = keysInput.inputHorn;
             m_locationChangerProviders = locationChangerProviders;

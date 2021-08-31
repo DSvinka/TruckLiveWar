@@ -19,9 +19,12 @@ namespace Code.Controller.Initialization
             m_locationNameID = locationNameID;
             m_data = data;
         }
-
-        public void ChangeLocation(string locationNameID)
+        
+        public void ChangeLocation(string locationNameID = null)
         {
+            if (locationNameID == null)
+                locationNameID = m_locationNameID;
+            
             var gameStarterOld = Object.FindObjectOfType<GameStarter>();
             var location = Object.FindObjectOfType<LocationMarker>();
             var player = Object.FindObjectOfType<PlayerMarker>();

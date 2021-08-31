@@ -58,6 +58,7 @@ namespace Code.Providers
         public Transform PlacePoint => m_placePoint;
         public WeaponSlotType SlotType => m_slotType;
         public WeaponProvider WeaponProvider { get; set; }
+        public Weapon Weapon { get; set; }
     }
 
     internal sealed class CarProvider : MonoBehaviour, IUnit
@@ -88,6 +89,7 @@ namespace Code.Providers
         {
             var slot = m_weaponSlots[index];
             var weaponObject = Instantiate(weapon.WeaponProviderPrefab, slot.PlacePoint);
+            slot.Weapon = weapon;
             slot.WeaponProvider = weaponObject;
             return weaponObject;
         }

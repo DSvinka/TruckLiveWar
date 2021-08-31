@@ -62,7 +62,7 @@ namespace Code.Data
         
         private TargetData m_targetData;
 
-        private HudData m_hudData;
+        private UIData m_uiData;
         
         private Dictionary<string, LocationData> m_locations;
 
@@ -82,7 +82,7 @@ namespace Code.Data
 
         public TargetData TargetData => GetData(m_targetPath, ref m_targetData);
 
-        public HudData HudData => GetData(m_hudPath, ref m_hudData);
+        public UIData UIData => GetData(m_hudPath, ref m_uiData);
 
         public GameStarter GameStarterPrefab => m_gameStarterPrefab;
         public Dictionary<string, LocationData> LocationDatas => GetDatasDict(m_locationsDirPath, ref m_locations);

@@ -1,5 +1,6 @@
 using System;
 using Code.Controller.Starter;
+using Code.Controller.UI;
 using Code.Factory;
 using Code.Markers;
 using Code.Providers;
@@ -32,8 +33,9 @@ namespace Code.Controller.Initialization
             var inputInitialization = new InputInitialization();
             var playerInitialization = new PlayerInitialization(playerFactory, playerSpawn.transform.position);
             
-            var hudFactory = new HudFactory(data.HudData, playerInitialization);
-            var hudInitialization = new HudInitialization(hudFactory);
+            var uiFactory = new UIFactory(data.UIData, playerInitialization);
+            var hudInitialization = new HudInitialization(uiFactory);
+            var escapeMenuInitialization = new EscapeMenuInitilization(uiFactory);
 
             var axisInput = inputInitialization.GetAxisInput();
             var keysInput = inputInitialization.GetKeysInput();
@@ -45,9 +47,11 @@ namespace Code.Controller.Initialization
             var modificatorsController = new ModificatorsController(modificators, carController, data);
             var hudController = new HudController(hudInitialization, modificatorsController, carController, playerInitialization, data.Player);
             var radarController = new RadarController(playerInitialization, hudInitialization, data.Player.RadarSize);
+            var escapeMenuController = new EscapeMenuController(escapeMenuInitialization, playerInitialization, carController, locationInitialization, keysInput);
             
             controllers.Add(playerInitialization);
             controllers.Add(hudInitialization);
+            controllers.Add(escapeMenuInitialization);
             
             controllers.Add(inputController);
             controllers.Add(carController);
@@ -55,6 +59,7 @@ namespace Code.Controller.Initialization
             controllers.Add(modificatorsController);
             controllers.Add(hudController);
             controllers.Add(radarController);
+            controllers.Add(escapeMenuController);
 
             if (locationChangers.Length != 0)
             {

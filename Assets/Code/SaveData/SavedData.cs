@@ -1,17 +1,21 @@
 using System;
+using Code.Data;
+using Code.Providers;
 using UnityEngine;
 
 namespace Code.SaveData
 {
     [Serializable]
-    internal sealed class SavedData
+    internal sealed class PlayerSaveData
     {
         public float Health;
+        public CarData Car;
+        public WeaponSlot[] Weapons;
+
         public Vector3Serializable Position;
-        public bool IsEnabled;
 
         public override string ToString() =>
-            $"<color=red>Health</color> {Health} <color=red>Position</color> {Position} <color=red>IsVisible</color> {IsEnabled}";
+            $"<color=red>Health</color> {Health} <color=red>Position</color> {Position}";
 
         [Serializable]
         public struct Vector3Serializable
