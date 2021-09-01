@@ -23,9 +23,10 @@ namespace Code.Controller.UI
 
         public EscapeMenuController(EscapeMenuInitilization escapeMenuInitilization,
             PlayerInitialization playerInitialization, CarController carController,
-            LocationInitialization locationInitialization,
+            LocationInitialization locationInitialization, SaveDataRepository saveDataRepository,
             (IUserKeyProxy inputHandbreak, IUserKeyProxy inputRestart, IUserKeyProxy inputHorn, IUserKeyProxy inputEscape) inputKeys)
         {
+            m_saveDataRepository = saveDataRepository;
             m_locationInitialization = locationInitialization;
             m_playerInitialization = playerInitialization;
             m_escapeMenuInitilization = escapeMenuInitilization;
@@ -35,8 +36,6 @@ namespace Code.Controller.UI
 
         public void Initialization()
         {
-            m_saveDataRepository = new SaveDataRepository();
-            
             var transform = m_escapeMenuInitilization.GetEscapeMenu();
             m_escapeMenuProvider = transform.GetComponent<EscapeMenuProvider>();
             if (m_escapeMenuProvider == null)

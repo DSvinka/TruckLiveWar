@@ -13,38 +13,11 @@ namespace Code.SaveData
         public WeaponSlot[] Weapons;
 
         public Vector3Serializable Position;
-        public QuaternionSerializable Rotation;
+        public Vector3Serializable Rotation;
 
         public override string ToString() =>
-            $"<color=red>Health</color> {Health} <color=red>Position</color> {Position}";
+            $"<color=red>Health</color> {Health} \n<color=red>Position</color> {Position} \n<color=red>Rotation</color> {Rotation}";
 
-        [Serializable]
-        public struct QuaternionSerializable
-        {
-            public float X;
-            public float Y;
-            public float Z;
-
-            private QuaternionSerializable(float valueX, float valueY, float valueZ)
-            {
-                X = valueX;
-                Y = valueY;
-                Z = valueZ;
-            }
-
-            public static implicit operator Quaternion(QuaternionSerializable value)
-            {
-                return new Quaternion(value.X, value.Y, value.Z, 0f);
-            }
-
-            public static implicit operator QuaternionSerializable(Quaternion value)
-            {
-                return new QuaternionSerializable(value.x, value.y, value.z);
-            }
-
-            public override string ToString() => $"[ X = {X}, Y = {Y}, Z = {Z} ]";
-        }
-        
         [Serializable]
         public struct Vector3Serializable
         {
