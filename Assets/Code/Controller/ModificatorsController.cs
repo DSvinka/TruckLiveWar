@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Code.Data;
 using Code.Interfaces;
 using Code.Providers;
+using Code.Utils.Extensions;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Code.Controller
 {
@@ -176,7 +175,7 @@ namespace Code.Controller
         {
             modificatorProvider.OnTriggerEnterChange -= OnTriggerEnter;
             modificatorProvider.OnTriggerEnterChange -= OnTriggerExit;
-            Object.Destroy(modificatorProvider.gameObject);
+            modificatorProvider.Parent.SetActive(false);
         }
     }
 }

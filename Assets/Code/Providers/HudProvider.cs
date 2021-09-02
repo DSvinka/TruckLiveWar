@@ -1,12 +1,11 @@
 using System;
 using TMPro;
-using UnityEditor.VersionControl;
 using UnityEngine;
 
 namespace Code.Providers
 {
     [Serializable]
-    internal sealed class MessageComponent
+    internal struct MessageComponent
     {
         [SerializeField] private GameObject m_gameObject;
         [SerializeField] private TMP_Text m_text;
@@ -16,7 +15,7 @@ namespace Code.Providers
     }
     
     [Serializable]
-    internal sealed class EnemyInformationComponent
+    internal struct EnemyInformationComponent
     {
         [SerializeField] private GameObject m_gameObject;
         [SerializeField] private TMP_Text m_nameText;
@@ -28,7 +27,7 @@ namespace Code.Providers
     }
 
     [Serializable]
-    internal sealed class BonusesListComponent
+    internal struct BonusesListComponent
     {
         [SerializeField] private GameObject m_gameObject;
         [SerializeField] private GameObject m_messagePrefab;
@@ -39,12 +38,24 @@ namespace Code.Providers
         public Transform Content => m_content;
     }
     
+    [Serializable]
+    internal struct RadarComponent
+    {
+        [SerializeField] private GameObject m_gameObject;
+        [SerializeField] private Transform m_content;
+
+        public GameObject GameObject => m_gameObject;
+        public Transform Content => m_content;
+    }
+    
     internal sealed class HudProvider : MonoBehaviour
     {
         [SerializeField] private EnemyInformationComponent m_enemyInformation;
         [SerializeField] private BonusesListComponent m_bonusesList;
         [SerializeField] private MessageComponent m_message;
+        [SerializeField] private RadarComponent m_radar;
 
+        public RadarComponent Radar => m_radar;
         public EnemyInformationComponent EnemyInformation => m_enemyInformation;
         public BonusesListComponent BonusesList => m_bonusesList;
         public MessageComponent Message => m_message;

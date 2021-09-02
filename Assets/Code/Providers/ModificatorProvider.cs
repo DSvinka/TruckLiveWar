@@ -11,6 +11,9 @@ namespace Code.Providers
         public event Action<GameObject, ModificatorProvider, ModificatorType> OnTriggerExitChange = delegate(GameObject gameObject, ModificatorProvider modificatorProvider, ModificatorType modificatorType) {  };
 
         [SerializeField] private ModificatorType m_modificatorType;
+        [SerializeField] private GameObject m_parent;
+
+        public GameObject Parent => m_parent;
 
         private void OnTriggerEnter(Collider other)
         {

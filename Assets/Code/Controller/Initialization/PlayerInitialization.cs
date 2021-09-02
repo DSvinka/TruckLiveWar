@@ -1,11 +1,11 @@
-using System.Data;
 using Cinemachine;
+using Code.Data;
 using Code.Factory;
 using Code.Interfaces;
 using Code.Interfaces.Factory;
 using Code.Providers;
 using UnityEngine;
-using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
 
 namespace Code.Controller.Initialization
 {
@@ -29,18 +29,36 @@ namespace Code.Controller.Initialization
         public void Initialization()
         {
             m_player = m_playerFactory.CreatePlayer();
-            m_playerCar = m_playerFactory.CreateTransport();
             
-            CinemachineCamera = m_player.GetComponentInChildren<CinemachineFreeLook>();
             Camera = m_player.GetComponentInChildren<Camera>();
+            CinemachineCamera = m_player.GetComponentInChildren<CinemachineFreeLook>();
             
-            CinemachineCamera.Follow = m_playerCar.CameraFollow;
-            CinemachineCamera.LookAt = m_playerCar.CameraLookAt;
+            InitCar();
+
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
 
             m_player.position = m_playerSpawnPosition;
             m_playerCar.transform.position = m_playerSpawnPosition;
         }
 
+        private void InitCar(CarData carData = null)
+        {
+            if (carData != null) 
+                m_playerFactory.ChangePlayerCar(carData);
+            m_playerCar = m_playerFactory.CreateTransport();
+
+            CinemachineCamera.Follow = m_playerCar.CameraFollow;
+            CinemachineCamera.LookAt = m_playerCar.CameraLookAt;
+        }
+        
+        public void ChangeCar(CarData carData)
+        {
+            if (m_playerCar.gameObject != null)
+                Object.Destroy(m_playerCar.gameObject);
+            InitCar(carData);
+        }
+        
         public Transform GetPlayer()
         {
             return m_player;

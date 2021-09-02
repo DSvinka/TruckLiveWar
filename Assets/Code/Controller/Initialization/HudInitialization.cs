@@ -1,30 +1,27 @@
 using Code.Factory;
 using Code.Interfaces;
-using Code.Interfaces.Factory;
-using Code.Providers;
 using UnityEngine;
 
 namespace Code.Controller.Initialization
 {
     internal sealed class HudInitialization : IInitialization
     {
-        private readonly HudFactory m_hudFactory;
+        private readonly UIFactory m_uiFactory;
         
         private Transform m_playerHud;
         private Transform m_winHud;
         private Transform m_deathHud;
 
-        public HudInitialization(HudFactory hudFactory)
+        public HudInitialization(UIFactory uiFactory)
         {
-            m_hudFactory = hudFactory;
+            m_uiFactory = uiFactory;
         }
 
         public void Initialization()
         {
-            m_playerHud = m_hudFactory.CreateHud();
-
-            m_winHud = m_hudFactory.CreateWinWindow();
-            m_deathHud = m_hudFactory.CreateDeathWindow();
+            m_playerHud = m_uiFactory.CreateHud();
+            m_winHud = m_uiFactory.CreateWinWindow();
+            m_deathHud = m_uiFactory.CreateDeathWindow();
 
             m_playerHud.gameObject.SetActive(true);
             m_winHud.gameObject.SetActive(false);
@@ -35,6 +32,7 @@ namespace Code.Controller.Initialization
         {
             m_playerHud.gameObject.SetActive(false);
             m_winHud.gameObject.SetActive(false);
+            m_deathHud.gameObject.SetActive(false);
             m_deathHud.gameObject.SetActive(false);
         }
 

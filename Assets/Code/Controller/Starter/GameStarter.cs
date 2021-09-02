@@ -1,18 +1,46 @@
 using Code.Controller.Initialization;
+using Code.SaveData;
 using UnityEngine;
 
 namespace Code.Controller.Starter
 {
-    public sealed class GameStarter : MonoBehaviour
+    internal sealed class GameStarter : MonoBehaviour
     {
         [SerializeField] private Data.Data m_data;
+        [SerializeField] private string m_locationNameID;
         private Controllers m_controllers;
+        private GameSaveData m_gameSaveData;
+
+        public Data.Data Data
+        {
+            get => m_data;
+            set => m_data = value;
+        }
+        public string LocationNameID
+        {
+            get => m_locationNameID;
+            set => m_locationNameID = value;
+        }
+        public GameSaveData GameSave
+        {
+            get => m_gameSaveData;
+            set => m_gameSaveData = value;
+        }
 
         private void Start()
         {
             m_controllers = new Controllers();
-            var game = new GameInitialization(m_controllers, m_data);
+
+            var location = new LocationInitialization(m_locationNameID, m_data, m_data.GameStarterPrefab);
+            location.LoadLocation();
+
+            var saveRepository = new SaveDataRepository(location);
+            var game = new GameInitialization(m_controllers, location, saveRepository, m_data);
+
             m_controllers.Initialization();
+            
+            if (GameSave != null)
+                saveRepository.Load(game.PlayerInitialization, true);
         }
 
         private void Update()

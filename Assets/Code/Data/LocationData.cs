@@ -1,8 +1,6 @@
 using Code.Interfaces.Data;
-using Code.Providers;
 using UnityEngine;
 
-// TODO: СДЕЛАТЬ СМЕНУ ЛОКАЦИИ... Только я не знаю как это грамотно реализовать...
 namespace Code.Data
 {
     [CreateAssetMenu(fileName = "LocationSettings", menuName = "Data/LocationSettings")]
