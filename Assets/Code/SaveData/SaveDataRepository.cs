@@ -50,6 +50,7 @@ namespace Code.SaveData
             {
                 Player = savePlayer,
                 LocationNameID = LocationInitialization.LocationNameID,
+                
             };
             
             m_data.Save(saveGame, Path.Combine(m_path, m_fileName));
