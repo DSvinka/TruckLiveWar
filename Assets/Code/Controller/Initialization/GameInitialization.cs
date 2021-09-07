@@ -5,6 +5,7 @@ using Code.Factory;
 using Code.Markers;
 using Code.Providers;
 using Code.SaveData;
+using Code.Utils.Extensions;
 using Object = UnityEngine.Object;
 
 namespace Code.Controller.Initialization
@@ -34,9 +35,9 @@ namespace Code.Controller.Initialization
             var playerFactory = new PlayerFactory(data.Player);
             
             var inputInitialization = new InputInitialization();
-            PlayerInitialization = new PlayerInitialization(playerFactory, playerSpawn.transform.position);
+            var playerInitialization = new PlayerInitialization(playerFactory, playerSpawn.transform.position);
 
-            var uiFactory = new UIFactory(data.UIData, PlayerInitialization);
+            var uiFactory = new UIFactory(data.UIData, playerInitialization);
             var hudInitialization = new HudInitialization(uiFactory);
             var escapeMenuInitialization = new EscapeMenuInitilization(uiFactory);
 
@@ -45,20 +46,23 @@ namespace Code.Controller.Initialization
             var mouseInput = inputInitialization.GetMouseInput();
 
             var inputController = new InputController(axisInput, keysInput, mouseInput);
-            CarController = new CarController(axisInput, keysInput, PlayerInitialization, data.Player.Car);
-            var weaponController = new WeaponsController(mouseInput, PlayerInitialization);
-            var modificatorsController = new ModificatorsController(modificators, CarController, data);
-            var hudController = new HudController(hudInitialization, modificatorsController, CarController, PlayerInitialization, data.Player);
-            var radarController = new RadarController(PlayerInitialization, hudInitialization, data.Player.RadarSize);
-            var escapeMenuController = new EscapeMenuController(escapeMenuInitialization, PlayerInitialization, CarController, 
+            var weaponController = new WeaponsController(mouseInput, playerInitialization);
+            var carController = new CarController(axisInput, keysInput, playerInitialization, weaponController, data.Player.Car);
+            var modificatorsController = new ModificatorsController(modificators, carController, data);
+            var hudController = new HudController(hudInitialization, modificatorsController, carController, playerInitialization, data.Player);
+            var radarController = new RadarController(playerInitialization, hudInitialization, data.Player.RadarSize);
+            var escapeMenuController = new EscapeMenuController(escapeMenuInitialization, playerInitialization, carController, 
                 locationInitialization, saveRepository, keysInput);
-            
+
+            CarController = carController;
+            PlayerInitialization = playerInitialization;
+
             controllers.Add(PlayerInitialization);
             controllers.Add(hudInitialization);
             controllers.Add(escapeMenuInitialization);
             
             controllers.Add(inputController);
-            controllers.Add(CarController);
+            controllers.Add(carController);
             controllers.Add(weaponController);
             controllers.Add(modificatorsController);
             controllers.Add(hudController);
@@ -67,14 +71,14 @@ namespace Code.Controller.Initialization
 
             if (locationChangers.Length != 0)
             {
-                var locationChangerController = new LocationChangerController(PlayerInitialization, locationInitialization,
+                var locationChangerController = new LocationChangerController(playerInitialization, locationInitialization,
                     hudController, locationChangers, keysInput);
                 controllers.Add(locationChangerController);
             }
             
             if (pickups.Length != 0)
             {
-                var pickupController = new PickupController(pickups, CarController, weaponController);
+                var pickupController = new PickupController(pickups, carController, weaponController);
                 controllers.Add(pickupController);
             }
 

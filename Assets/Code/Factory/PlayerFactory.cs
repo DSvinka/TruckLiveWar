@@ -1,11 +1,12 @@
 using Code.Data;
 using Code.Interfaces.Factory;
 using Code.Providers;
+using Code.Utils.Extensions;
 using UnityEngine;
 
 namespace Code.Factory
 {
-    internal sealed class PlayerFactory : IPlayerFactory
+    public sealed class PlayerFactory : IPlayerFactory
     {
         private readonly PlayerData m_playerData;
         private CarData m_carData;

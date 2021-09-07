@@ -27,12 +27,14 @@ namespace Code.Controller
 
     internal sealed class ModificatorsController : IController, IInitialization, ICleanup, IExecute
     {
-        private readonly ModificatorProvider[] m_modificators;
+        private static ModificatorProvider[] m_modificators;
         private readonly CarController m_playerCarController;
 
         private readonly Modificator m_speedBonusModificator;
         private readonly Modificator m_speedSlowingDownModificator;
         private readonly Modificator m_playerKillerModificator;
+
+        public static ModificatorProvider[] ModificatorProviders => m_modificators;
         
         public event Action<Modificator> ModificatorCreate = delegate(Modificator modificator) {};
         public event Action<Modificator> ModificatorRemove = delegate(Modificator modificator) {};

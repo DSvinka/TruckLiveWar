@@ -1,6 +1,6 @@
 namespace Code.Interfaces.Data
 {
-    internal interface IUnitData
+    public interface IUnitData
     {
         public string Name { get; }
         public float MaxHealth { get; }

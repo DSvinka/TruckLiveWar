@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0898139a6b08b4c40abe00b43e7d0541, type: 3}
   m_Name: BaseWeapon
   m_EditorClassIdentifier: 
-  m_prefab: {fileID: 3068818217966147393, guid: 970efb6641c41bd4e9fb8a9e1570acd1, type: 3}
+  m_weaponPrefabPath: Assets/Resources/Prefabs/Guns/Base/BaseGun.prefab
   m_name: "\u041F\u0442\u0438\u0447\u043A\u0430"
   m_description: "\u0421\u043A\u043E\u0440\u043E\u0441\u0442\u0440\u0435\u043B\u044C\u043D\u044B\u0439
     \u043F\u0438\u0441\u0442\u043E\u043B\u0435\u0442-\u043F\u0443\u043B\u0435\u043C\u0451\u0442"

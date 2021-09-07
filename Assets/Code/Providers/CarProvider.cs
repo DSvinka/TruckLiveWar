@@ -3,18 +3,19 @@ using Code.Controller;
 using Code.Data;
 using Code.Interfaces.Data;
 using Code.Interfaces.Providers;
+using Code.Utils.Extensions;
 using UnityEngine;
 
 namespace Code.Providers
 {
-    internal enum WheelSide
+    public enum WheelSide
     {
         Left,
         Right,
     }
 
     [Serializable]
-    internal struct WheelAxie
+    public class WheelAxie
     {
         [SerializeField] private Wheel[] m_wheels;
 
@@ -28,22 +29,37 @@ namespace Code.Providers
         public bool IsMotorAxie => m_isMotorAxie;
         public bool IsHandbreakAxie => m_isHandbreakAxie;
         public bool IsSteeringAxie => m_isSteeringAxie;
+        
+        public WheelAxie(Wheel[] wheels, bool isMotorAxie = true, bool isHandbreakAxie = true, bool isSteeringAxie = false)
+        {
+            m_wheels = wheels;
+            m_isMotorAxie = isMotorAxie;
+            m_isHandbreakAxie = isHandbreakAxie;
+            m_isSteeringAxie = isSteeringAxie;
+        }
     }
 
     [Serializable]
-    internal struct Wheel
+    public struct Wheel
     {
         [SerializeField] private GameObject m_wheelShape;
         [SerializeField] private WheelCollider m_wheelCollider;
-        [SerializeField] [Tooltip("На какой стороне находится оружие")] private WheelSide m_wheelSide;
+        [SerializeField] [Tooltip("На какой стороне находится колесо")] private WheelSide m_wheelSide;
 
         public GameObject WheelShape => m_wheelShape;
         public WheelCollider WheelCollider => m_wheelCollider;
         public WheelSide WheelSide => m_wheelSide;
+
+        public Wheel(GameObject wheelShape, WheelCollider wheelCollider, WheelSide wheelSide)
+        {
+            m_wheelShape = wheelShape;
+            m_wheelCollider = wheelCollider;
+            m_wheelSide = wheelSide;
+        }
     }
 
     [Serializable]
-    internal struct WeaponSlot
+    public class WeaponSlot
     {
         [Header("Объекты")]
         [SerializeField] [Tooltip("Слот")] private Transform m_slot;
@@ -60,7 +76,7 @@ namespace Code.Providers
         public Weapon Weapon { get; set; }
     }
 
-    internal sealed class CarProvider : MonoBehaviour, IUnit
+    public sealed class CarProvider : MonoBehaviour, IUnit
     {
         [Header("Объекты отслеживания камеры")]
         [SerializeField] private Transform m_cameraFollow;
@@ -83,20 +99,27 @@ namespace Code.Providers
         public WheelAxie[] WheelAxies => m_wheelAxies;
         public Transform CameraFollow => m_cameraFollow;
         public Transform CameraLookAt => m_cameraLookAt;
-
+        
+        [Obsolete("Не рекомендуется использовать где либо кроме контроллера WeaponController. Эта функция нужна для работы Контроллера с Провайдером.")]
         public WeaponProvider PlaceWeapon(int index, Weapon weapon)
         {
             var slot = m_weaponSlots[index];
+
             var weaponObject = Instantiate(weapon.WeaponProviderPrefab, slot.PlacePoint);
+
             slot.Weapon = weapon;
             slot.WeaponProvider = weaponObject;
+
             return weaponObject;
         }
 
+        [Obsolete("Не рекомендуется использовать где либо кроме контроллера WeaponController. Эта функция нужна для работы Контроллера с Провайдером.")]
         public void RemoveWeapon(int index)
         {
             var slot = m_weaponSlots[index];
-            Destroy(slot.WeaponProvider.gameObject);
+            if (slot.WeaponProvider != null)
+                Destroy(slot.WeaponProvider.gameObject);
+            
             slot.WeaponProvider = null;
         }
 

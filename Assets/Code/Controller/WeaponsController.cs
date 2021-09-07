@@ -5,11 +5,12 @@ using Code.Interfaces;
 using Code.Interfaces.Providers;
 using Code.Interfaces.UserInput;
 using Code.Providers;
+using Code.Utils.Extensions;
 using UnityEngine;
 
 namespace Code.Controller
 {
-    internal sealed class Weapon
+    public sealed class Weapon
     {
         private readonly WeaponProvider m_weaponProviderPrefab;
         private readonly WeaponData m_weaponData;
@@ -28,7 +29,7 @@ namespace Code.Controller
         }
     }
 
-    internal sealed class WeaponsController: IController, IExecute, IInitialization, ICleanup
+    public sealed class WeaponsController: IController, IExecute, IInitialization, ICleanup
     {
         private readonly PlayerInitialization m_playerInitialization;
 
@@ -40,6 +41,7 @@ namespace Code.Controller
         private bool m_mouseFireInput;
 
         public Weapon[] Weapons => m_weapons;
+        public Weapon[] SetWeaponOnSpawn { get; set; }
 
         public WeaponsController(
             IUserKeyProxy mouseInput,
@@ -64,10 +66,14 @@ namespace Code.Controller
 
         public void Execute(float deltatime)
         {
-            if (m_weapons.Any(x => x == null)) 
-                return;
-
             if (m_carProvider == null)
+            {
+                m_carProvider = m_playerInitialization.GetPlayerTransport();
+                InitWeapon();
+                return;
+            }
+            
+            if (m_weapons.Any(x => x == null)) 
                 return;
             
             foreach (var weapon in m_weapons)
@@ -79,8 +85,9 @@ namespace Code.Controller
                     weapon.Cooldown -= deltatime;
             }
         }
-
-        public bool AddWeapon(int index, Weapon weapon)
+        
+#pragma warning disable 618
+        public bool SetWeapon(int index, Weapon weapon)
         {
             if (weapon.WeaponData.SlotType != m_carProvider.WeaponSlots[index].SlotType)
                 return false;
@@ -89,7 +96,9 @@ namespace Code.Controller
                 RemoveWeapon(index);
 
             m_weapons[index] = weapon;
+
             weapon.WeaponProvider = m_carProvider.PlaceWeapon(index, weapon);
+
             weapon.Index = index;
             return true;
         }
@@ -104,6 +113,19 @@ namespace Code.Controller
             return true;
         }
 
+        public void InitWeapon()
+        {
+            if (SetWeaponOnSpawn != null && SetWeaponOnSpawn.Length != 0)
+            {
+                for (var index = 0; index < SetWeaponOnSpawn.Length; index++)
+                {
+                    var weapon = SetWeaponOnSpawn[index];
+                    SetWeapon(index, weapon);
+                }
+            }
+        }
+#pragma warning restore 618
+        
         private void Move(Weapon weapon)
         {
             var weaponProvider = weapon.WeaponProvider;

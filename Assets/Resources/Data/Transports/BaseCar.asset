@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d99abb9ba46c46c48d098b9739b400e9, type: 3}
   m_Name: BaseCar
   m_EditorClassIdentifier: 
-  m_carPrefab: {fileID: 228394205304314984, guid: 37e8aec0f2deb384893884121c5b75b9, type: 3}
+  m_carPrefabPath: Assets/Resources/Prefabs/Transports/Base/BaseCar.prefab
   m_name: "\u041C\u0430\u0448\u0438\u043D\u0430"
   m_maxHealth: 200
   m_maxFuel: 100

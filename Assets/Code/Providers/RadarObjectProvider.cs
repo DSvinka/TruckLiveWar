@@ -16,7 +16,6 @@ namespace Code.Providers
         
         [SerializeField] private Image m_icon;
         [SerializeField] private ObjectType m_objectType = ObjectType.House;
-        
 
         private void OnValidate()
         {
@@ -31,9 +30,15 @@ namespace Code.Providers
             m_icon = Resources.Load<Image>(path);
         }
 
-        private void OnEnable()
+        private void Start()
         {
             RadarController.RegisterRadarObject(gameObject, m_icon);
+        }
+        
+        private void OnEnable()
+        {
+            if (!gameObject.activeSelf)
+                RadarController.RegisterRadarObject(gameObject, m_icon);
         }
 
         private void OnDisable()

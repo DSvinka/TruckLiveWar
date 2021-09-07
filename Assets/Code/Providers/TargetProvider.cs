@@ -17,7 +17,7 @@ namespace Code.Providers
 
         public void Explosion()
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
 
         public void AddDamage(GameObject damager, float damage)

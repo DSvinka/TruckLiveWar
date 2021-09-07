@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c975ba639aa4cb7998cdf210ec45c3e, type: 3}
   m_Name: Data
   m_EditorClassIdentifier: 
-  m_playerDataPath: PlayerSettings
-  m_speedBonusPath: Modificators/SpeedBonus
-  m_speedSlowingDownPath: Modificators/SpeedSlowingDown
-  m_playerKillerPath: Modificators/PlayerKiller
-  m_baseWeaponPath: Weapons/BaseWeapon
-  m_baseCarPath: Transports/BaseCar
-  m_targetPath: Objects/Target
-  m_hudPath: UI/UISettings
-  m_gameStarterPrefab: {fileID: 3339700231056870871, guid: 4412fd8fd8b5d7d45bccaf86f0fd8258, type: 3}
-  m_locationsDirPath: Locations/
+  m_playerDataPath: Assets/Resources/Data/PlayerSettings.asset
+  m_speedBonusPath: Assets/Resources/Data/Modificators/SpeedBonus.asset
+  m_speedSlowingDownPath: Assets/Resources/Data/Modificators/SpeedSlowingDown.asset
+  m_playerKillerPath: Assets/Resources/Data/Modificators/PlayerKiller.asset
+  m_baseWeaponPath: Assets/Resources/Data/Weapons/BaseWeapon.asset
+  m_baseCarPath: Assets/Resources/Data/Transports/BaseCar.asset
+  m_targetPath: Assets/Resources/Data/Objects/Target.asset
+  m_uiPath: Assets/Resources/Data/UI/UISettings.asset
+  m_gameStarterPrefabPath: Assets/Resources/Prefabs/GameStarter.prefab
+  m_locationsDirPath: Data/Locations/

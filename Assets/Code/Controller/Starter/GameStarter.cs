@@ -1,5 +1,7 @@
 using Code.Controller.Initialization;
+using Code.Markers;
 using Code.SaveData;
+using Code.SaveData.Data;
 using UnityEngine;
 
 namespace Code.Controller.Starter
@@ -30,7 +32,7 @@ namespace Code.Controller.Starter
         private void Start()
         {
             m_controllers = new Controllers();
-
+            
             var location = new LocationInitialization(m_locationNameID, m_data, m_data.GameStarterPrefab);
             location.LoadLocation();
 
@@ -40,7 +42,7 @@ namespace Code.Controller.Starter
             m_controllers.Initialization();
             
             if (GameSave != null)
-                saveRepository.Load(game.PlayerInitialization, true);
+                saveRepository.Load(game.PlayerInitialization, game.CarController, true);
         }
 
         private void Update()

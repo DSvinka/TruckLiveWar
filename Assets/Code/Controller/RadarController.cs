@@ -19,8 +19,8 @@ namespace Code.Controller
         private readonly PlayerInitialization m_playerInitialization;
         private readonly float m_mapScale;
 
-        private Transform m_carPosition;
-        private RadarComponent m_radarComponent;
+        private CarProvider m_carProvider;
+        private HudProvider m_hudProvider;
 
         private static List<RadarObject> RadarObjects = new List<RadarObject>();
 
@@ -34,14 +34,20 @@ namespace Code.Controller
         public void Initialization()
         {
             var hudProvider = m_hudInitialization.GetPlayerHud().GetComponent<HudProvider>();
-            m_radarComponent = hudProvider.Radar;
-            m_carPosition = m_playerInitialization.GetPlayerTransport().transform;
+            m_hudProvider = hudProvider;
+            m_carProvider = m_playerInitialization.GetPlayerTransport();
         }
 
         public void Execute(float deltatime)
         {
             if (Time.frameCount % 2 == 0)
             {
+                if (m_carProvider == null || m_hudProvider == null)
+                {
+                    m_hudProvider = m_hudInitialization.GetPlayerHud().GetComponent<HudProvider>();
+                    m_carProvider = m_playerInitialization.GetPlayerTransport();
+                }
+                
                 DrawRadarDots();
             }
         }
@@ -72,12 +78,12 @@ namespace Code.Controller
         {
             foreach (var radarObject in RadarObjects)
             {
-                var carPosition = m_carPosition.position;
-                var radarView = m_radarComponent.Content;
+                var carPosition = m_carProvider.transform.position;
+                var radarView = m_hudProvider.Radar.Content;
                 
                 var radarPosition = (radarObject.Owner.transform.position - carPosition);
                 var distToObject = Vector3.Distance(carPosition, radarObject.Owner.transform.position) * m_mapScale;
-                var deltay = Mathf.Atan2(radarPosition.x, radarPosition.z) * Mathf.Rad2Deg - 270 - m_carPosition.transform.eulerAngles.y;
+                var deltay = Mathf.Atan2(radarPosition.x, radarPosition.z) * Mathf.Rad2Deg - 270 - m_carProvider.transform.eulerAngles.y;
 
                 radarPosition.x = distToObject * Mathf.Cos(deltay * Mathf.Deg2Rad) * -1;
                 radarPosition.z = distToObject * Mathf.Sin(deltay * Mathf.Deg2Rad);
