@@ -1,18 +1,25 @@
+using static Code.Data.DataUtils;
+using Code.Interfaces.Data;
 using Code.Providers;
+using UnityEditor;
 using UnityEngine;
 
 namespace Code.Data
 {
-    internal enum WeaponSlotType
+    public enum WeaponSlotType
     {
         Small,
         Middle
     }
 
     [CreateAssetMenu(fileName = "WeaponSettings", menuName = "Data/Pickup/WeaponSettings")]
-    internal sealed class WeaponData : ScriptableObject
+    public sealed class WeaponData : ScriptableObject, IData
     {
-        [SerializeField] private WeaponProvider m_prefab;
+        public string Path { get; set; }
+        
+        #region Поля
+        
+        [SerializeField] [AssetPath.Attribute(typeof(WeaponProvider))] private string m_weaponPrefabPath;
 
         [Header("Информация")]
         [SerializeField] private string m_name = "Птичка";
@@ -41,6 +48,16 @@ namespace Code.Data
 
         [SerializeField] [Tooltip("Включение бесконечного количества патрон в запасе")]
         private bool m_infinityAmmo = true;
+        
+        #endregion
+        
+        #region Объекты
+        
+        private WeaponProvider m_weaponPrefab;
+        
+        #endregion
+        
+        #region Свойства
 
         // TODO: Добавить инвентарь для информации о оружии
         public string Name => m_name;
@@ -53,11 +70,13 @@ namespace Code.Data
         public float FireRate => m_fireRate;
         public float TurnSpeed => m_turnSpeed;
 
-        public WeaponProvider Prefab => m_prefab;
+        public WeaponProvider Prefab => GetData(m_weaponPrefabPath, ref m_weaponPrefab);
 
         // TODO: Добавить патроны
         public int ClipAmmo => m_clipAmmo;
         public int MaxAmmo => m_maxAmmo;
         public bool InfinityAmmo => m_infinityAmmo;
+
+        #endregion
     }
 }
