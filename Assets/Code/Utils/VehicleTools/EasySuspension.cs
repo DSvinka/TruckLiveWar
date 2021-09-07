@@ -3,7 +3,7 @@
 namespace Code.Utils.VehicleTools
 {
     [ExecuteInEditMode]
-    internal sealed class EasySuspension : MonoBehaviour
+    public sealed class EasySuspension : MonoBehaviour
     {
         [Range(0.1f, 20f)]
         [Tooltip("Собственная частота пружин подвески. Описывает упругость подвески.")]
