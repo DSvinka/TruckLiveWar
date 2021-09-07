@@ -11,12 +11,14 @@ namespace Code.Controller
 {
     internal sealed class WallController : IController, IInitialization, ICleanup
     {
-        private readonly List<WallProvider> m_wallProviders;
+        private static WallProvider[] m_wallProviders;
         private readonly TargetData m_targetData;
+
+        public static WallProvider[] WallProviders => m_wallProviders;
 
         public WallController(WallProvider[] wallProviders, TargetData targetData)
         {
-            m_wallProviders = wallProviders.ToList();
+            m_wallProviders = wallProviders;
             m_targetData = targetData;
         }
 
@@ -24,15 +26,18 @@ namespace Code.Controller
         {
             foreach (var wallProvider in m_wallProviders)
             {
-                wallProvider.TargetProviders = wallProvider.GetComponentsInChildren<TargetProvider>();
-                wallProvider.TargetCount = wallProvider.TargetProviders.Length;
-                
-                foreach (var targetProvider in wallProvider.TargetProviders)
+                if (wallProvider.gameObject.activeSelf)
                 {
-                    targetProvider.Wall = wallProvider;
-                    targetProvider.UnitData = m_targetData;
-                    targetProvider.Health = m_targetData.MaxHealth;
-                    targetProvider.OnUnitDamage += OnTargetDamage;
+                    wallProvider.TargetProviders = wallProvider.GetComponentsInChildren<TargetProvider>();
+                    wallProvider.TargetCount = wallProvider.TargetProviders.Length;
+                
+                    foreach (var targetProvider in wallProvider.TargetProviders)
+                    {
+                        targetProvider.Wall = wallProvider;
+                        targetProvider.UnitData = m_targetData;
+                        targetProvider.Health = m_targetData.MaxHealth;
+                        targetProvider.OnUnitDamage += OnTargetDamage;
+                    }
                 }
             }
         }
@@ -51,10 +56,7 @@ namespace Code.Controller
                 target.Explosion();
                 wall.TargetCount -= 1;
                 if (wall.TargetCount == 0)
-                {
-                    m_wallProviders.Remove(wall);
                     wall.Explosion();
-                }
             }
         }
 

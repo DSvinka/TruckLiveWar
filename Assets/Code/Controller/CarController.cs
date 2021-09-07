@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Code.Controller.Initialization;
+using Code.Data;
 using UnityEngine;
 using Code.Interfaces;
 using Code.Interfaces.Data;
@@ -14,7 +15,7 @@ namespace Code.Controller
     internal sealed class CarController : IInitialization, IExecute, ICleanup
     {
         private readonly PlayerInitialization m_playerInitialization;
-        private readonly ICarData m_carData;
+        private ICarData m_carData;
 
         public event Action<CarController> CarExplosion = delegate(CarController carController) { };
 
@@ -35,15 +36,17 @@ namespace Code.Controller
         private bool _death;
 
         public CarProvider CarProvider => m_carProvider;
-
+        
+        public WeaponsController WeaponsController { get; }
         public float SpeedModificator { get; set; }
 
         public CarController(
             (IUserAxisProxy inputHorizontal, IUserAxisProxy inputVertical) axisInput,
             (IUserKeyProxy inputHandbreak, IUserKeyProxy inputRestart, IUserKeyProxy inputHorn, IUserKeyProxy inputEscape) keysInput,
-            PlayerInitialization playerInitialization, ICarData carData)
+            PlayerInitialization playerInitialization, WeaponsController weaponsController, ICarData carData)
         {
             m_playerInitialization = playerInitialization;
+            WeaponsController = weaponsController;
             m_carData = carData;
             
             m_horizontalAxisProxy = axisInput.inputHorizontal;
@@ -60,6 +63,7 @@ namespace Code.Controller
             m_handbreakInputProxy.KeyOnChange += HandbreakOnChange;
             
             m_carProvider = m_playerInitialization.GetPlayerTransport();
+            m_carData = m_carProvider.UnitData as CarData;
 
             m_carProvider.Health = m_carData.MaxHealth;
             m_carProvider.UnitData = m_carData as IUnitData;
@@ -101,6 +105,9 @@ namespace Code.Controller
                 return;
             
             GetInput();
+            if (m_carProvider == null) 
+                m_carProvider = m_playerInitialization.GetPlayerTransport();
+            
             foreach (var wheelAxie in m_carProvider.WheelAxies)
             {
                 foreach (var wheel in wheelAxie.Wheels)

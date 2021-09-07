@@ -1,10 +1,16 @@
+using Code.Interfaces.Data;
+using UnityEditor;
 using UnityEngine;
 
 namespace Code.Data
 {
     [CreateAssetMenu(fileName = "ModificatorSettings", menuName = "Data/Pickup/ModificatorSettings")]
-    internal sealed class ModificatorData : ScriptableObject
+    internal sealed class ModificatorData : ScriptableObject, IData
     {
+        public string Path { get; set; }
+        
+        #region Поля
+
         [Header("Информация")]
         [SerializeField] private string m_modificatorName = "Бонус";
         [SerializeField] private Color m_messageColor = Color.gray;
@@ -26,7 +32,10 @@ namespace Code.Data
             "Если True то объект не будет удалятся после срабатывания, " +
             "А модификаторы будут держаться пока игрок не выйдет из зоны (а после выхода, пока не кончится таймер ActiveTime)")]
         private bool m_zoneObject;
+        
+        #endregion
 
+        #region Свойства
         public string ModificatorName => m_modificatorName;
         public Color MessageColor => m_messageColor;
 
@@ -54,5 +63,7 @@ namespace Code.Data
         /// А модификаторы будут держаться пока игрок не выйдет из зоны (и пока не кончится таймер ActiveTime)
         /// </summary>
         public bool ZoneObject => m_zoneObject;
+        
+        #endregion
     }
 }

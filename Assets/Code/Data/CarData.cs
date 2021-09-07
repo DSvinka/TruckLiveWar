@@ -1,13 +1,18 @@
+using static Code.Data.DataUtils;
 using Code.Interfaces.Data;
 using Code.Providers;
+using UnityEditor;
 using UnityEngine;
 
 namespace Code.Data
 {
     [CreateAssetMenu(fileName = "CarSettings", menuName = "Data/Transport/CarSettings")]
-    internal sealed class CarData : ScriptableObject, ICarData, IUnitData
+    public sealed class CarData : ScriptableObject, IData, ICarData, IUnitData
     {
-        [SerializeField] private CarProvider m_carPrefab;
+        public string Path { get; set; }
+        
+        #region Поля
+        [SerializeField] [AssetPath.Attribute(typeof(CarProvider))] private string m_carPrefabPath;
 
         [Header("Информация")]
         [SerializeField] private string m_name = "Машина";
@@ -33,8 +38,14 @@ namespace Code.Data
         private int m_stepsBelow = 12;
         [SerializeField] [Tooltip("Подэтапы моделирования при скорости ниже критической.")]
         private int m_stepsAbove = 15;
+        #endregion
         
-        public CarProvider CarPrefab => m_carPrefab;
+        #region Объекты
+        private CarProvider m_carPrefab;
+        #endregion
+        
+        #region Свойства
+        public CarProvider CarPrefab => GetData(m_carPrefabPath, ref m_carPrefab);
         
         public float MaxAngle => m_maxAngle;
         public float MaxTorque => m_maxTorque;
@@ -44,11 +55,11 @@ namespace Code.Data
         public int StepsBelow => m_stepsBelow;
         public int StepsAbove => m_stepsAbove;
         
-        
         public string Name => m_name;
         
         public float MaxHealth => m_maxHealth;
         public float MaxFuel => m_maxFuel;
         public bool InfinityFuel => m_infinityFuel;
+        #endregion
     }
 }

@@ -9,12 +9,15 @@ namespace Code.Providers
     {
         public event Action<GameObject, PickupProvider> OnTriggerEnterChange = delegate(GameObject gameObject, PickupProvider pickupProvider) {  };
 
-        [SerializeField] private WeaponData m_weaponData;
+        [SerializeField] [AssetPath.Attribute(typeof(WeaponData))] private string m_weaponDataPath;
         [SerializeField] private GameObject m_parent;
+
+
+        private WeaponData m_weaponData;
         
         public GameObject Parent => m_parent;
 
-        public WeaponData WeaponData => m_weaponData;
+        public WeaponData WeaponData => DataUtils.GetData(m_weaponDataPath, ref m_weaponData);
 
         private void OnTriggerEnter(Collider other)
         {

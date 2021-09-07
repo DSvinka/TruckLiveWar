@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Code.Interfaces.Providers
 {
-    internal interface IUnit
+    public interface IUnit
     {
         event Action<GameObject, IUnit, float> OnUnitDamage;
         event Action<GameObject, IUnit, float> OnUnitHealth;

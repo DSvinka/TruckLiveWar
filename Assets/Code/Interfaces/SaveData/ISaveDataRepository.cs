@@ -6,6 +6,6 @@ namespace Code.Interfaces.SaveData
     internal interface ISaveDataRepository
     {
         void Save(CarController player);
-        void Load(PlayerInitialization playerInitialization, bool active);
+        void Load(PlayerInitialization playerInitialization, CarController carController = null, bool loaded = false);
     }
 }

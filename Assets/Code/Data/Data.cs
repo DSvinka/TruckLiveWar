@@ -4,7 +4,6 @@ using static Code.Data.DataUtils;
 using UnityEngine;
 
 
-// TODO: Перенести префабы в Resources
 namespace Code.Data
 {
     // TODO: Как то улучшить этот ENUM, не удобно.
@@ -18,30 +17,30 @@ namespace Code.Data
     [CreateAssetMenu(fileName = "Data", menuName = "Data/Data")]
     internal sealed class Data : ScriptableObject
     {
-        #region Пути
+        #region Поля
 
         [Header("Игрок")]
-        [SerializeField] private string m_playerDataPath;
+        [SerializeField] [AssetPath.Attribute(typeof(PlayerData))] private string m_playerDataPath;
 
-        [Header("Модификаторы")] // TODO: Сделать автоматический сбор модификаторов (ввод только названия папки)
-        [SerializeField] private string m_speedBonusPath;
-        [SerializeField] private string m_speedSlowingDownPath;
-        [SerializeField] private string m_playerKillerPath;
+        [Header("Модификаторы")]
+        [SerializeField] [AssetPath.Attribute(typeof(ModificatorData))] private string m_speedBonusPath;
+        [SerializeField] [AssetPath.Attribute(typeof(ModificatorData))] private string m_speedSlowingDownPath;
+        [SerializeField] [AssetPath.Attribute(typeof(ModificatorData))] private string m_playerKillerPath;
 
-        [Header("Вооружение")] // TODO: Сделать автоматический сбор транспорта (ввод только названия папки)
-        [SerializeField] private string m_baseWeaponPath;
+        [Header("Вооружение")]
+        [SerializeField] [AssetPath.Attribute(typeof(WeaponData))] private string m_baseWeaponPath;
 
-        [Header("Траспортные средства")] // TODO: Сделать автоматический сбор вооружения (ввод только названия папки)
-        [SerializeField] private string m_baseCarPath;
+        [Header("Траспортные средства")]
+        [SerializeField] [AssetPath.Attribute(typeof(CarData))] private string m_baseCarPath;
 
-        [Header("Объекты")] // TODO: Сделать автоматический сбор объектов (ввод только названия папки)
-        [SerializeField] private string m_targetPath;
+        [Header("Объекты")]
+        [SerializeField] [AssetPath.Attribute(typeof(TargetData))] private string m_targetPath;
         
-        [Header("Интерфейс")] // TODO: Сделать автоматический сбор интерфейсов (ввод только названия папки)
-        [SerializeField] private string m_hudPath;
+        [Header("Интерфейс")]
+        [SerializeField] [AssetPath.Attribute(typeof(UIData))] private string m_uiPath;
 
         [Header("Игра")] 
-        [SerializeField] private GameStarter m_gameStarterPrefab;
+        [SerializeField] [AssetPath.Attribute(typeof(GameStarter))] private string m_gameStarterPrefabPath;
         [SerializeField] private string m_locationsDirPath;
 
         #endregion
@@ -61,7 +60,8 @@ namespace Code.Data
         private TargetData m_targetData;
 
         private UIData m_uiData;
-        
+
+        private GameStarter m_gameStarterPrefab;
         private Dictionary<string, LocationData> m_locations;
 
         #endregion
@@ -80,9 +80,9 @@ namespace Code.Data
 
         public TargetData TargetData => GetData(m_targetPath, ref m_targetData);
 
-        public UIData UIData => GetData(m_hudPath, ref m_uiData);
+        public UIData UIData => GetData(m_uiPath, ref m_uiData);
 
-        public GameStarter GameStarterPrefab => m_gameStarterPrefab;
+        public GameStarter GameStarterPrefab => GetData(m_gameStarterPrefabPath, ref m_gameStarterPrefab);
         public Dictionary<string, LocationData> LocationDatas => GetDatasDict(m_locationsDirPath, ref m_locations);
 
         #endregion

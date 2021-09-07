@@ -9,7 +9,7 @@ using Cursor = UnityEngine.Cursor;
 
 namespace Code.Controller.Initialization
 {
-    internal sealed class PlayerInitialization : IInitialization
+    public sealed class PlayerInitialization : IInitialization
     {
         private IPlayerFactory m_playerFactory;
         private Transform m_player;

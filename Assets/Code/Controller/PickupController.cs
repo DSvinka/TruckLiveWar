@@ -7,9 +7,11 @@ namespace Code.Controller
 {
     internal sealed class PickupController : IController, IInitialization, ICleanup
     {
-        private readonly PickupProvider[] m_pickupProviders;
+        private static PickupProvider[] m_pickupProviders;
         private readonly CarController m_playerCarController;
         private readonly WeaponsController m_weaponsController;
+
+        public static PickupProvider[] PickupProviders => m_pickupProviders;
 
         public PickupController(PickupProvider[] pickupProviders, CarController CarController, WeaponsController weaponsController)
         {
@@ -31,10 +33,10 @@ namespace Code.Controller
             if (m_playerCarController.CarProvider.gameObject.GetInstanceID() == gameObject.GetInstanceID())
             {
                 var weaponPlace = new Weapon(pickupProvider.WeaponData);
-                m_weaponsController.AddWeapon(0, weaponPlace);
+                m_weaponsController.SetWeapon(0, weaponPlace);
                 // TODO: Добавить выбор куда установить.
-
-                Destroy(pickupProvider);
+                
+                pickupProvider.Parent.gameObject.SetActive(false);
             }
         }
 
@@ -44,12 +46,6 @@ namespace Code.Controller
             {
                 pickupProvider.OnTriggerEnterChange -= OnTriggerEnter;
             }
-        }
-
-        private void Destroy(PickupProvider pickupProvider)
-        {
-            pickupProvider.OnTriggerEnterChange -= OnTriggerEnter;
-            Object.Destroy(pickupProvider.gameObject);
         }
     }
 }

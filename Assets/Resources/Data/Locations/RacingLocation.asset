@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e86257bc3fe8462898877304cd33c325, type: 3}
   m_Name: RacingLocation
   m_EditorClassIdentifier: 
-  m_locationPrefab: {fileID: 7461456747131580634, guid: 097d8e2e9de5164488d9eaa5369537df, type: 3}
+  m_locationPrefabPath: Assets/Resources/Prefabs/Locations/Racing/Location/Location.prefab
   m_IDName: racingLocation
   m_name: "\u0413\u043E\u043D\u043A\u0430"
