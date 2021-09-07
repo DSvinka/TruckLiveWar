@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using Code.Providers;
 using UnityEngine;
 
 namespace Code.Utils.Extensions
@@ -129,6 +130,12 @@ namespace Code.Utils.Extensions
         public static Vector3 UpdateZ(this Vector3 vector, float value)
         {
             vector = new Vector3(vector.x, vector.y, value);
+            return vector;
+        }
+        
+        public static Vector3 UpdateAll(this Vector3 vector, float value)
+        {
+            vector = new Vector3(vector.x * value, vector.y * value, vector.z * value);
             return vector;
         }
 
