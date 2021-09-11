@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d99abb9ba46c46c48d098b9739b400e9, type: 3}
-  m_Name: BaseCar
+  m_Name: Van
   m_EditorClassIdentifier: 
-  m_carPrefabPath: Assets/Resources/Prefabs/Transports/Base/BaseCar.prefab
-  m_name: "\u041C\u0430\u0448\u0438\u043D\u0430"
-  m_maxHealth: 200
+  m_carPrefabPath: Assets/Resources/Prefabs/Transports/Van/Van.prefab
+  m_name: "\u0412\u044D\u043D"
+  m_maxHealth: 100
   m_maxFuel: 100
   m_infinityFuel: 0
   m_maxAngle: 30
@@ -23,3 +23,7 @@ MonoBehaviour:
   m_criticalSpeed: 5
   m_stepsBelow: 12
   m_stepsAbove: 15
+  m_naturalFrequency: 10
+  m_dampingRatio: 1.07
+  m_forceShift: 0.03
+  m_setSuspensionDistance: 1

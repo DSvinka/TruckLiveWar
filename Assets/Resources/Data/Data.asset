@@ -18,6 +18,7 @@ MonoBehaviour:
   m_playerKillerPath: Assets/Resources/Data/Modificators/PlayerKiller.asset
   m_baseWeaponPath: Assets/Resources/Data/Weapons/BaseWeapon.asset
   m_baseCarPath: Assets/Resources/Data/Transports/BaseCar.asset
+  m_vanPath: Assets/Resources/Data/Transports/Van.asset
   m_targetPath: Assets/Resources/Data/Objects/Target.asset
   m_uiPath: Assets/Resources/Data/UI/UISettings.asset
   m_gameStarterPrefabPath: Assets/Resources/Prefabs/GameStarter.prefab
