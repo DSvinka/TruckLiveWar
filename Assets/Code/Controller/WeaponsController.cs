@@ -120,7 +120,8 @@ namespace Code.Controller
                 for (var index = 0; index < SetWeaponOnSpawn.Length; index++)
                 {
                     var weapon = SetWeaponOnSpawn[index];
-                    SetWeapon(index, weapon);
+                    if (weapon != null)
+                        SetWeapon(index, weapon);
                 }
             }
         }
