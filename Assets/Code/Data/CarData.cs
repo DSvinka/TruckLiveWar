@@ -38,6 +38,19 @@ namespace Code.Data
         private int m_stepsBelow = 12;
         [SerializeField] [Tooltip("Подэтапы моделирования при скорости ниже критической.")]
         private int m_stepsAbove = 15;
+        
+        [Header("Настройка Подвески")]
+        [Tooltip("Собственная частота пружин подвески. Описывает упругость подвески.")]
+        [SerializeField] [Range(0.1f, 20f)] private float m_naturalFrequency = 10;
+        
+        [Tooltip("Коэффициент демпфирования пружин подвески. Описывает, как быстро пружина возвращается в исходное положение после отскока.")]
+        [SerializeField] [Range(0f, 3f)] private float m_dampingRatio = 0.8f;
+        
+        [Tooltip("Расстояние по оси Y до точки приложения сил подвески смещеное ниже центра масс.")]
+        [SerializeField] [Range(-1f, 1f)] private float m_forceShift = 0.03f;
+
+        [Tooltip("Регулировка длинны пружин подвески в соответствии с частотой и коэффициентом демпфирования. В выключенном состоянии может вызвать нереалистичные отскоки подвески.")]
+        [SerializeField] private bool m_setSuspensionDistance = true;
         #endregion
         
         #region Объекты
@@ -54,6 +67,11 @@ namespace Code.Data
         public float CriticalSpeed => m_criticalSpeed;
         public int StepsBelow => m_stepsBelow;
         public int StepsAbove => m_stepsAbove;
+
+        public float NaturalFrequency => m_naturalFrequency;
+        public float DampingRatio => m_dampingRatio;
+        public float ForceShift => m_forceShift;
+        public bool SetSuspensionDistance => m_setSuspensionDistance;
         
         public string Name => m_name;
         
