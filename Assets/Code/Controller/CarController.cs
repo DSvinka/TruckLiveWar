@@ -20,6 +20,7 @@ namespace Code.Controller
         public event Action<CarController> CarExplosion = delegate(CarController carController) { };
 
         private CarProvider m_carProvider;
+        private Rigidbody m_carRigidbody;
 
         private float m_horizontalInput;
         private float m_verticalInput;
@@ -63,6 +64,10 @@ namespace Code.Controller
             m_handbreakInputProxy.KeyOnChange += HandbreakOnChange;
             
             m_carProvider = m_playerInitialization.GetPlayerTransport();
+            m_carRigidbody = m_carProvider.GetComponent<Rigidbody>();
+            if (m_carRigidbody == null)
+                throw new Exception("Rigidbody отсуствует у транспорта!");
+            
             m_carData = m_carProvider.UnitData as CarData;
 
             m_carProvider.Health = m_carData.MaxHealth;
@@ -105,14 +110,19 @@ namespace Code.Controller
                 return;
             
             GetInput();
-            if (m_carProvider == null) 
+            if (m_carProvider == null)
+            {
                 m_carProvider = m_playerInitialization.GetPlayerTransport();
+                m_carRigidbody = m_carProvider.GetComponent<Rigidbody>();
+            }
+               
             
             foreach (var wheelAxie in m_carProvider.WheelAxies)
             {
                 foreach (var wheel in wheelAxie.Wheels)
-                {
+                { 
                     CarMove(wheel, wheelAxie);
+                    SetSuspension(wheel.WheelCollider);
                     if (wheel.WheelShape)
                         UpdateVisual(wheel);
                 }
@@ -162,6 +172,25 @@ namespace Code.Controller
 
             if (wheelAxie.IsMotorAxie)
                 wheelCollider.motorTorque = _torque;
+        }
+
+        private void SetSuspension(WheelCollider wheelCollider)
+        {
+            var spring = wheelCollider.suspensionSpring;
+
+            var sqrtWcSprungMass = Mathf.Sqrt(wheelCollider.sprungMass);
+            spring.spring = sqrtWcSprungMass * m_carData.NaturalFrequency * sqrtWcSprungMass * m_carData.NaturalFrequency;
+            spring.damper = 2f * m_carData.DampingRatio * Mathf.Sqrt(spring.spring * wheelCollider.sprungMass);
+
+            wheelCollider.suspensionSpring = spring;
+
+            var wheelRelativeBody = m_carProvider.transform.InverseTransformPoint(wheelCollider.transform.position);
+            var distance = m_carRigidbody.centerOfMass.y - wheelRelativeBody.y + wheelCollider.radius;
+
+            wheelCollider.forceAppPointDistance = distance - m_carData.ForceShift;
+
+            if (spring.targetPosition > 0 && m_carData.SetSuspensionDistance)
+                wheelCollider.suspensionDistance = wheelCollider.sprungMass * Physics.gravity.magnitude / (spring.targetPosition * spring.spring);
         }
 
         private void AddDamage(GameObject damager, IUnit unit, float damage)
