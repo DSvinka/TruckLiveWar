@@ -3,17 +3,9 @@ using Code.Controller.Starter;
 using static Code.Data.DataUtils;
 using UnityEngine;
 
-
+// TODO: Избавиться от этого Scriptible Object чтоб лучше жилось, и доставать всё по другому
 namespace Code.Data
 {
-    // TODO: Как то улучшить этот ENUM, не удобно.
-    internal enum ModificatorType
-    {
-        SpeedBonus,
-        SpeedSlowingDown,
-        PlayerKiller
-    }
-
     [CreateAssetMenu(fileName = "Data", menuName = "Data/Data")]
     internal sealed class Data : ScriptableObject
     {
@@ -32,6 +24,7 @@ namespace Code.Data
 
         [Header("Траспортные средства")]
         [SerializeField] [AssetPath.Attribute(typeof(CarData))] private string m_baseCarPath;
+        [SerializeField] [AssetPath.Attribute(typeof(CarData))] private string m_vanPath;
 
         [Header("Объекты")]
         [SerializeField] [AssetPath.Attribute(typeof(TargetData))] private string m_targetPath;
@@ -56,6 +49,7 @@ namespace Code.Data
         private WeaponData m_baseWeapon;
 
         private CarData m_baseCar;
+        private CarData m_van;
         
         private TargetData m_targetData;
 
@@ -77,6 +71,7 @@ namespace Code.Data
         public WeaponData BaseWeapon => GetData(m_baseWeaponPath, ref m_baseWeapon);
 
         public CarData BaseCar => GetData(m_baseCarPath, ref m_baseCar);
+        public CarData VanCar => GetData(m_vanPath, ref m_van);
 
         public TargetData TargetData => GetData(m_targetPath, ref m_targetData);
 

@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40f5474e00d64ba6a3b32adcb6be9027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_weaponData: {fileID: 11400000, guid: 3caabe10a8a9456458ec3367ba11d3e0, type: 2}
+  m_weaponDataPath: Assets/Resources/Data/Weapons/BaseWeapon.asset
   m_parent: {fileID: 4601680255006525825}
 --- !u!1 &4601680255006525825
 GameObject:

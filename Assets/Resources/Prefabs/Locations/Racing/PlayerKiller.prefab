@@ -57,5 +57,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f637ea0d752d4db885ba403f68cdef8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_modificatorType: 2
+  m_modificatorData: {fileID: 11400000, guid: 324c117a8d3ed4b4dbb34604753aaa37, type: 2}
   m_parent: {fileID: 4704130894079852297}
