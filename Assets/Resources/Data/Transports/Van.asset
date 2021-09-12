@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d99abb9ba46c46c48d098b9739b400e9, type: 3}
+  m_Name: Van
+  m_EditorClassIdentifier: 
+  m_carPrefabPath: Assets/Resources/Prefabs/Transports/Van/Van.prefab
+  m_name: "\u0412\u044D\u043D"
+  m_maxHealth: 100
+  m_maxFuel: 100
+  m_infinityFuel: 0
+  m_maxAngle: 30
+  m_maxTorque: 600
+  m_brakeTorque: 30000
+  m_criticalSpeed: 5
+  m_stepsBelow: 12
+  m_stepsAbove: 15
+  m_naturalFrequency: 10
+  m_dampingRatio: 1.07
+  m_forceShift: 0.03
+  m_setSuspensionDistance: 1

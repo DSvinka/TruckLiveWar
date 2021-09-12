@@ -1,7 +1,6 @@
 using Code.Data;
 using Code.Interfaces.Factory;
 using Code.Providers;
-using Code.Utils.Extensions;
 using UnityEngine;
 
 namespace Code.Factory
@@ -9,18 +8,18 @@ namespace Code.Factory
     public sealed class PlayerFactory : IPlayerFactory
     {
         private readonly PlayerData m_playerData;
-        private CarData m_carData;
+        private TransportData m_transportData;
         private Transform m_player;
 
         public PlayerFactory(PlayerData playerData)
         {
             m_playerData = playerData;
-            m_carData = playerData.Car;
+            m_transportData = playerData.Transport;
         }
 
-        public void ChangePlayerCar(CarData carData)
+        public void ChangePlayerCar(TransportData transportData)
         {
-            m_carData = carData;
+            m_transportData = transportData;
         }
 
         public Transform CreatePlayer()
@@ -32,8 +31,8 @@ namespace Code.Factory
 
         public CarProvider CreateTransport()
         {
-            var carProvider = Object.Instantiate(m_carData.CarPrefab, m_player);
-            carProvider.UnitData = m_playerData.Car;
+            var carProvider = Object.Instantiate(m_transportData.CarPrefab, m_player);
+            carProvider.UnitData = m_playerData.Transport;
             return carProvider;
         }
     }

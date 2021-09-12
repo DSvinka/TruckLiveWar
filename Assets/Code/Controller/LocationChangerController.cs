@@ -1,9 +1,10 @@
 using Code.Controller.Initialization;
 using Code.Controller.UI;
 using Code.Interfaces;
-using Code.Interfaces.UserInput;
+using Code.Interfaces.Input;
 using Code.Managers;
 using Code.Providers;
+using Code.UserInput.Inputs;
 using UnityEngine;
 
 namespace Code.Controller
@@ -21,10 +22,9 @@ namespace Code.Controller
         private bool m_triggered;
 
         public LocationChangerController(PlayerInitialization playerInitialization, LocationInitialization locationInitialization,
-            HudController hudController, LocationChangerProvider[] locationChangerProviders,
-            (IUserKeyProxy inputHandbreak, IUserKeyProxy inputRestart, IUserKeyProxy inputHorn, IUserKeyProxy inputEscape) keysInput)
+            HudController hudController, LocationChangerProvider[] locationChangerProviders)
         {
-            m_hornInputProxy = keysInput.inputHorn;
+            m_hornInputProxy = KeysInput.Horn;
             m_locationChangerProviders = locationChangerProviders;
             m_playerInitialization = playerInitialization;
             m_hudController = hudController;

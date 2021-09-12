@@ -3,94 +3,72 @@ using System.Collections.Generic;
 using Code.Data;
 using Code.Interfaces;
 using Code.Providers;
-using Code.Utils.Extensions;
 using UnityEngine;
 
 namespace Code.Controller
 {
     internal sealed class Modificator
     {
-        private readonly ModificatorData m_data;
-        
-        public float Cooldown;
-        public GameObject GameObject;
+        private ModificatorData m_modificatorData;
 
-        public ModificatorData Data => m_data;
+        public ModificatorData ModificatorData => m_modificatorData;
 
-        public Modificator(ModificatorData modificatorData)
+        public float Timer { get; set; }
+        public GameObject GameObject { get; }
+
+        public Modificator(ModificatorData modificatorData, GameObject gameObject)
         {
-            m_data = modificatorData;
-            Cooldown = modificatorData.ActiveTime;
-            GameObject = null;
+            m_modificatorData = modificatorData;
+            Timer = modificatorData.ActiveTime;
+            GameObject = gameObject;
         }
     }
-
+    
     internal sealed class ModificatorsController : IController, IInitialization, ICleanup, IExecute
     {
-        private static ModificatorProvider[] m_modificators;
+        private static ModificatorProvider[] s_modificators;
         private readonly CarController m_playerCarController;
 
-        private readonly Modificator m_speedBonusModificator;
-        private readonly Modificator m_speedSlowingDownModificator;
-        private readonly Modificator m_playerKillerModificator;
-
-        public static ModificatorProvider[] ModificatorProviders => m_modificators;
+        public static ModificatorProvider[] ModificatorProviders => s_modificators;
         
         public event Action<Modificator> ModificatorCreate = delegate(Modificator modificator) {};
         public event Action<Modificator> ModificatorRemove = delegate(Modificator modificator) {};
 
         private List<Modificator> m_activeModificators;
 
-        public ModificatorsController(ModificatorProvider[] modificators, CarController CarController, Data.Data data)
+        public ModificatorsController(ModificatorProvider[] modificators, CarController carController)
         {
-            m_modificators = modificators;
-            m_playerCarController = CarController;
-            
-            m_speedBonusModificator = new Modificator(data.SpeedBonus);
-            m_speedSlowingDownModificator = new Modificator(data.SpeedSlowingDown);
-            m_playerKillerModificator = new Modificator(data.PlayerKiller);
+            s_modificators = modificators;
+            m_playerCarController = carController;
         }
 
         public void Initialization()
         {
             m_activeModificators = new List<Modificator>();
 
-            foreach (var modificatorProvider in m_modificators)
+            foreach (var modificatorProvider in s_modificators)
             {
                 modificatorProvider.OnTriggerEnterChange += OnTriggerEnter;
                 modificatorProvider.OnTriggerExitChange += OnTriggerExit;
             }
         }
 
-        private void OnTriggerEnter(GameObject gameObject, ModificatorProvider modificatorProvider, ModificatorType modificatorType)
-        {
-            if (m_playerCarController.CarProvider.gameObject.GetInstanceID() != gameObject.GetInstanceID()) 
-                return;
-
-            var modificator = modificatorType switch
-            {
-                ModificatorType.SpeedBonus => m_speedBonusModificator,
-                ModificatorType.SpeedSlowingDown => m_speedSlowingDownModificator,
-                ModificatorType.PlayerKiller => m_playerKillerModificator,
-                _ => throw new Exception("Указанный тип модификатора не найден!")
-            };
-
-            AddModificator(modificator, modificatorProvider);
-            ModificatorCreate.Invoke(modificator);
-        }
-        private void OnTriggerExit(GameObject gameObject, ModificatorProvider modificatorProvider, ModificatorType modificatorType)
+        private void OnTriggerEnter(GameObject gameObject, ModificatorProvider modificatorProvider, ModificatorData modificatorData)
         {
             if (m_playerCarController.CarProvider.gameObject.GetInstanceID() != gameObject.GetInstanceID()) 
                 return;
             
-            var modificator = modificatorType switch
-            {
-                ModificatorType.SpeedBonus => m_speedBonusModificator,
-                ModificatorType.SpeedSlowingDown => m_speedSlowingDownModificator,
-                ModificatorType.PlayerKiller => m_playerKillerModificator,
-                _ => throw new Exception("Указанный тип модификатора не найден!")
-            };
-                
+            var modificator = new Modificator(modificatorData, modificatorProvider.Parent);
+            
+            modificatorProvider.Modificator = modificator;
+            AddModificator(modificator, modificatorProvider);
+            ModificatorCreate.Invoke(modificator);
+        }
+        private void OnTriggerExit(GameObject gameObject, ModificatorProvider modificatorProvider, Modificator modificator)
+        {
+            if (m_playerCarController.CarProvider.gameObject.GetInstanceID() != gameObject.GetInstanceID()) 
+                return;
+
             RemoveModificator(modificator);
             ModificatorRemove.Invoke(modificator);
         }
@@ -106,8 +84,8 @@ namespace Code.Controller
                 
                 SetCarSettings(modificator);
                 
-                modificator.Cooldown -= deltatime;
-                if (modificator.Cooldown < 0f)
+                modificator.Timer -= deltatime;
+                if (modificator.Timer < 0f)
                 {
                     SetDefaultCarSettings();
                     m_activeModificators.Remove(modificator);
@@ -120,16 +98,16 @@ namespace Code.Controller
         }
         public void Cleanup()
         {
-            foreach (var modificatorProvider in m_modificators)
+            foreach (var modificatorProvider in s_modificators)
             {
                 modificatorProvider.OnTriggerEnterChange -= OnTriggerEnter;
-                modificatorProvider.OnTriggerEnterChange -= OnTriggerExit;
+                modificatorProvider.OnTriggerExitChange -= OnTriggerExit;
             }
         }
 
         private void AddModificator(Modificator modificator, ModificatorProvider modificatorProvider)
         {
-            var data = modificator.Data;
+            var data = modificator.ModificatorData;
             if (data.ZoneObject)
             {
                 SetCarSettings(modificator);
@@ -142,7 +120,7 @@ namespace Code.Controller
         }
         private void RemoveModificator(Modificator modificator)
         {
-            var data = modificator.Data;
+            var data = modificator.ModificatorData;
             if (!data.ZoneObject) 
                 return;
             
@@ -153,7 +131,7 @@ namespace Code.Controller
 
         private void SetCarSettings(Modificator modificator)
         {
-            var data = modificator.Data;
+            var data = modificator.ModificatorData;
             var changeHealth = data.ChangeHealth;
             var changeSpeed = data.ChangeSpeed;
             var permaKill = data.PermaKiller;
@@ -176,7 +154,7 @@ namespace Code.Controller
         private void Destroy(ModificatorProvider modificatorProvider)
         {
             modificatorProvider.OnTriggerEnterChange -= OnTriggerEnter;
-            modificatorProvider.OnTriggerEnterChange -= OnTriggerExit;
+            modificatorProvider.OnTriggerExitChange -= OnTriggerExit;
             modificatorProvider.Parent.SetActive(false);
         }
     }

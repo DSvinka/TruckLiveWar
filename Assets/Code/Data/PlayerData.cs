@@ -1,6 +1,4 @@
 using Code.Interfaces.Data;
-using Code.Markers;
-using UnityEditor;
 using static Code.Data.DataUtils;
 using UnityEngine;
 
@@ -12,7 +10,7 @@ namespace Code.Data
         public string Path { get; set; }
         
         #region Поля
-        [SerializeField] [AssetPath.Attribute(typeof(CarData))] private string m_carDataPath;
+        [SerializeField] [AssetPath.Attribute(typeof(TransportData))] private string m_carDataPath;
 
         [Header("Объекты")]
         [SerializeField] [AssetPath.Attribute(typeof(GameObject))] private string m_playerPrefabPath;
@@ -24,7 +22,7 @@ namespace Code.Data
         
         #region Объекты
         
-        private CarData m_carData;
+        private TransportData m_transportData;
         private GameObject m_playerPrefab;
         
         #endregion
@@ -35,7 +33,7 @@ namespace Code.Data
         public float RayDistance => m_rayDistance;
         public float RadarSize => m_radarSize;
 
-        public CarData Car => GetData(m_carDataPath, ref m_carData);
+        public TransportData Transport => GetData(m_carDataPath, ref m_transportData);
         
         #endregion
     }

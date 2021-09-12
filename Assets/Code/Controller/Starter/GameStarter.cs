@@ -1,5 +1,5 @@
 using Code.Controller.Initialization;
-using Code.Markers;
+using Code.Data.DataStores;
 using Code.SaveData;
 using Code.SaveData.Data;
 using UnityEngine;
@@ -8,12 +8,12 @@ namespace Code.Controller.Starter
 {
     internal sealed class GameStarter : MonoBehaviour
     {
-        [SerializeField] private Data.Data m_data;
+        [SerializeField] private DataStore m_data;
         [SerializeField] private string m_locationNameID;
         private Controllers m_controllers;
         private GameSaveData m_gameSaveData;
 
-        public Data.Data Data
+        public DataStore Data
         {
             get => m_data;
             set => m_data = value;

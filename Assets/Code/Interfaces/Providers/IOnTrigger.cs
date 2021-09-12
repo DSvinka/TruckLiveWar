@@ -1,4 +1,5 @@
 using System;
+using Code.Controller;
 using Code.Data;
 using Code.Providers;
 using UnityEngine;
@@ -7,8 +8,8 @@ namespace Code.Interfaces.Providers
 {
     internal interface IModificatorProvider
     {
-        event Action<GameObject, ModificatorProvider, ModificatorType> OnTriggerEnterChange;
-        event Action<GameObject, ModificatorProvider, ModificatorType> OnTriggerExitChange;
+        event Action<GameObject, ModificatorProvider, ModificatorData> OnTriggerEnterChange;
+        event Action<GameObject, ModificatorProvider, Modificator> OnTriggerExitChange;
     }
 
     internal interface IPickupProvider

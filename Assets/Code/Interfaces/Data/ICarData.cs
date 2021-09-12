@@ -11,9 +11,15 @@ namespace Code.Interfaces.Data
         float CriticalSpeed { get; }
         int StepsBelow { get; }
         int StepsAbove { get; }
+        
+        public float NaturalFrequency { get; }
+        public float DampingRatio { get; }
+        public float ForceShift { get; }
+        public bool SetSuspensionDistance { get; }
 
         public string Name { get; }
         public float MaxHealth { get; }
+        public float MaxSpeed { get; }
 
         CarProvider CarPrefab { get; }
     }

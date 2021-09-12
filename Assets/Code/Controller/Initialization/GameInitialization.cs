@@ -1,11 +1,11 @@
 using System;
 using Code.Controller.Starter;
 using Code.Controller.UI;
+using Code.Data.DataStores;
 using Code.Factory;
 using Code.Markers;
 using Code.Providers;
 using Code.SaveData;
-using Code.Utils.Extensions;
 using Object = UnityEngine.Object;
 
 namespace Code.Controller.Initialization
@@ -13,12 +13,12 @@ namespace Code.Controller.Initialization
     internal sealed class GameInitialization
     {
         private Controllers m_controllers;
-        private Data.Data m_data;
+        private DataStore m_data;
 
         public PlayerInitialization PlayerInitialization { get; }
         public CarController CarController { get; }
 
-        public GameInitialization(Controllers controllers, LocationInitialization locationInitialization, SaveDataRepository saveRepository, Data.Data data)
+        public GameInitialization(Controllers controllers, LocationInitialization locationInitialization, SaveDataRepository saveRepository, DataStore data)
         {
             m_controllers = controllers;
             m_data = data;
@@ -32,27 +32,23 @@ namespace Code.Controller.Initialization
             if (playerSpawn == null)
                 throw new Exception("Спавнер игрока отсуствует!");
             
-            var playerFactory = new PlayerFactory(data.Player);
+            var playerFactory = new PlayerFactory(data.PlayerData);
             
             var inputInitialization = new InputInitialization();
             var playerInitialization = new PlayerInitialization(playerFactory, playerSpawn.transform.position);
 
-            var uiFactory = new UIFactory(data.UIData, playerInitialization);
+            var uiFactory = new UIFactory(data.UIDatas, playerInitialization);
             var hudInitialization = new HudInitialization(uiFactory);
             var escapeMenuInitialization = new EscapeMenuInitilization(uiFactory);
 
-            var axisInput = inputInitialization.GetAxisInput();
-            var keysInput = inputInitialization.GetKeysInput();
-            var mouseInput = inputInitialization.GetMouseInput();
-
-            var inputController = new InputController(axisInput, keysInput, mouseInput);
-            var weaponController = new WeaponsController(mouseInput, playerInitialization);
-            var carController = new CarController(axisInput, keysInput, playerInitialization, weaponController, data.Player.Car);
-            var modificatorsController = new ModificatorsController(modificators, carController, data);
-            var hudController = new HudController(hudInitialization, modificatorsController, carController, playerInitialization, data.Player);
-            var radarController = new RadarController(playerInitialization, hudInitialization, data.Player.RadarSize);
+            var inputController = new InputController();
+            var weaponController = new WeaponsController(playerInitialization);
+            var carController = new CarController(playerInitialization, weaponController, data.PlayerData.Transport);
+            var modificatorsController = new ModificatorsController(modificators, carController);
+            var hudController = new HudController(hudInitialization, modificatorsController, carController, playerInitialization, data.PlayerData);
+            var radarController = new RadarController(playerInitialization, hudInitialization, data.PlayerData.RadarSize);
             var escapeMenuController = new EscapeMenuController(escapeMenuInitialization, playerInitialization, carController, 
-                locationInitialization, saveRepository, keysInput);
+                locationInitialization, saveRepository);
 
             CarController = carController;
             PlayerInitialization = playerInitialization;
@@ -72,7 +68,7 @@ namespace Code.Controller.Initialization
             if (locationChangers.Length != 0)
             {
                 var locationChangerController = new LocationChangerController(playerInitialization, locationInitialization,
-                    hudController, locationChangers, keysInput);
+                    hudController, locationChangers);
                 controllers.Add(locationChangerController);
             }
             
@@ -84,7 +80,7 @@ namespace Code.Controller.Initialization
 
             if (walls.Length != 0)
             {
-                var wallController = new WallController(walls, data.TargetData);
+                var wallController = new WallController(walls, data.EnemyDatas.TargetData);
                 controllers.Add(wallController);
             }
         }

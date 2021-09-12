@@ -1,5 +1,4 @@
-﻿using System;
-using Code.Providers;
+﻿using Code.Providers;
 using Code.Utils.Extensions;
 using UnityEngine;
 using UnityEditor;
@@ -62,7 +61,6 @@ namespace Code.Utils.VehicleTools.Editor
             rootBody.mass = m_mass;
             
             m_car.AddComponent<CarProvider>();
-            m_car.AddComponent<EasySuspension>();
 
             var length = (m_axlesCount - 1) * m_axleStep;
             var firstOffset = length * 0.5f;

@@ -110,20 +110,20 @@ namespace Code.Controller.UI
             foreach (var message in m_bonusMessages)
             {
                 var modificator = message.Modificator();
-                var data = modificator.Data;
+                var data = modificator.ModificatorData;
                 
-                message.Text().text = $"[{(int) modificator.Cooldown} секунд] {data.ModificatorName}";
+                message.Text().text = $"[{(int) modificator.Timer} секунд] {data.ModificatorName}";
             }
         }
 
         private void ModificatorCreated(Modificator modificator)
         {
-            var data = modificator.Data;
+            var data = modificator.ModificatorData;
             var bonusesList = m_hudProvider.BonusesList;
             
             var messageObject = Object.Instantiate(bonusesList.MessagePrefab, bonusesList.Content.transform);
             var text = messageObject.GetComponentInChildren<TMP_Text>();
-            text.text = $"[{(int) modificator.Cooldown} секунд] {data.ModificatorName}";
+            text.text = $"[{(int) modificator.Timer} секунд] {data.ModificatorName}";
 
             var message = new BonusMessage(messageObject, modificator, text);
             m_bonusMessages.Add(message);
