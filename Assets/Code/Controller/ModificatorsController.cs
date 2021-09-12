@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Code.Data;
 using Code.Interfaces;
 using Code.Providers;
-using Code.Utils.Extensions;
 using UnityEngine;
 
 namespace Code.Controller
@@ -27,27 +26,27 @@ namespace Code.Controller
     
     internal sealed class ModificatorsController : IController, IInitialization, ICleanup, IExecute
     {
-        private static ModificatorProvider[] m_modificators;
+        private static ModificatorProvider[] s_modificators;
         private readonly CarController m_playerCarController;
 
-        public static ModificatorProvider[] ModificatorProviders => m_modificators;
+        public static ModificatorProvider[] ModificatorProviders => s_modificators;
         
         public event Action<Modificator> ModificatorCreate = delegate(Modificator modificator) {};
         public event Action<Modificator> ModificatorRemove = delegate(Modificator modificator) {};
 
         private List<Modificator> m_activeModificators;
 
-        public ModificatorsController(ModificatorProvider[] modificators, CarController CarController, Data.Data data)
+        public ModificatorsController(ModificatorProvider[] modificators, CarController carController)
         {
-            m_modificators = modificators;
-            m_playerCarController = CarController;
+            s_modificators = modificators;
+            m_playerCarController = carController;
         }
 
         public void Initialization()
         {
             m_activeModificators = new List<Modificator>();
 
-            foreach (var modificatorProvider in m_modificators)
+            foreach (var modificatorProvider in s_modificators)
             {
                 modificatorProvider.OnTriggerEnterChange += OnTriggerEnter;
                 modificatorProvider.OnTriggerExitChange += OnTriggerExit;
@@ -99,7 +98,7 @@ namespace Code.Controller
         }
         public void Cleanup()
         {
-            foreach (var modificatorProvider in m_modificators)
+            foreach (var modificatorProvider in s_modificators)
             {
                 modificatorProvider.OnTriggerEnterChange -= OnTriggerEnter;
                 modificatorProvider.OnTriggerExitChange -= OnTriggerExit;

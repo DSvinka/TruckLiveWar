@@ -1,5 +1,4 @@
-﻿using System;
-using Code.Providers;
+﻿using Code.Providers;
 using Code.Utils.Extensions;
 using UnityEngine;
 using UnityEditor;

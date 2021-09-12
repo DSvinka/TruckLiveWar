@@ -1,9 +1,10 @@
 using System;
 using Code.Controller.Initialization;
 using Code.Interfaces;
-using Code.Interfaces.UserInput;
+using Code.Interfaces.Input;
 using Code.Providers;
 using Code.SaveData;
+using Code.UserInput.Inputs;
 using UnityEngine;
 
 namespace Code.Controller.UI
@@ -19,19 +20,18 @@ namespace Code.Controller.UI
         private SaveDataRepository m_saveDataRepository;
         
         private bool m_escapeInput;
-        private IUserKeyProxy m_escapeInputProxy;
+        private IUserKeyDownProxy m_escapeInputProxy;
 
         public EscapeMenuController(EscapeMenuInitilization escapeMenuInitilization,
             PlayerInitialization playerInitialization, CarController carController,
-            LocationInitialization locationInitialization, SaveDataRepository saveDataRepository,
-            (IUserKeyProxy inputHandbreak, IUserKeyProxy inputRestart, IUserKeyProxy inputHorn, IUserKeyProxy inputEscape) inputKeys)
+            LocationInitialization locationInitialization, SaveDataRepository saveDataRepository)
         {
             m_saveDataRepository = saveDataRepository;
             m_locationInitialization = locationInitialization;
             m_playerInitialization = playerInitialization;
             m_escapeMenuInitilization = escapeMenuInitilization;
             m_carController = carController;
-            m_escapeInputProxy = inputKeys.inputEscape;
+            m_escapeInputProxy = KeysInput.Escape;
         }
 
         public void Initialization()
@@ -46,7 +46,7 @@ namespace Code.Controller.UI
             m_escapeMenuProvider.LoadButton.onClick.AddListener(LoadGame);
             m_escapeMenuProvider.ExitButton.onClick.AddListener(ExitGame);
 
-            m_escapeInputProxy.KeyOnChange += OnChangeEscapeKey;
+            m_escapeInputProxy.KeyOnDown += OnChangeEscapeKey;
         }
 
         private void OnChangeEscapeKey(bool value)
@@ -105,7 +105,7 @@ namespace Code.Controller.UI
             m_escapeMenuProvider.LoadButton.onClick.RemoveListener(LoadGame);
             m_escapeMenuProvider.ExitButton.onClick.RemoveListener(ExitGame);
             
-            m_escapeInputProxy.KeyOnChange -= OnChangeEscapeKey;
+            m_escapeInputProxy.KeyOnDown -= OnChangeEscapeKey;
         }
     }
 }

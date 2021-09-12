@@ -5,12 +5,10 @@ using Code.Controller;
 using Code.Controller.Initialization;
 using Code.Data;
 using Code.Interfaces.SaveData;
-using Code.Providers;
 using Code.SaveData.Data;
 using Code.Utils.Extensions;
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
 using WeaponSave = Code.SaveData.Data.Weapon;
 using Weapon = Code.Controller.Weapon;
 
@@ -43,7 +41,7 @@ namespace Code.SaveData
             var carProvider = player.CarProvider;
 
             carPosition = carPosition.UpdateY(carPosition.y + PlayerSpawnChangeY);
-            var carData = player.CarProvider.UnitData as CarData;
+            var carData = player.CarProvider.UnitData as TransportData;
             if (carData == null)
                 throw new Exception("UnitData в CarProvider не является CarData");
 
@@ -168,7 +166,7 @@ namespace Code.SaveData
             
             #region Инициализация Игрока
 
-            var carData = AssetDatabase.LoadAssetAtPath<CarData>(loadedPlayer.Car.PathToData);
+            var carData = AssetDatabase.LoadAssetAtPath<TransportData>(loadedPlayer.Car.PathToData);
             
             playerInitialization.ChangeCar(carData);
             var car = playerInitialization.GetPlayerTransport();

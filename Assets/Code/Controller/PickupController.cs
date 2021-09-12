@@ -1,28 +1,27 @@
 using Code.Interfaces;
 using Code.Providers;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Code.Controller
 {
     internal sealed class PickupController : IController, IInitialization, ICleanup
     {
-        private static PickupProvider[] m_pickupProviders;
+        private static PickupProvider[] s_pickupProviders;
         private readonly CarController m_playerCarController;
         private readonly WeaponsController m_weaponsController;
 
-        public static PickupProvider[] PickupProviders => m_pickupProviders;
+        public static PickupProvider[] PickupProviders => s_pickupProviders;
 
-        public PickupController(PickupProvider[] pickupProviders, CarController CarController, WeaponsController weaponsController)
+        public PickupController(PickupProvider[] pickupProviders, CarController carController, WeaponsController weaponsController)
         {
-            m_pickupProviders = pickupProviders;
-            m_playerCarController = CarController;
+            s_pickupProviders = pickupProviders;
+            m_playerCarController = carController;
             m_weaponsController = weaponsController;
         }
 
         public void Initialization()
         {
-            foreach (var pickupProvider in m_pickupProviders)
+            foreach (var pickupProvider in s_pickupProviders)
             {
                 pickupProvider.OnTriggerEnterChange += OnTriggerEnter;
             }
@@ -42,7 +41,7 @@ namespace Code.Controller
 
         public void Cleanup()
         {
-            foreach (var pickupProvider in m_pickupProviders)
+            foreach (var pickupProvider in s_pickupProviders)
             {
                 pickupProvider.OnTriggerEnterChange -= OnTriggerEnter;
             }

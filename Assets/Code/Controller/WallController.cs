@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Code.Data;
 using Code.Interfaces;
@@ -11,20 +10,20 @@ namespace Code.Controller
 {
     internal sealed class WallController : IController, IInitialization, ICleanup
     {
-        private static WallProvider[] m_wallProviders;
+        private static WallProvider[] s_wallProviders;
         private readonly TargetData m_targetData;
 
-        public static WallProvider[] WallProviders => m_wallProviders;
+        public static WallProvider[] WallProviders => s_wallProviders;
 
         public WallController(WallProvider[] wallProviders, TargetData targetData)
         {
-            m_wallProviders = wallProviders;
+            s_wallProviders = wallProviders;
             m_targetData = targetData;
         }
 
         public void Initialization()
         {
-            foreach (var wallProvider in m_wallProviders)
+            foreach (var wallProvider in s_wallProviders)
             {
                 if (wallProvider.gameObject.activeSelf)
                 {
@@ -62,7 +61,7 @@ namespace Code.Controller
 
         public void Cleanup()
         {
-            foreach (var targetProvider in m_wallProviders.SelectMany(wallProvider => wallProvider.TargetProviders))
+            foreach (var targetProvider in s_wallProviders.SelectMany(wallProvider => wallProvider.TargetProviders))
             {
                 targetProvider.OnUnitDamage -= OnTargetDamage;
             }

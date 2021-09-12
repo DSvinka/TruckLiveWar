@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public partial class AssetPath
+﻿public partial class AssetPath
 {
     /// <summary>
     /// A enum containing all the types of paths we can watch

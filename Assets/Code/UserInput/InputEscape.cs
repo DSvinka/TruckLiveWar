@@ -1,18 +1,17 @@
 using System;
-using Code.Interfaces.UserInput;
+using Code.Interfaces.Input;
 using Code.Managers;
 using UnityEngine;
 
 namespace Code.UserInput
 {
-    internal sealed class InputEscape : IUserKeyProxy
+    internal sealed class InputEscape : IUserKeyDownProxy
     {
-        public event Action<bool> KeyOnChange = delegate(bool f) { };
+        public event Action<bool> KeyOnDown = delegate(bool f) { };
 
-        public void GetKey()
+        public void GetKeyDown()
         {
-            // TODO: Испарвить этот костыль
-            KeyOnChange.Invoke(Input.GetKeyDown(ButtonsManager.ESCAPE_BUTTON));
+            KeyOnDown.Invoke(Input.GetKeyDown(ButtonsManager.ESCAPE_BUTTON));
         }
     }
 }

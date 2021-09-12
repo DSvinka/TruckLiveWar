@@ -1,5 +1,5 @@
 using System;
-using Code.Interfaces.UserInput;
+using Code.Interfaces.Input;
 using Code.Managers;
 using UnityEngine;
 

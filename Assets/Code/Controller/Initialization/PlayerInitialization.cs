@@ -42,21 +42,21 @@ namespace Code.Controller.Initialization
             m_playerCar.transform.position = m_playerSpawnPosition;
         }
 
-        private void InitCar(CarData carData = null)
+        private void InitCar(TransportData transportData = null)
         {
-            if (carData != null) 
-                m_playerFactory.ChangePlayerCar(carData);
+            if (transportData != null) 
+                m_playerFactory.ChangePlayerCar(transportData);
             m_playerCar = m_playerFactory.CreateTransport();
 
             CinemachineCamera.Follow = m_playerCar.CameraFollow;
             CinemachineCamera.LookAt = m_playerCar.CameraLookAt;
         }
         
-        public void ChangeCar(CarData carData)
+        public void ChangeCar(TransportData transportData)
         {
             if (m_playerCar.gameObject != null)
                 Object.Destroy(m_playerCar.gameObject);
-            InitCar(carData);
+            InitCar(transportData);
         }
         
         public Transform GetPlayer()

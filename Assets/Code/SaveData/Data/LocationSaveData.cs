@@ -1,7 +1,5 @@
 using System;
 using Code.Providers;
-using Code.Utils.Extensions;
-using UnityEngine;
 
 namespace Code.SaveData.Data
 {
@@ -59,7 +57,6 @@ namespace Code.SaveData.Data
             }
         }
         
-        // TODO: Добавить сохранение мишеней на стене. (А лучше сделать нормальных противников - автономные "ДОТы")
         public void WallsSet(WallProvider[] wallProviders)
         {
             Walls = new Wall[wallProviders.Length];

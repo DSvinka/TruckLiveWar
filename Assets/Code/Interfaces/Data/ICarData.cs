@@ -19,6 +19,7 @@ namespace Code.Interfaces.Data
 
         public string Name { get; }
         public float MaxHealth { get; }
+        public float MaxSpeed { get; }
 
         CarProvider CarPrefab { get; }
     }

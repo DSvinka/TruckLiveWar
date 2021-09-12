@@ -1,6 +1,6 @@
 using System;
 
-namespace Code.Interfaces.UserInput
+namespace Code.Interfaces.Input
 {
     public interface IUserKeyProxy
     {

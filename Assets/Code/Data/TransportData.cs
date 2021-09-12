@@ -1,13 +1,12 @@
 using static Code.Data.DataUtils;
 using Code.Interfaces.Data;
 using Code.Providers;
-using UnityEditor;
 using UnityEngine;
 
 namespace Code.Data
 {
-    [CreateAssetMenu(fileName = "CarSettings", menuName = "Data/Transport/CarSettings")]
-    public sealed class CarData : ScriptableObject, IData, ICarData, IUnitData
+    [CreateAssetMenu(fileName = "Transport", menuName = "Data/Transport")]
+    public sealed class TransportData : ScriptableObject, IData, ICarData, IUnitData
     {
         public string Path { get; set; }
         
@@ -18,6 +17,8 @@ namespace Code.Data
         [SerializeField] private string m_name = "Машина";
         [SerializeField] [Tooltip("Максимальное количество жизней")]
         private float m_maxHealth = 100f;
+        [SerializeField] [Tooltip("Максимальная скорость (для звука)")]
+        private float m_maxSpeed = 80f;
         [SerializeField] [Tooltip("Максимальное количество топлива")] 
         private float m_maxFuel = 100f;
         [SerializeField] [Tooltip("Топливо конечное или бесконечное?")] 
@@ -76,6 +77,7 @@ namespace Code.Data
         public string Name => m_name;
         
         public float MaxHealth => m_maxHealth;
+        public float MaxSpeed => m_maxSpeed;
         public float MaxFuel => m_maxFuel;
         public bool InfinityFuel => m_infinityFuel;
         #endregion

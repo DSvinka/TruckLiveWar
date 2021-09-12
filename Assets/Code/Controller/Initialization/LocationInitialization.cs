@@ -1,10 +1,8 @@
 using System;
 using Code.Controller.Starter;
+using Code.Data.DataStores;
 using Code.Markers;
-using Code.SaveData;
 using Code.SaveData.Data;
-using Code.Utils.Extensions;
-using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Code.Controller.Initialization
@@ -12,12 +10,12 @@ namespace Code.Controller.Initialization
     internal sealed class LocationInitialization
     { 
         private static string m_locationNameID;
-        private readonly Data.Data m_data;
+        private readonly DataStore m_data;
         private readonly GameStarter m_gameStarterPrefab;
 
         public static string LocationNameID => m_locationNameID;
 
-        public LocationInitialization(string locationNameID, Data.Data data, GameStarter gameStarterPrefab)
+        public LocationInitialization(string locationNameID, DataStore data, GameStarter gameStarterPrefab)
         {
             m_gameStarterPrefab = gameStarterPrefab;
             m_locationNameID = locationNameID;

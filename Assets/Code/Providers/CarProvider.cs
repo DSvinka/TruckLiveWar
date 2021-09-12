@@ -3,7 +3,6 @@ using Code.Controller;
 using Code.Data;
 using Code.Interfaces.Data;
 using Code.Interfaces.Providers;
-using Code.Utils.Extensions;
 using UnityEngine;
 
 namespace Code.Providers
@@ -87,6 +86,8 @@ namespace Code.Providers
 
         [Header("Настройка слотов для оружия")]
         [SerializeField] private WeaponSlot[] m_weaponSlots;
+        
+        private AudioSource m_audioSource;
 
         public event Action<GameObject, IUnit, float> OnUnitDamage = delegate(GameObject attacker, IUnit unit, float damage) { };
         public event Action<GameObject, IUnit, float> OnUnitHealth = delegate(GameObject healer, IUnit unit, float health) { };
@@ -99,6 +100,12 @@ namespace Code.Providers
         public WheelAxie[] WheelAxies => m_wheelAxies;
         public Transform CameraFollow => m_cameraFollow;
         public Transform CameraLookAt => m_cameraLookAt;
+        public AudioSource AudioSource => m_audioSource;
+
+        private void Start()
+        {
+            m_audioSource = GetComponentInChildren<AudioSource>();
+        }
         
         [Obsolete("Не рекомендуется использовать где либо кроме контроллера WeaponController. Эта функция нужна для работы Контроллера с Провайдером.")]
         public WeaponProvider PlaceWeapon(int index, Weapon weapon)

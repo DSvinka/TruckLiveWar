@@ -1,12 +1,11 @@
 using static Code.Data.DataUtils;
 using Code.Interfaces.Data;
-using UnityEditor;
 using UnityEngine;
 
-namespace Code.Data
+namespace Code.Data.DataStores
 {
-    [CreateAssetMenu(fileName = "UISettings", menuName = "Data/UI/UISettings")]
-    internal sealed class UIData : ScriptableObject, IData
+    [CreateAssetMenu(fileName = "UIs", menuName = "Data/Data Stores/UIs")]
+    internal sealed class UIDatas : ScriptableObject, IData
     {
         public string Path { get; set; }
         
