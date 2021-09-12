@@ -6,8 +6,8 @@ using UnityEngine;
 using Code.Interfaces;
 using Code.Interfaces.Data;
 using Code.Interfaces.Input;
-using Code.Interfaces.UserInput;
 using Code.Providers;
+using Code.UserInput.Inputs;
 using IUnit = Code.Interfaces.Providers.IUnit;
 
 namespace Code.Controller
@@ -19,7 +19,6 @@ namespace Code.Controller
 
         public event Action<CarController> CarExplosion = delegate(CarController carController) { };
 
-        private CarProvider m_carProvider;
         private Rigidbody m_carRigidbody;
 
         private float m_horizontalInput;
@@ -30,29 +29,26 @@ namespace Code.Controller
         private IUserAxisProxy m_verticalAxisProxy;
         private IUserKeyProxy m_handbreakInputProxy;
 
-        private float _angle;
-        private float _torque;
-        private float _handBrake;
+        private float m_angle;
+        private float m_torque;
+        private float m_handBrake;
         
-        private bool _death;
+        private bool m_death;
 
-        public CarProvider CarProvider => m_carProvider;
-        
+        public CarProvider CarProvider { get; private set; }
+
         public WeaponsController WeaponsController { get; }
         public float SpeedModificator { get; set; }
 
-        public CarController(
-            (IUserAxisProxy inputHorizontal, IUserAxisProxy inputVertical) axisInput,
-            (IUserKeyProxy inputHandbreak, IUserKeyProxy inputRestart, IUserKeyProxy inputHorn, IUserKeyProxy inputEscape) keysInput,
-            PlayerInitialization playerInitialization, WeaponsController weaponsController, ICarData carData)
+        public CarController(PlayerInitialization playerInitialization, WeaponsController weaponsController, ICarData carData)
         {
             m_playerInitialization = playerInitialization;
             WeaponsController = weaponsController;
             m_carData = carData;
             
-            m_horizontalAxisProxy = axisInput.inputHorizontal;
-            m_verticalAxisProxy = axisInput.inputVertical;
-            m_handbreakInputProxy = keysInput.inputHandbreak;
+            m_horizontalAxisProxy = AxisInput.Horizontal;
+            m_verticalAxisProxy = AxisInput.Vertical;
+            m_handbreakInputProxy = KeysInput.Handbreak;
             
             // TODO: Сделать звук гудка.
         }
@@ -63,19 +59,19 @@ namespace Code.Controller
             m_verticalAxisProxy.AxisOnChange += VerticalOnAxisOnChange;
             m_handbreakInputProxy.KeyOnChange += HandbreakOnChange;
             
-            m_carProvider = m_playerInitialization.GetPlayerTransport();
-            m_carRigidbody = m_carProvider.GetComponent<Rigidbody>();
+            CarProvider = m_playerInitialization.GetPlayerTransport();
+            m_carRigidbody = CarProvider.GetComponent<Rigidbody>();
             if (m_carRigidbody == null)
                 throw new Exception("Rigidbody отсуствует у транспорта!");
             
-            m_carData = m_carProvider.UnitData as CarData;
+            m_carData = CarProvider.UnitData as TransportData;
 
-            m_carProvider.Health = m_carData.MaxHealth;
-            m_carProvider.UnitData = m_carData as IUnitData;
-            m_carProvider.OnUnitDamage += AddDamage;
-            m_carProvider.OnUnitHealth += AddHealth;
+            CarProvider.Health = m_carData.MaxHealth;
+            CarProvider.UnitData = m_carData as IUnitData;
+            CarProvider.OnUnitDamage += AddDamage;
+            CarProvider.OnUnitHealth += AddHealth;
             
-            foreach (var wheel in m_carProvider.WheelAxies.SelectMany(wheelAxie => wheelAxie.Wheels))
+            foreach (var wheel in CarProvider.WheelAxies.SelectMany(wheelAxie => wheelAxie.Wheels))
             {
                 wheel.WheelCollider.ConfigureVehicleSubsteps(m_carData.CriticalSpeed, m_carData.StepsBelow, m_carData.StepsAbove);
             }
@@ -87,8 +83,8 @@ namespace Code.Controller
             m_verticalAxisProxy.AxisOnChange -= VerticalOnAxisOnChange;
             m_handbreakInputProxy.KeyOnChange -= HandbreakOnChange;
             
-            m_carProvider.OnUnitDamage -= AddDamage;
-            m_carProvider.OnUnitHealth -= AddHealth;
+            CarProvider.OnUnitDamage -= AddDamage;
+            CarProvider.OnUnitHealth -= AddHealth;
         }
 
         private void VerticalOnAxisOnChange(float value)
@@ -106,18 +102,18 @@ namespace Code.Controller
 
         public void Execute(float deltaTime)
         {
-            if (_death) 
+            if (m_death) 
                 return;
             
-            GetInput();
-            if (m_carProvider == null)
+            if (CarProvider == null)
             {
-                m_carProvider = m_playerInitialization.GetPlayerTransport();
-                m_carRigidbody = m_carProvider.GetComponent<Rigidbody>();
+                CarProvider = m_playerInitialization.GetPlayerTransport();
+                m_carRigidbody = CarProvider.GetComponent<Rigidbody>();
             }
-               
             
-            foreach (var wheelAxie in m_carProvider.WheelAxies)
+            GetInput();
+            PlayAudio();
+            foreach (var wheelAxie in CarProvider.WheelAxies)
             {
                 foreach (var wheel in wheelAxie.Wheels)
                 { 
@@ -131,15 +127,15 @@ namespace Code.Controller
 
         private void GetInput()
         {
-            _angle = m_carData.MaxAngle * m_horizontalInput;
-            _handBrake = m_handBreakInput ? m_carData.BrakeTorque : 0;
+            m_angle = m_carData.MaxAngle * m_horizontalInput;
+            m_handBrake = m_handBreakInput ? m_carData.BrakeTorque : 0;
             
             if (SpeedModificator < 0f)
-                _torque = (m_carData.MaxTorque / -SpeedModificator) * m_verticalInput;
+                m_torque = (m_carData.MaxTorque / -SpeedModificator) * m_verticalInput;
             else if (SpeedModificator > 0f)
-                _torque = (m_carData.MaxTorque * SpeedModificator) * m_verticalInput;
+                m_torque = (m_carData.MaxTorque * SpeedModificator) * m_verticalInput;
             else
-                _torque = m_carData.MaxTorque * m_verticalInput;
+                m_torque = m_carData.MaxTorque * m_verticalInput;
         }
 
         private void UpdateVisual(Wheel wheel)
@@ -165,13 +161,21 @@ namespace Code.Controller
             var wheelCollider = wheel.WheelCollider;
 
             if (wheelAxie.IsSteeringAxie)
-                wheelCollider.steerAngle = _angle;
+                wheelCollider.steerAngle = m_angle;
 
             if (wheelAxie.IsHandbreakAxie)
-                wheelCollider.brakeTorque = _handBrake;
+                wheelCollider.brakeTorque = m_handBrake;
 
             if (wheelAxie.IsMotorAxie)
-                wheelCollider.motorTorque = _torque;
+                wheelCollider.motorTorque = m_torque;
+        }
+
+        private void PlayAudio()
+        {
+            var currentSpeed = m_carRigidbody.velocity.magnitude * 3.6f;
+            
+            var pitch = currentSpeed / m_carData.MaxSpeed;
+            CarProvider.AudioSource.pitch = pitch;
         }
 
         private void SetSuspension(WheelCollider wheelCollider)
@@ -184,7 +188,7 @@ namespace Code.Controller
 
             wheelCollider.suspensionSpring = spring;
 
-            var wheelRelativeBody = m_carProvider.transform.InverseTransformPoint(wheelCollider.transform.position);
+            var wheelRelativeBody = CarProvider.transform.InverseTransformPoint(wheelCollider.transform.position);
             var distance = m_carRigidbody.centerOfMass.y - wheelRelativeBody.y + wheelCollider.radius;
 
             wheelCollider.forceAppPointDistance = distance - m_carData.ForceShift;
@@ -195,42 +199,42 @@ namespace Code.Controller
 
         private void AddDamage(GameObject damager, IUnit unit, float damage)
         {
-            if (_death) 
+            if (m_death) 
                 return;
             
             var carProvider = unit as CarProvider;
             if (carProvider == null)
                 throw new Exception("Аргумент unit не является CarProvider'ом");
 
-            if (carProvider.gameObject.GetInstanceID() != m_carProvider.gameObject.GetInstanceID()) 
+            if (carProvider.gameObject.GetInstanceID() != CarProvider.gameObject.GetInstanceID()) 
                 return;
             
-            m_carProvider.Health -= damage;
-            if (m_carProvider.Health <= 0)
+            CarProvider.Health -= damage;
+            if (CarProvider.Health <= 0)
                 Death();
         }
 
         private void AddHealth(GameObject healer, IUnit unit, float health)
         {
-            if (_death) return;
+            if (m_death) return;
 
             var carProvider = unit as CarProvider;
             if (carProvider == null)
                 throw new Exception("Аргумент unit не является CarProvider'ом");
 
-            if (carProvider.gameObject.GetInstanceID() != m_carProvider.gameObject.GetInstanceID()) 
+            if (carProvider.gameObject.GetInstanceID() != CarProvider.gameObject.GetInstanceID()) 
                 return;
 
-            m_carProvider.Health += health;
-            if (m_carProvider.Health > m_carData.MaxHealth)
-                m_carProvider.Health = m_carData.MaxHealth;
+            CarProvider.Health += health;
+            if (CarProvider.Health > m_carData.MaxHealth)
+                CarProvider.Health = m_carData.MaxHealth;
         }
 
         private void Death()
         {
-            _death = true;
-            m_carProvider.Health = 0;
-            m_carProvider.Explosion();
+            m_death = true;
+            CarProvider.Health = 0;
+            CarProvider.Explosion();
             CarExplosion.Invoke(this);
         }
     }

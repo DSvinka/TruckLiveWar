@@ -2,10 +2,10 @@ using System.Linq;
 using Code.Controller.Initialization;
 using Code.Data;
 using Code.Interfaces;
+using Code.Interfaces.Input;
 using Code.Interfaces.Providers;
-using Code.Interfaces.UserInput;
 using Code.Providers;
-using Code.Utils.Extensions;
+using Code.UserInput.Inputs;
 using UnityEngine;
 
 namespace Code.Controller
@@ -17,7 +17,7 @@ namespace Code.Controller
 
         public float Cooldown { get; set; }
         public WeaponProvider WeaponProvider { get; set; }
-        public int Index { get; set; }
+        public float Index { get; set; }
 
         public WeaponProvider WeaponProviderPrefab => m_weaponProviderPrefab;
         public WeaponData WeaponData => m_weaponData;
@@ -34,28 +34,25 @@ namespace Code.Controller
         private readonly PlayerInitialization m_playerInitialization;
 
         private CarProvider m_carProvider;
-        private Weapon[] m_weapons;
 
         private IUserKeyProxy m_mouseFireInputProxy;
 
         private bool m_mouseFireInput;
 
-        public Weapon[] Weapons => m_weapons;
+        public Weapon[] Weapons { get; private set; }
         public Weapon[] SetWeaponOnSpawn { get; set; }
 
-        public WeaponsController(
-            IUserKeyProxy mouseInput,
-            PlayerInitialization playerInitialization)
+        public WeaponsController(PlayerInitialization playerInitialization)
         {
             m_playerInitialization = playerInitialization;
-            m_mouseFireInputProxy = mouseInput;
+            m_mouseFireInputProxy = MouseInput.Shot;
         }
 
         public void Initialization()
         {
             m_carProvider = m_playerInitialization.GetPlayerTransport();
 
-            m_weapons = new Weapon[m_carProvider.WeaponSlots.Length];
+            Weapons = new Weapon[m_carProvider.WeaponSlots.Length];
             m_mouseFireInputProxy.KeyOnChange += MouseFireButtonChange;
         }
 
@@ -73,10 +70,10 @@ namespace Code.Controller
                 return;
             }
             
-            if (m_weapons.Any(x => x == null)) 
+            if (Weapons.Any(x => x == null)) 
                 return;
             
-            foreach (var weapon in m_weapons)
+            foreach (var weapon in Weapons)
             {
                 Move(weapon);
                 Shot(weapon);
@@ -92,10 +89,10 @@ namespace Code.Controller
             if (weapon.WeaponData.SlotType != m_carProvider.WeaponSlots[index].SlotType)
                 return false;
 
-            if (m_weapons[index] != null)
+            if (Weapons[index] != null)
                 RemoveWeapon(index);
 
-            m_weapons[index] = weapon;
+            Weapons[index] = weapon;
 
             weapon.WeaponProvider = m_carProvider.PlaceWeapon(index, weapon);
 
@@ -105,10 +102,10 @@ namespace Code.Controller
 
         public bool RemoveWeapon(int index)
         {
-            if (m_weapons[index] == null)
+            if (Weapons[index] == null)
                 return false;
 
-            m_weapons[index] = null;
+            Weapons[index] = null;
             m_carProvider.RemoveWeapon(index);
             return true;
         }
@@ -149,6 +146,8 @@ namespace Code.Controller
             {
                 var barrelPosition = weaponProvider.FirePoint.position;
                 var barrelForward = weaponProvider.FirePoint.forward;
+                weaponProvider.ShotEffect.Play();
+                weaponProvider.AudioSource.PlayOneShot(weaponProvider.AudioSource.clip);
 
                 if (Physics.Raycast(barrelPosition, barrelForward, out var raycastHit, weaponData.MaxDistance))
                 {
